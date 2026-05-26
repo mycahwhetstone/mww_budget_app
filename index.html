@@ -3,39 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Budget</title>
+<title>MWW Budget</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Budget">
 <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:       #0a0a0a;
-  --bg2:      #111318;
-  --s1:       #272b35;
-  --s2:       #2e3240;
-  --s3:       #353a4a;
-  --border:   #363b4a;
-  --border2:  #424860;
-  --sec-gap:  #000000;
-
-  --green:    #2ddd82;
-  --gdim:     rgba(45,221,130,0.1);
-  --yellow:   #f5c84a;
-  --ydim:     rgba(245,200,74,0.1);
-  --red:      #f05f5f;
-  --rdim:     rgba(240,95,95,0.1);
-  --blue:     #6aa3f5;
-  --bdim:     rgba(106,163,245,0.1);
-
-  --text:     #dde1ec;
-  --text2:    #a8adc2;
-  --sub:      #6b7191;
-  --sub2:     #474d66;
-  --mono:     'Geist Mono', monospace;
-  --sans:     'Geist', sans-serif;
+  --bg:      #0a0a0a;
+  --bg2:     #111318;
+  --s1:      #272b35;
+  --s2:      #2e3240;
+  --s3:      #353a4a;
+  --border:  #363b4a;
+  --border2: #424860;
+  --gap:     #000000;
+  --green:   #2ddd82;
+  --gdim:    rgba(45,221,130,0.1);
+  --yellow:  #f5c84a;
+  --ydim:    rgba(245,200,74,0.1);
+  --red:     #f05f5f;
+  --rdim:    rgba(240,95,95,0.1);
+  --blue:    #6aa3f5;
+  --bdim:    rgba(106,163,245,0.1);
+  --text:    #dde1ec;
+  --text2:   #a8adc2;
+  --sub:     #6b7191;
+  --sub2:    #474d66;
+  --mono:    'Geist Mono', monospace;
+  --sans:    'Geist', sans-serif;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 body {
   font-family: var(--sans);
-  background: var(--sec-gap);
+  background: var(--gap);
   color: var(--text);
   max-width: 430px;
   margin: 0 auto;
@@ -44,44 +45,26 @@ body {
   overflow-x: hidden;
 }
 
+/* ── PAGES ── */
+.page { display: none; }
+.page.active { display: block; }
+
 /* ── HEADER ── */
-.hdr {
-  background: var(--bg);
-  padding: 54px 20px 18px;
-  border-bottom: 2px solid var(--sec-gap);
-}
+.hdr { background: var(--bg); padding: 54px 20px 18px; border-bottom: 2px solid var(--gap); }
 .hdr-row { display: flex; justify-content: space-between; align-items: flex-start; }
 .hdr-left h1 { font-size: 21px; font-weight: 600; letter-spacing: -0.4px; margin-bottom: 4px; color: var(--text); }
 .hdr-left .period { font-family: var(--mono); font-size: 11px; color: var(--sub); }
-.day-badge {
-  font-family: var(--mono); font-size: 11px; color: var(--text2);
-  background: var(--s2); border: 1px solid var(--border);
-  border-radius: 8px; padding: 5px 10px;
-}
+.day-badge { font-family: var(--mono); font-size: 11px; color: var(--text2); background: var(--s2); border: 1px solid var(--border); border-radius: 8px; padding: 5px 10px; }
 .prog-wrap { margin-top: 14px; }
 .prog-meta { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; color: var(--sub2); margin-bottom: 5px; }
 .prog-bg { height: 3px; background: var(--s3); border-radius: 99px; overflow: hidden; }
 .prog-fill { height: 100%; border-radius: 99px; background: var(--green); opacity: 0.55; }
 
 /* ── STANDINGS ── */
-.standings-wrap {
-  background: var(--bg2);
-  padding: 14px 16px;
-  border-bottom: 2px solid var(--sec-gap);
-}
+.standings-wrap { background: var(--bg2); padding: 14px 16px; border-bottom: 2px solid var(--gap); }
 .standings { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-.st {
-  background: var(--s1);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px 10px 10px;
-  position: relative; overflow: hidden;
-  transition: border-color 0.25s;
-}
-.st::after {
-  content: ''; position: absolute;
-  bottom: 0; left: 0; right: 0; height: 2px;
-}
+.st { background: var(--s1); border: 1px solid var(--border); border-radius: 12px; padding: 12px 10px 10px; position: relative; overflow: hidden; transition: border-color 0.25s; }
+.st::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; }
 .st.g { border-color: rgba(45,221,130,0.25); }
 .st.g::after { background: var(--green); }
 .st.y { border-color: rgba(245,200,74,0.25); }
@@ -93,7 +76,6 @@ body {
 .st.g .st-val { color: var(--green); }
 .st.y .st-val { color: var(--yellow); }
 .st.r .st-val { color: var(--red); }
-.st-sub { font-size: 9px; color: var(--sub); margin-top: 4px; font-family: var(--mono); }
 .st-meta { margin-top: 8px; display: flex; flex-direction: column; gap: 2px; }
 .st-meta-row { display: flex; justify-content: space-between; align-items: center; }
 .st-meta-lbl { font-family: var(--mono); font-size: 8px; color: var(--sub2); letter-spacing: 0.05em; }
@@ -102,41 +84,17 @@ body {
 .st-meta-val.out { color: rgba(240,95,95,0.55); }
 
 /* ── SECTION ── */
-.section {
-  background: var(--bg);
-  border-top: 2px solid var(--sec-gap);
-  border-bottom: 2px solid var(--sec-gap);
-  margin-bottom: 2px;
-}
-.sec-head {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 13px 20px 11px;
-  background: var(--s1);
-  border-bottom: 1px solid var(--border);
-}
+.section { background: var(--bg); border-top: 2px solid var(--gap); border-bottom: 2px solid var(--gap); margin-bottom: 2px; }
+.sec-head { display: flex; justify-content: space-between; align-items: center; padding: 13px 20px 11px; background: var(--s1); border-bottom: 1px solid var(--border); }
 .sec-head-left { display: flex; align-items: center; gap: 8px; }
 .sec-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.sec-label {
-  font-size: 11px; font-weight: 600;
-  letter-spacing: 0.07em; text-transform: uppercase;
-  color: var(--text2); font-family: var(--mono);
-}
+.sec-label { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text2); font-family: var(--mono); }
 .sec-right { font-family: var(--mono); font-size: 11px; color: var(--sub); }
 .sec-action { color: var(--blue); cursor: pointer; font-family: var(--mono); font-size: 11px; }
 .sec-body { padding: 10px 16px 12px; background: var(--bg); }
 
 /* ── PRESET ROWS ── */
-.preset-row {
-  display: flex; align-items: center; gap: 10px;
-  padding: 12px 14px;
-  background: var(--s1);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  margin-bottom: 7px;
-  cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
-  user-select: none;
-}
+.preset-row { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--s1); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 7px; cursor: pointer; transition: border-color 0.15s, background 0.15s; user-select: none; }
 .preset-row:active { background: var(--s2); }
 .preset-row.has-value { border-color: var(--border2); }
 .preset-pip { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
@@ -148,29 +106,11 @@ body {
 .preset-val.active-cc  { color: var(--red); }
 .preset-val.active-inc { color: var(--green); }
 .preset-val.active-oth { color: var(--yellow); }
-
-/* extra adj divider */
-.adj-divider {
-  font-family: var(--mono); font-size: 10px;
-  color: var(--sub2); text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 8px 2px 6px;
-  display: none;
-}
+.adj-divider { font-family: var(--mono); font-size: 10px; color: var(--sub2); text-transform: uppercase; letter-spacing: 0.08em; padding: 8px 2px 6px; display: none; }
 .adj-divider.show { display: block; }
 
-/* ── EXTRA ADJ ITEMS ── */
-.adj-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 11px 14px;
-  background: var(--s1);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  margin-bottom: 7px;
-  cursor: pointer;
-  transition: border-color 0.15s;
-  animation: fadeUp 0.2s ease;
-}
+/* ── EXTRA ADJ ── */
+.adj-item { display: flex; align-items: center; gap: 10px; padding: 11px 14px; background: var(--s1); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 7px; cursor: pointer; transition: border-color 0.15s; animation: fadeUp 0.2s ease; }
 .adj-item:active { background: var(--s2); }
 .adj-pip { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 .adj-pip.income { background: var(--green); }
@@ -187,24 +127,9 @@ body {
 .adj-edit-hint { font-family: var(--mono); font-size: 10px; color: var(--sub2); }
 
 /* ── BILLS ── */
-.bill {
-  display: flex; align-items: center; gap: 11px;
-  padding: 11px 14px;
-  background: var(--s1);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  margin-bottom: 7px;
-  cursor: pointer;
-  transition: opacity 0.2s;
-  user-select: none;
-}
+.bill { display: flex; align-items: center; gap: 11px; padding: 11px 14px; background: var(--s1); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 7px; cursor: pointer; transition: opacity 0.2s; user-select: none; }
 .bill.paid { opacity: 0.28; }
-.chk {
-  width: 20px; height: 20px; border-radius: 50%;
-  border: 1.5px solid var(--border2);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; transition: all 0.18s;
-}
+.chk { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--border2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.18s; }
 .bill.paid .chk { background: var(--green); border-color: var(--green); }
 .chk svg { display: none; }
 .bill.paid .chk svg { display: block; }
@@ -213,77 +138,65 @@ body {
 .bill-sub { font-size: 11px; color: var(--sub); margin-top: 1px; font-family: var(--mono); }
 .bill-r { text-align: right; flex-shrink: 0; }
 .bill-amt { font-family: var(--mono); font-size: 13px; }
-.tag { display: inline-block; font-family: var(--mono); font-size: 9px; border-radius: 5px; padding: 2px 6px; margin-top: 3px; letter-spacing: 0.03em; }
+.tag { display: inline-block; font-family: var(--mono); font-size: 9px; border-radius: 5px; padding: 2px 6px; margin-top: 3px; }
 .t-sav { background: var(--bdim); color: var(--blue); }
 .t-chk { background: var(--ydim); color: var(--yellow); }
 .t-cc  { background: var(--rdim); color: var(--red); }
 
 /* ── UPCOMING ── */
-.upc {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 10px 14px;
-  background: var(--s1);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  margin-bottom: 7px;
-}
+.upc { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: var(--s1); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 7px; }
 .upc-name { font-size: 13px; font-weight: 500; }
 .upc-when { font-family: var(--mono); font-size: 10px; color: var(--sub); margin-top: 2px; }
 .upc-amt { font-family: var(--mono); font-size: 13px; color: var(--yellow); }
 
+/* ── PLACEHOLDER PAGE ── */
+.placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; gap: 12px; padding: 40px 20px; }
+.placeholder-icon { font-size: 40px; opacity: 0.4; }
+.placeholder-title { font-size: 16px; font-weight: 600; color: var(--text2); }
+.placeholder-sub { font-size: 12px; color: var(--sub); font-family: var(--mono); text-align: center; line-height: 1.6; }
+
+/* ── PAYCHECK SCHEDULE (More) ── */
+.pay-hdr { background: var(--bg); padding: 54px 20px 18px; border-bottom: 2px solid var(--gap); }
+.pay-hdr h1 { font-size: 21px; font-weight: 600; letter-spacing: -0.4px; margin-bottom: 4px; }
+.pay-hdr .pay-sub { font-family: var(--mono); font-size: 11px; color: var(--sub); }
+.pay-row { display: flex; align-items: center; gap: 0; padding: 11px 14px; background: var(--s1); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 7px; }
+.pay-row.current-period { border-color: rgba(45,221,130,0.35); background: rgba(45,221,130,0.05); }
+.pay-date { font-family: var(--mono); font-size: 12px; font-weight: 500; flex: 1; }
+.pay-amt { font-family: var(--mono); font-size: 12px; color: var(--green); width: 80px; text-align: right; }
+.pay-owed { font-family: var(--mono); font-size: 12px; color: var(--red); width: 80px; text-align: right; }
+.pay-badge { font-family: var(--mono); font-size: 9px; background: var(--gdim); color: var(--green); border: 1px solid rgba(45,221,130,0.2); border-radius: 5px; padding: 2px 6px; margin-left: 8px; }
+
 /* ── FAB ── */
-.fab {
-  position: fixed; bottom: 94px;
-  right: calc(50% - 215px + 18px);
-  width: 50px; height: 50px; border-radius: 14px;
-  background: var(--green); border: none;
-  color: #0a0a0a; font-size: 24px;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 0 1px rgba(45,221,130,0.2), 0 8px 28px rgba(45,221,130,0.18);
-  transition: transform 0.2s, border-radius 0.2s; z-index: 90; line-height: 1;
-}
+.fab { position: fixed; bottom: 94px; right: calc(50% - 215px + 18px); width: 50px; height: 50px; border-radius: 14px; background: var(--green); border: none; color: #0a0a0a; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 1px rgba(45,221,130,0.2), 0 8px 28px rgba(45,221,130,0.18); transition: transform 0.2s, border-radius 0.2s; z-index: 90; line-height: 1; }
 .fab.open { transform: rotate(45deg); border-radius: 50%; }
 .fab:active { transform: scale(0.92); }
+.fab.hidden { display: none; }
 
-/* ── SHEET ── */
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 110; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+/* ── SHEETS ── */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 110; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
 .overlay.show { opacity: 1; pointer-events: all; }
-.sheet {
-  position: fixed; bottom: 0;
-  left: 50%; transform: translateX(-50%) translateY(102%);
-  width: 100%; max-width: 430px;
-  background: var(--s1);
-  border-radius: 20px 20px 0 0;
-  border: 1px solid var(--border2); border-bottom: none;
-  padding: 0 0 44px; z-index: 120;
-  transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
-}
+.sheet { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%) translateY(102%); width: 100%; max-width: 430px; background: var(--s1); border-radius: 20px 20px 0 0; border: 1px solid var(--border2); border-bottom: none; padding: 0 0 44px; z-index: 120; transition: transform 0.3s cubic-bezier(0.32,0.72,0,1); }
 .sheet.open { transform: translateX(-50%) translateY(0); }
 .handle { width: 32px; height: 3px; background: var(--border2); border-radius: 99px; margin: 10px auto 18px; }
 .sheet-hdr { display: flex; align-items: center; justify-content: space-between; padding: 0 18px; margin-bottom: 18px; }
-.sheet-title { font-size: 15px; font-weight: 600; letter-spacing: -0.2px; }
+.sheet-title { font-size: 15px; font-weight: 600; }
 .sheet-delete { font-family: var(--mono); font-size: 11px; color: var(--red); cursor: pointer; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(240,95,95,0.25); background: var(--rdim); display: none; }
 .sheet-delete.vis { display: block; }
-
 .type-row { display: flex; gap: 6px; padding: 0 18px; margin-bottom: 18px; }
 .t-btn { flex: 1; padding: 10px 0; border-radius: 10px; border: 1px solid var(--border2); background: var(--s2); font-family: var(--sans); font-size: 12px; font-weight: 500; color: var(--sub); cursor: pointer; transition: all 0.15s; }
 .t-btn.si { background: var(--gdim); border-color: rgba(45,221,130,0.3); color: var(--green); }
-.t-btn.sd { background: var(--rdim); border-color: rgba(240,95,95,0.3);   color: var(--red); }
-.t-btn.sa { background: var(--ydim); border-color: rgba(245,200,74,0.3);  color: var(--yellow); }
-
+.t-btn.sd { background: var(--rdim); border-color: rgba(240,95,95,0.3); color: var(--red); }
+.t-btn.sa { background: var(--ydim); border-color: rgba(245,200,74,0.3); color: var(--yellow); }
 .field { padding: 0 18px; margin-bottom: 14px; }
 .field-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sub); margin-bottom: 6px; }
 .inp { width: 100%; background: var(--s2); border: 1px solid var(--border2); border-radius: 10px; padding: 12px 13px; font-family: var(--sans); font-size: 14px; color: var(--text); outline: none; transition: border-color 0.15s; }
 .inp:focus { border-color: var(--blue); }
-
 .sign-row { display: flex; gap: 6px; padding: 0 18px; margin-bottom: 14px; }
 .sign-btn { flex: 1; padding: 10px 0; border-radius: 10px; border: 1px solid var(--border2); background: var(--s2); font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--sub); cursor: pointer; transition: all 0.15s; }
 .sign-btn.sp { background: var(--gdim); border-color: rgba(45,221,130,0.3); color: var(--green); }
-.sign-btn.sn { background: var(--rdim); border-color: rgba(240,95,95,0.3);  color: var(--red); }
-
+.sign-btn.sn { background: var(--rdim); border-color: rgba(240,95,95,0.3); color: var(--red); }
 .amt-inp { width: calc(100% - 36px); margin: 0 18px 16px; background: var(--s2); border: 1px solid var(--border2); border-radius: 10px; padding: 14px 13px; font-family: var(--mono); font-size: 24px; font-weight: 500; color: var(--text); outline: none; text-align: center; letter-spacing: -0.5px; transition: border-color 0.15s; }
 .amt-inp:focus { border-color: var(--blue); }
-
 .save-btn { display: block; width: calc(100% - 36px); margin: 0 18px; padding: 14px; border-radius: 12px; border: none; font-family: var(--sans); font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.15s, transform 0.12s; }
 .save-btn:active { transform: scale(0.97); opacity: 0.85; }
 .save-btn.sg { background: var(--green);  color: #0a0a0a; }
@@ -293,47 +206,11 @@ body {
 .save-btn.sd { background: var(--red);    color: #fff; }
 .save-btn.sa { background: var(--yellow); color: #0a0a0a; }
 
-/* ── NAV ── */
-.nav {
-  position: fixed; bottom: 0;
-  left: 50%; transform: translateX(-50%);
-  width: 100%; max-width: 430px;
-  background: rgba(10,10,10,0.97);
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid var(--border);
-  display: flex; padding: 10px 0 28px; z-index: 80;
-}
-.ni { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 0; }
-.ni-icon { font-size: 18px; }
-.ni-lbl { font-size: 9px; color: var(--sub); font-family: var(--mono); letter-spacing: 0.04em; text-transform: uppercase; }
-.ni.on .ni-lbl { color: var(--green); }
-
-/* ── TOAST ── */
-.toast { position: fixed; bottom: 102px; left: 50%; transform: translateX(-50%); background: var(--s2); border: 1px solid var(--border2); border-radius: 99px; padding: 8px 16px; font-family: var(--mono); font-size: 11px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 200; }
-.toast.show { opacity: 1; }
-
-@keyframes fadeUp { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
-
 /* ── MORE TRAY ── */
-.more-tray {
-  position: fixed; bottom: 0;
-  left: 50%; transform: translateX(-50%) translateY(102%);
-  width: 100%; max-width: 430px;
-  background: var(--s1);
-  border-radius: 20px 20px 0 0;
-  border: 1px solid var(--border2); border-bottom: none;
-  padding: 0 0 44px; z-index: 140;
-  transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
-}
+.more-tray { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%) translateY(102%); width: 100%; max-width: 430px; background: var(--s1); border-radius: 20px 20px 0 0; border: 1px solid var(--border2); border-bottom: none; padding: 0 0 44px; z-index: 140; transition: transform 0.3s cubic-bezier(0.32,0.72,0,1); }
 .more-tray.open { transform: translateX(-50%) translateY(0); }
 .more-handle { width: 32px; height: 3px; background: var(--border2); border-radius: 99px; margin: 10px auto 16px; }
-.more-item {
-  display: flex; align-items: center; gap: 14px;
-  padding: 15px 20px;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  transition: background 0.15s;
-}
+.more-item { display: flex; align-items: center; gap: 14px; padding: 15px 20px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s; }
 .more-item:last-child { border-bottom: none; }
 .more-item:active { background: var(--s2); }
 .more-icon { font-size: 20px; width: 24px; text-align: center; flex-shrink: 0; }
@@ -342,124 +219,179 @@ body {
 .more-sub { font-size: 11px; color: var(--sub); font-family: var(--mono); margin-top: 2px; }
 .more-arrow { font-size: 20px; color: var(--sub2); }
 
-/* wider nav for 6 items */
-.nav { padding: 10px 0 28px; }
-.ni-lbl { font-size: 8px; }
+/* ── NAV ── */
+.nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; background: rgba(10,10,10,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; padding: 10px 0 28px; z-index: 80; }
+.ni { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 0; }
+.ni-icon { font-size: 18px; }
+.ni-lbl { font-size: 8px; color: var(--sub); font-family: var(--mono); letter-spacing: 0.04em; text-transform: uppercase; }
+.ni.on .ni-lbl { color: var(--green); }
 
+/* ── TOAST ── */
+.toast { position: fixed; bottom: 102px; left: 50%; transform: translateX(-50%); background: var(--s2); border: 1px solid var(--border2); border-radius: 99px; padding: 8px 16px; font-family: var(--mono); font-size: 11px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 200; }
+.toast.show { opacity: 1; }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="hdr">
-  <div class="hdr-row">
-    <div class="hdr-left">
-      <h1>Expense Planning</h1>
-      <div class="period">May 23 – Jun 5, 2026</div>
+<!-- ══════════════════════════════════════
+     PAGE: BUDGET
+══════════════════════════════════════ -->
+<div class="page" id="page-budget">
+  <div class="hdr">
+    <div class="hdr-row">
+      <div class="hdr-left"><h1>Budget</h1><div class="period">Monthly overview</div></div>
     </div>
-    <div class="day-badge" id="dayBadge">Day 1</div>
   </div>
-  <div class="prog-wrap">
-    <div class="prog-meta"><span>Period start</span><span>Jun 5 · next payday</span></div>
-    <div class="prog-bg"><div class="prog-fill" id="progFill" style="width:7%"></div></div>
+  <div class="placeholder">
+    <div class="placeholder-icon">📊</div>
+    <div class="placeholder-title">Budget</div>
+    <div class="placeholder-sub">Monthly income, expenses,<br>and savings overview.<br>Coming next.</div>
   </div>
 </div>
 
-<!-- STANDINGS -->
-<div class="standings-wrap">
-  <div class="standings">
-    <div class="st g" id="cardCurrent">
-      <div class="st-lbl">Current</div>
-      <div class="st-val" id="stCurrent">$499</div>
-      <div class="st-meta">
-        <div class="st-meta-row"><span class="st-meta-lbl">in</span><span class="st-meta-val in" id="detCurrentIn">$1,294</span></div>
-        <div class="st-meta-row"><span class="st-meta-lbl">out</span><span class="st-meta-val out" id="detCurrentOut">$794</span></div>
+<!-- ══════════════════════════════════════
+     PAGE: EXPENSE PLANNING
+══════════════════════════════════════ -->
+<div class="page active" id="page-expense">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-row">
+      <div class="hdr-left">
+        <h1>Expense Planning</h1>
+        <div class="period" id="periodLabel">May 15 – May 28, 2026</div>
+      </div>
+      <div class="day-badge" id="dayBadge">Day 1</div>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-meta"><span id="progStart">May 15</span><span id="progEnd">May 29 · payday</span></div>
+      <div class="prog-bg"><div class="prog-fill" id="progFill" style="width:7%"></div></div>
+    </div>
+  </div>
+
+  <!-- STANDINGS -->
+  <div class="standings-wrap">
+    <div class="standings">
+      <div class="st g" id="cardCurrent">
+        <div class="st-lbl">Current</div>
+        <div class="st-val" id="stCurrent">$0</div>
+        <div class="st-meta">
+          <div class="st-meta-row"><span class="st-meta-lbl">in</span><span class="st-meta-val in" id="detCurrentIn">$0</span></div>
+          <div class="st-meta-row"><span class="st-meta-lbl">out</span><span class="st-meta-val out" id="detCurrentOut">$0</span></div>
+        </div>
+      </div>
+      <div class="st y" id="cardShort">
+        <div class="st-lbl">Short</div>
+        <div class="st-val" id="stShort">$0</div>
+        <div class="st-meta">
+          <div class="st-meta-row"><span class="st-meta-lbl">in</span><span class="st-meta-val in" id="detShortIn">$0</span></div>
+          <div class="st-meta-row"><span class="st-meta-lbl">out</span><span class="st-meta-val out" id="detShortOut">$0</span></div>
+        </div>
+      </div>
+      <div class="st r" id="cardLong">
+        <div class="st-lbl">Long</div>
+        <div class="st-val" id="stLong">$0</div>
+        <div class="st-meta">
+          <div class="st-meta-row"><span class="st-meta-lbl">in</span><span class="st-meta-val in" id="detLongIn">$0</span></div>
+          <div class="st-meta-row"><span class="st-meta-lbl">out</span><span class="st-meta-val out" id="detLongOut">$0</span></div>
+        </div>
       </div>
     </div>
-    <div class="st y" id="cardShort">
-      <div class="st-lbl">Short</div>
-      <div class="st-val" id="stShort">$5</div>
-      <div class="st-meta">
-        <div class="st-meta-row"><span class="st-meta-lbl">in</span><span class="st-meta-val in" id="detShortIn">$2,714</span></div>
-        <div class="st-meta-row"><span class="st-meta-lbl">out</span><span class="st-meta-val out" id="detShortOut">$3,208</span></div>
+  </div>
+
+  <!-- ADJUSTMENTS -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-head-left"><div class="sec-dot" style="background:var(--yellow)"></div><span class="sec-label">Adjustments</span></div>
+      <span class="sec-action" onclick="openExtra(null)">+ Add</span>
+    </div>
+    <div class="sec-body">
+      <div class="preset-row" id="pr-cc1" onclick="openPreset('cc1')"><div class="preset-pip cc"></div><div class="preset-name">CC1</div><div class="preset-val" id="pv-cc1">—</div></div>
+      <div class="preset-row" id="pr-cc2" onclick="openPreset('cc2')"><div class="preset-pip cc"></div><div class="preset-name">CC2</div><div class="preset-val" id="pv-cc2">—</div></div>
+      <div class="preset-row" id="pr-upi" onclick="openPreset('upi')"><div class="preset-pip inc"></div><div class="preset-name">Upcoming Income</div><div class="preset-val" id="pv-upi">—</div></div>
+      <div class="preset-row" id="pr-oth" onclick="openPreset('oth')"><div class="preset-pip other"></div><div class="preset-name">Other</div><div class="preset-val" id="pv-oth">—</div></div>
+      <div class="adj-divider" id="extraDivider">Additional</div>
+      <div id="adjList"></div>
+    </div>
+  </div>
+
+  <!-- BILLS THIS PERIOD -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-head-left"><div class="sec-dot" style="background:var(--blue)"></div><span class="sec-label">Bills This Period</span></div>
+      <span class="sec-right" id="paidCount">0 / 0 paid</span>
+    </div>
+    <div class="sec-body" id="billsCurrentBody"></div>
+  </div>
+
+  <!-- SHORT TERM -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-head-left"><div class="sec-dot" style="background:var(--yellow)"></div><span class="sec-label">Short Term</span></div>
+      <span class="sec-right" id="shortLabel">Next period</span>
+    </div>
+    <div class="sec-body" id="billsShortBody"></div>
+  </div>
+
+  <!-- LONG TERM -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-head-left"><div class="sec-dot" style="background:var(--red)"></div><span class="sec-label">Long Term</span></div>
+      <span class="sec-right">2+ paychecks out</span>
+    </div>
+    <div class="sec-body" id="billsLongBody"></div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE: MONTHLY FIXED
+══════════════════════════════════════ -->
+<div class="page" id="page-monthly">
+  <div class="hdr">
+    <div class="hdr-row">
+      <div class="hdr-left"><h1>Monthly Fixed</h1><div class="period">Bills & Emergency Fund</div></div>
+    </div>
+  </div>
+  <div class="placeholder">
+    <div class="placeholder-icon">🏠</div>
+    <div class="placeholder-title">Monthly Fixed Costs</div>
+    <div class="placeholder-sub">Full bill register, emergency fund<br>tracker, and debt balances.<br>Coming next.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE: GOALS
+══════════════════════════════════════ -->
+<div class="page" id="page-goals">
+  <div class="hdr">
+    <div class="hdr-row">
+      <div class="hdr-left"><h1>Goals</h1><div class="period">Financial goals</div></div>
+    </div>
+  </div>
+  <div class="placeholder">
+    <div class="placeholder-icon">🎯</div>
+    <div class="placeholder-title">Goals</div>
+    <div class="placeholder-sub">Track your financial goals<br>and milestones.<br>Coming next.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE: PAYCHECK SCHEDULE (More)
+══════════════════════════════════════ -->
+<div class="page" id="page-schedule">
+  <div class="pay-hdr">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <div>
+        <h1>Paycheck Schedule</h1>
+        <div class="pay-sub">$2,714.20 · every 2 weeks</div>
       </div>
-    </div>
-    <div class="st r" id="cardLong">
-      <div class="st-lbl">Long</div>
-      <div class="st-val" id="stLong">-$944</div>
-      <div class="st-meta">
-        <div class="st-meta-row"><span class="st-meta-lbl">in</span><span class="st-meta-val in" id="detLongIn">$2,714</span></div>
-        <div class="st-meta-row"><span class="st-meta-lbl">out</span><span class="st-meta-val out" id="detLongOut">$1,774</span></div>
-      </div>
+      <div style="font-size:22px;cursor:pointer;" onclick="goBack()">←</div>
     </div>
   </div>
-</div>
-
-<!-- ADJUSTMENTS -->
-<div class="section">
-  <div class="sec-head">
-    <div class="sec-head-left"><div class="sec-dot" style="background:var(--yellow)"></div><span class="sec-label">Adjustments</span></div>
-    <span class="sec-action" onclick="openExtra(null)">+ Add</span>
-  </div>
-  <div class="sec-body">
-    <div class="preset-row" id="pr-cc1" onclick="openPreset('cc1')">
-      <div class="preset-pip cc"></div>
-      <div class="preset-name">CC1</div>
-      <div class="preset-val" id="pv-cc1">—</div>
-    </div>
-    <div class="preset-row" id="pr-cc2" onclick="openPreset('cc2')">
-      <div class="preset-pip cc"></div>
-      <div class="preset-name">CC2</div>
-      <div class="preset-val" id="pv-cc2">—</div>
-    </div>
-    <div class="preset-row" id="pr-upi" onclick="openPreset('upi')">
-      <div class="preset-pip inc"></div>
-      <div class="preset-name">Upcoming Income</div>
-      <div class="preset-val" id="pv-upi">—</div>
-    </div>
-    <div class="preset-row" id="pr-oth" onclick="openPreset('oth')">
-      <div class="preset-pip other"></div>
-      <div class="preset-name">Other</div>
-      <div class="preset-val" id="pv-oth">—</div>
-    </div>
-    <div class="adj-divider" id="extraDivider">Additional</div>
-    <div id="adjList"></div>
-  </div>
-</div>
-
-<!-- BILLS -->
-<div class="section">
-  <div class="sec-head">
-    <div class="sec-head-left"><div class="sec-dot" style="background:var(--blue)"></div><span class="sec-label">Bills This Period</span></div>
-    <span class="sec-right" id="paidCount">3 / 6 paid</span>
-  </div>
-  <div class="sec-body">
-    <div class="bill paid" onclick="toggleBill(this,-575.46)"><div class="chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.8 2.8L9 1" stroke="#1c1f26" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="bill-info"><div class="bill-name">Student Loans</div><div class="bill-sub">NelNet · May 27</div></div><div class="bill-r"><div class="bill-amt">$575.46</div><span class="tag t-sav">SAV</span></div></div>
-    <div class="bill paid" onclick="toggleBill(this,-80)"><div class="chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.8 2.8L9 1" stroke="#1c1f26" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="bill-info"><div class="bill-name">Electric</div><div class="bill-sub">Duke · May 27</div></div><div class="bill-r"><div class="bill-amt">$80.00</div><span class="tag t-chk">CHK</span></div></div>
-    <div class="bill paid" onclick="toggleBill(this,-650)"><div class="chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.8 2.8L9 1" stroke="#1c1f26" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="bill-info"><div class="bill-name">Roth IRA</div><div class="bill-sub">Thrivent · May 27</div></div><div class="bill-r"><div class="bill-amt">$650.00</div><span class="tag t-chk">CHK</span></div></div>
-    <div class="bill" onclick="toggleBill(this,-32.92)"><div class="chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.8 2.8L9 1" stroke="#1c1f26" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="bill-info"><div class="bill-name">Trash</div><div class="bill-sub">Waste Mgmt · Jun 1</div></div><div class="bill-r"><div class="bill-amt">$32.92</div><span class="tag t-sav">SAV</span></div></div>
-    <div class="bill" onclick="toggleBill(this,-15)"><div class="chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.8 2.8L9 1" stroke="#1c1f26" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="bill-info"><div class="bill-name">Planet Fitness</div><div class="bill-sub">Planet Fitness · May 29</div></div><div class="bill-r"><div class="bill-amt">$15.00</div><span class="tag t-chk">CHK</span></div></div>
-    <div class="bill" onclick="toggleBill(this,-90)"><div class="chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.8 2.8L9 1" stroke="#1c1f26" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="bill-info"><div class="bill-name">PP Food — Pokey & Penny</div><div class="bill-sub">Hill's · May 29</div></div><div class="bill-r"><div class="bill-amt">$90.00</div><span class="tag t-cc">CC1</span></div></div>
-  </div>
-</div>
-
-<!-- SHORT -->
-<div class="section">
-  <div class="sec-head"><div class="sec-head-left"><div class="sec-dot" style="background:var(--yellow)"></div><span class="sec-label">Short Term</span></div><span class="sec-right">Jun 6 – 19</span></div>
-  <div class="sec-body">
-    <div class="upc"><div><div class="upc-name">Mortgage + Escrow</div><div class="upc-when">Caliber/Newrez · Jun 1</div></div><div class="upc-amt">$1,800.00</div></div>
-    <div class="upc"><div><div class="upc-name">Gas</div><div class="upc-when">Centerpoint · Jun 1</div></div><div class="upc-amt">$100.00</div></div>
-    <div class="upc"><div><div class="upc-name">House / Car Insurance</div><div class="upc-when">State Farm · Jun 7</div></div><div class="upc-amt">$220.00</div></div>
-    <div class="upc" style="opacity:0.35;"><div><div class="upc-name">+ 5 more</div><div class="upc-when">expand in full app</div></div><div class="upc-amt">$1,088.38</div></div>
-  </div>
-</div>
-
-<!-- LONG -->
-<div class="section">
-  <div class="sec-head"><div class="sec-head-left"><div class="sec-dot" style="background:var(--red)"></div><span class="sec-label">Long Term</span></div><span class="sec-right">2+ paychecks out</span></div>
-  <div class="sec-body">
-    <div class="upc"><div><div class="upc-name">Scope Pay Plan</div><div class="upc-when">Other debt · recurring</div></div><div class="upc-amt" style="color:var(--red)">$366.14</div></div>
-  </div>
+  <div style="padding:12px 16px;" id="scheduleBody"></div>
 </div>
 
 <!-- FAB -->
@@ -505,262 +437,525 @@ body {
   <button class="save-btn si" id="extraSaveBtn" onclick="saveExtra()">Save Income</button>
 </div>
 
-<!-- NAV -->
-<nav class="nav">
-  <div class="ni" onclick="showToast('Budget — coming soon')"><div class="ni-icon">📊</div><div class="ni-lbl">Budget</div></div>
-  <div class="ni on"><div class="ni-icon">📋</div><div class="ni-lbl">Expense</div></div>
-  <div class="ni" onclick="showToast('Monthly Fixed — coming soon')"><div class="ni-icon">🏠</div><div class="ni-lbl">Monthly</div></div>
-  <div class="ni" onclick="showToast('Thrivent — coming soon')"><div class="ni-icon">📈</div><div class="ni-lbl">Thrivent</div></div>
-  <div class="ni" onclick="showToast('Student Loans — coming soon')"><div class="ni-icon">🎓</div><div class="ni-lbl">Loans</div></div>
-  <div class="ni" onclick="openMore()"><div class="ni-icon">⋯</div><div class="ni-lbl">More</div></div>
-</nav>
-
 <!-- MORE TRAY -->
 <div class="overlay" id="moreOverlay" onclick="closeMore()" style="z-index:130;"></div>
 <div class="more-tray" id="moreTray">
   <div class="more-handle"></div>
-  <div class="more-item" onclick="showToast('Goals — coming soon'); closeMore()">
-    <span class="more-icon">🎯</span>
-    <div class="more-info">
-      <div class="more-label">Goals</div>
-      <div class="more-sub">Track financial goals</div>
-    </div>
+  <div class="more-item" onclick="goToSchedule()">
+    <span class="more-icon">📅</span>
+    <div class="more-info"><div class="more-label">Paycheck Schedule</div><div class="more-sub">Pay dates, amounts, obligations</div></div>
     <span class="more-arrow">›</span>
   </div>
-  <div class="more-item" onclick="showToast('Settings — coming soon'); closeMore()">
+  <div class="more-item" onclick="showToast('Settings coming soon'); closeMore()">
     <span class="more-icon">⚙️</span>
-    <div class="more-info">
-      <div class="more-label">Settings</div>
-      <div class="more-sub">Pay cycle, accounts, preferences</div>
-    </div>
+    <div class="more-info"><div class="more-label">Settings</div><div class="more-sub">Pay cycle, paycheck amount</div></div>
     <span class="more-arrow">›</span>
   </div>
 </div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="ni" id="nav-budget" onclick="navTo('budget')"><div class="ni-icon">📊</div><div class="ni-lbl">Budget</div></div>
+  <div class="ni on" id="nav-expense" onclick="navTo('expense')"><div class="ni-icon">📋</div><div class="ni-lbl">Expense</div></div>
+  <div class="ni" id="nav-monthly" onclick="navTo('monthly')"><div class="ni-icon">🏠</div><div class="ni-lbl">Monthly</div></div>
+  <div class="ni" id="nav-goals" onclick="navTo('goals')"><div class="ni-icon">🎯</div><div class="ni-lbl">Goals</div></div>
+  <div class="ni" id="nav-more" onclick="openMore()"><div class="ni-icon">⋯</div><div class="ni-lbl">More</div></div>
+</nav>
 <div class="toast" id="toastEl"></div>
 
 <script>
-  let billsPaid = 575.46 + 80 + 650;
-  let extraItems = [];
-  let extraEditIdx = null;
-  let selType = 'income', selSign = 1;
-  let activePreset = null, pSelSign = -1;
-  let activeSheet = null;
+// ══════════════════════════════════════
+// DATA
+// ══════════════════════════════════════
+const PAYCHECK = 2714.20;
 
-  const presetCfg = {
-    cc1: { label:'CC1',             fixedSign:true,  defaultSign:-1, pip:'cc'    },
-    cc2: { label:'CC2',             fixedSign:true,  defaultSign:-1, pip:'cc'    },
-    upi: { label:'Upcoming Income', fixedSign:false, defaultSign: 1, pip:'inc'   },
-    oth: { label:'Other',           fixedSign:false, defaultSign: 1, pip:'other' },
-  };
-  const presets     = { cc1:0, cc2:0, upi:0, oth:0 };
-  const presetSigns = { cc1:-1, cc2:-1, upi:1, oth:1 };
+// All bills — dueDay is day of month
+const ALL_BILLS = [
+  { id:'b1',  name:'Mortgage',           company:'Caliber/Newrez',      amt:1800.00, dueDay:1,  method:'SAV', essential:true  },
+  { id:'b2',  name:'Gas',                company:'Centerpoint',          amt:100.00,  dueDay:1,  method:'SAV', essential:true  },
+  { id:'b3',  name:'Car',                company:'Capital One',          amt:400.00,  dueDay:3,  method:'SAV', essential:true  },
+  { id:'b4',  name:'Electric',           company:'Duke',                 amt:80.00,   dueDay:7,  method:'CHK', essential:true  },
+  { id:'b5',  name:'Trash',              company:'Waste Management',     amt:32.92,   dueDay:7,  method:'SAV', essential:true  },
+  { id:'b6',  name:'House/Car Insurance',company:'State Farm',           amt:220.00,  dueDay:7,  method:'CC1', essential:true  },
+  { id:'b7',  name:'Student Loans',      company:'NelNet',               amt:575.46,  dueDay:12, method:'SAV', essential:true  },
+  { id:'b8',  name:'Roth IRA',           company:'Thrivent',             amt:650.00,  dueDay:15, method:'CHK', essential:false },
+  { id:'b9',  name:'Planet Fitness',     company:'Planet Fitness',       amt:15.00,   dueDay:17, method:'CHK', essential:false },
+  { id:'b10', name:'PP Food',            company:"Hill's",               amt:90.00,   dueDay:17, method:'CC1', essential:true  },
+  { id:'b11', name:'Water/Sewer',        company:'Town of Brownsburg',   amt:60.00,   dueDay:18, method:'CC1', essential:true  },
+  { id:'b12', name:'Phone Storage',      company:'Apple',                amt:9.99,    dueDay:21, method:'CC1', essential:false },
+  { id:'b13', name:'The Athletic',       company:'The Athletic',         amt:7.99,    dueDay:21, method:'CHK', essential:false },
+  { id:'b14', name:'YTTV + Phone',       company:'Youtube',              amt:88.00,   dueDay:27, method:'CHK', essential:false },
+  { id:'b15', name:'WiFi',               company:"AT&T",                 amt:85.00,   dueDay:27, method:'CC1', essential:true  },
+  { id:'b16', name:'Netflix',            company:'Netflix',              amt:15.49,   dueDay:28, method:'CC1', essential:false },
+];
 
-  function adjTotal() {
-    let t = 0;
-    Object.keys(presets).forEach(k => { if (presets[k]) t += presetSigns[k] * presets[k]; });
-    extraItems.forEach(i => t += i.signed);
-    return t;
-  }
+// Pay schedule (Fridays)
+const PAY_DATES = [
+  '2026-02-20','2026-03-06','2026-03-20','2026-04-03','2026-04-17',
+  '2026-05-01','2026-05-15','2026-05-29','2026-06-12','2026-06-26',
+  '2026-07-10','2026-07-24','2026-08-07','2026-08-21','2026-09-04',
+  '2026-09-18','2026-10-02','2026-10-16','2026-10-30','2026-11-13',
+  '2026-11-27','2026-12-11','2026-12-25','2027-01-08','2027-01-22',
+  '2027-02-05','2027-02-19','2027-03-05','2027-03-19','2027-04-02',
+  '2027-04-16','2027-04-30','2027-05-14','2027-05-28','2027-06-11',
+  '2027-06-25','2027-07-09','2027-07-23','2027-08-06','2027-08-20',
+  '2027-09-03','2027-09-17','2027-10-01','2027-10-15','2027-10-29',
+].map(d => new Date(d + 'T12:00:00'));
 
-  const PAYCHECK  = 2714.20;
-  const SHORT_EXP = 3208.38;
-  const LONG_EXP  = 1774.58;
+// Extra pay periods (marked with x)
+const EXTRA_PAY = ['2026-04-17','2026-10-16','2027-04-16'];
 
-  function colorCls(n) { return n > 150 ? 'g' : n > 0 ? 'y' : 'r'; }
-  function fmt(n) {
-    const a = Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
-    return (n<0?'-':'')+'$'+a;
+// ══════════════════════════════════════
+// PAY PERIOD ENGINE
+// Period = Friday (payday) through Thursday before next payday
+// ══════════════════════════════════════
+function getCurrentPeriodIdx() {
+  const now = new Date();
+  for (let i = 0; i < PAY_DATES.length - 1; i++) {
+    const start = PAY_DATES[i];
+    const end   = new Date(PAY_DATES[i+1].getTime() - 86400000); // Thursday before next payday
+    if (now >= start && now <= end) return i;
   }
-  function updateStandings() {
-    const adj = adjTotal();
-    const currentIn  = PAYCHECK + Math.max(0, adj);
-    const currentOut = billsPaid + Math.max(0, -adj);
-    const c = currentIn - currentOut;
-    const s = c + PAYCHECK - SHORT_EXP;
-    const l = s + PAYCHECK - LONG_EXP;
+  // fallback to most recent
+  for (let i = PAY_DATES.length - 2; i >= 0; i--) {
+    if (now >= PAY_DATES[i]) return i;
+  }
+  return 0;
+}
 
-    document.getElementById('stCurrent').textContent = fmt(c);
-    document.getElementById('stShort').textContent   = fmt(s);
-    document.getElementById('stLong').textContent    = fmt(l);
-    document.getElementById('cardCurrent').className = 'st ' + colorCls(c);
-    document.getElementById('cardShort').className   = 'st ' + colorCls(s);
-    document.getElementById('cardLong').className    = 'st ' + colorCls(l);
+// Get bills that fall within a pay period defined by two pay dates
+function getBillsForPeriod(paydayDate, nextPaydayDate) {
+  const start = paydayDate;
+  const end   = new Date(nextPaydayDate.getTime() - 86400000); // day before next payday
+  const startDay = start.getDate();
+  const endDay   = end.getDate();
+  const startMonth = start.getMonth();
+  const endMonth   = end.getMonth();
 
-    document.getElementById('detCurrentIn').textContent  = fmt(currentIn);
-    document.getElementById('detCurrentOut').textContent = fmt(currentOut);
-    document.getElementById('detShortIn').textContent    = fmt(PAYCHECK);
-    document.getElementById('detShortOut').textContent   = fmt(SHORT_EXP);
-    document.getElementById('detLongIn').textContent     = fmt(PAYCHECK);
-    document.getElementById('detLongOut').textContent    = fmt(LONG_EXP);
-  }
+  return ALL_BILLS.filter(bill => {
+    if (startMonth === endMonth) {
+      return bill.dueDay >= startDay && bill.dueDay <= endDay;
+    } else {
+      // period spans two months
+      return bill.dueDay >= startDay || bill.dueDay <= endDay;
+    }
+  });
+}
 
-  function toggleBill(el, delta) {
-    el.classList.toggle('paid');
-    const paid = el.classList.contains('paid');
-    billsPaid += paid ? Math.abs(delta) : -Math.abs(delta);
-    updateStandings();
-    const all = document.querySelectorAll('.bill').length;
-    const pN  = document.querySelectorAll('.bill.paid').length;
-    document.getElementById('paidCount').textContent = pN+' / '+all+' paid';
-    showToast(paid ? '✓ Paid' : 'Unpaid');
-  }
+function totalBills(bills) {
+  return bills.reduce((s, b) => s + b.amt, 0);
+}
 
-  // ── Preset ──
-  function openPreset(key) {
-    activePreset = key;
-    const cfg = presetCfg[key];
-    document.getElementById('presetSheetTitle').textContent = cfg.label;
-    document.getElementById('presetAmt').value = presets[key] ? Math.abs(presets[key]).toFixed(2) : '';
-    const signRow = document.getElementById('presetSignRow');
-    if (!cfg.fixedSign) { signRow.style.display='flex'; setPSign(presetSigns[key]); }
-    else { signRow.style.display='none'; pSelSign = cfg.defaultSign; }
-    const btn = document.getElementById('presetSaveBtn');
-    const cls = (key==='cc1'||key==='cc2') ? 'sr' : key==='upi' ? 'sg' : 'sy';
-    btn.className = 'save-btn '+cls;
-    document.getElementById('presetClearBtn').style.display = presets[key] ? 'block' : 'none';
-    openSheetEl('sheetPreset');
-    setTimeout(() => document.getElementById('presetAmt').focus(), 340);
+// ══════════════════════════════════════
+// STATE
+// ══════════════════════════════════════
+let currentPeriodIdx = getCurrentPeriodIdx();
+let billsPaid = {};      // { billId: true }
+let extraItems = [];
+let extraEditIdx = null;
+let selType = 'income', selSign = 1;
+let activePreset = null, pSelSign = -1;
+let activeSheet  = null;
+let prevPage     = 'expense';
+
+const presetCfg = {
+  cc1: { label:'CC1',             fixedSign:true,  defaultSign:-1 },
+  cc2: { label:'CC2',             fixedSign:true,  defaultSign:-1 },
+  upi: { label:'Upcoming Income', fixedSign:false, defaultSign: 1 },
+  oth: { label:'Other',           fixedSign:false, defaultSign: 1 },
+};
+const presets     = { cc1:0, cc2:0, upi:0, oth:0 };
+const presetSigns = { cc1:-1, cc2:-1, upi:1, oth:1 };
+
+// ══════════════════════════════════════
+// LOAD / SAVE localStorage
+// ══════════════════════════════════════
+function saveState() {
+  const key = 'mww_period_' + currentPeriodIdx;
+  localStorage.setItem(key, JSON.stringify({ billsPaid, extraItems, presets, presetSigns }));
+}
+function loadState() {
+  const key = 'mww_period_' + currentPeriodIdx;
+  const raw = localStorage.getItem(key);
+  if (raw) {
+    const d = JSON.parse(raw);
+    billsPaid  = d.billsPaid  || {};
+    extraItems = d.extraItems || [];
+    Object.assign(presets,     d.presets     || {});
+    Object.assign(presetSigns, d.presetSigns || {});
+  } else {
+    billsPaid  = {};
+    extraItems = [];
+    Object.keys(presets).forEach(k => { presets[k] = 0; presetSigns[k] = presetCfg[k].defaultSign; });
   }
-  function setPSign(s) {
-    pSelSign = s;
-    document.getElementById('pSignPos').className = 'sign-btn'+(s===1?' sp':'');
-    document.getElementById('pSignNeg').className = 'sign-btn'+(s===-1?' sn':'');
-  }
-  function savePreset() {
-    const amt = parseFloat(document.getElementById('presetAmt').value);
-    if (!amt||amt<=0) { showToast('Enter an amount'); return; }
-    presets[activePreset] = amt;
-    presetSigns[activePreset] = pSelSign;
-    updatePresetRow(activePreset);
-    updateStandings();
-    closeSheet();
-    showToast('Saved');
-  }
-  function clearPreset() {
-    presets[activePreset] = 0;
-    updatePresetRow(activePreset);
-    updateStandings();
-    closeSheet();
-    showToast('Cleared');
-  }
-  function updatePresetRow(key) {
-    const amt = presets[key];
-    const sign = presetSigns[key];
+}
+
+// ══════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════
+function adjTotal() {
+  let t = 0;
+  Object.keys(presets).forEach(k => { if (presets[k]) t += presetSigns[k] * presets[k]; });
+  extraItems.forEach(i => t += i.signed);
+  return t;
+}
+
+function colorCls(n) { return n > 150 ? 'g' : n > 0 ? 'y' : 'r'; }
+function fmt(n) {
+  const a = Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
+  return (n<0?'-':'')+'$'+a;
+}
+function fmtD(n) {
+  return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function tagClass(method) {
+  if (method==='SAV') return 't-sav';
+  if (method==='CHK') return 't-chk';
+  return 't-cc';
+}
+
+// ══════════════════════════════════════
+// RENDER EXPENSE PAGE
+// ══════════════════════════════════════
+function renderExpensePage() {
+  const idx  = currentPeriodIdx;
+  const p0   = PAY_DATES[idx];
+  const p1   = PAY_DATES[idx+1];
+  const p2   = PAY_DATES[idx+2];
+  const p3   = PAY_DATES[idx+3];
+
+  const currentBills = getBillsForPeriod(p0, p1);
+  const shortBills   = p1 && p2 ? getBillsForPeriod(p1, p2) : [];
+  const longBills    = p2 && p3 ? getBillsForPeriod(p2, p3) : [];
+
+  const shortExp = totalBills(shortBills);
+  const longExp  = totalBills(longBills);
+
+  // Header
+  const opts = {month:'short', day:'numeric'};
+  const periodStart = p0.toLocaleDateString('en-US', opts);
+  const periodEnd   = new Date(p1.getTime()-86400000).toLocaleDateString('en-US', opts);
+  const nextPayday  = p1.toLocaleDateString('en-US', opts);
+  document.getElementById('periodLabel').textContent = periodStart + ' – ' + periodEnd + ', 2026';
+  document.getElementById('progStart').textContent   = periodStart;
+  document.getElementById('progEnd').textContent     = nextPayday + ' · payday';
+
+  // Period progress
+  const now  = new Date();
+  const day  = Math.max(1, Math.floor((now - p0) / 86400000) + 1);
+  const pct  = Math.min(100, Math.max(1, (now - p0) / (p1 - p0) * 100));
+  document.getElementById('dayBadge').textContent    = 'Day ' + day;
+  document.getElementById('progFill').style.width    = pct + '%';
+
+  // Standings
+  const adj        = adjTotal();
+  const paidTotal  = currentBills.filter(b => billsPaid[b.id]).reduce((s,b) => s+b.amt, 0);
+  const unpaidTotal= currentBills.filter(b => !billsPaid[b.id]).reduce((s,b) => s+b.amt, 0);
+  const currentIn  = PAYCHECK + Math.max(0, adj);
+  const currentOut = unpaidTotal + Math.max(0, -adj);
+  const currentSt  = PAYCHECK + adj - totalBills(currentBills);
+  const shortSt    = currentSt + PAYCHECK - shortExp;
+  const longSt     = shortSt   + PAYCHECK - longExp;
+
+  document.getElementById('stCurrent').textContent    = fmt(currentSt);
+  document.getElementById('stShort').textContent      = fmt(shortSt);
+  document.getElementById('stLong').textContent       = fmt(longSt);
+  document.getElementById('cardCurrent').className    = 'st ' + colorCls(currentSt);
+  document.getElementById('cardShort').className      = 'st ' + colorCls(shortSt);
+  document.getElementById('cardLong').className       = 'st ' + colorCls(longSt);
+  document.getElementById('detCurrentIn').textContent  = fmt(currentIn);
+  document.getElementById('detCurrentOut').textContent = fmt(currentOut + paidTotal);
+  document.getElementById('detShortIn').textContent    = fmt(PAYCHECK);
+  document.getElementById('detShortOut').textContent   = fmt(shortExp);
+  document.getElementById('detLongIn').textContent     = fmt(PAYCHECK);
+  document.getElementById('detLongOut').textContent    = fmt(longExp);
+
+  // Bills this period
+  const currentBody = document.getElementById('billsCurrentBody');
+  currentBody.innerHTML = '';
+  currentBills.forEach(bill => {
+    const paid = !!billsPaid[bill.id];
+    const el = document.createElement('div');
+    el.className = 'bill' + (paid ? ' paid' : '');
+    el.onclick = () => toggleBill(bill.id, bill.amt, currentBills);
+    el.innerHTML = `
+      <div class="chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.8 2.8L9 1" stroke="#0a0a0a" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="bill-info">
+        <div class="bill-name">${bill.name}</div>
+        <div class="bill-sub">${bill.company} · due ${bill.dueDay}${ordinal(bill.dueDay)}</div>
+      </div>
+      <div class="bill-r">
+        <div class="bill-amt">${fmtD(bill.amt)}</div>
+        <span class="tag ${tagClass(bill.method)}">${bill.method}</span>
+      </div>`;
+    currentBody.appendChild(el);
+  });
+
+  // Paid count
+  const paidN = currentBills.filter(b => billsPaid[b.id]).length;
+  document.getElementById('paidCount').textContent = paidN + ' / ' + currentBills.length + ' paid';
+
+  // Short term
+  const shortBody = document.getElementById('billsShortBody');
+  shortBody.innerHTML = '';
+  document.getElementById('shortLabel').textContent = p1 ? p1.toLocaleDateString('en-US',opts) + ' period' : 'Next period';
+  shortBills.forEach(bill => {
+    const el = document.createElement('div');
+    el.className = 'upc';
+    el.innerHTML = `
+      <div><div class="upc-name">${bill.name}</div><div class="upc-when">${bill.company} · due ${bill.dueDay}${ordinal(bill.dueDay)}</div></div>
+      <div class="upc-amt">${fmtD(bill.amt)}</div>`;
+    shortBody.appendChild(el);
+  });
+  if (shortBills.length === 0) shortBody.innerHTML = '<div style="font-family:var(--mono);font-size:11px;color:var(--sub2);text-align:center;padding:8px 0;">No bills in this window</div>';
+
+  // Long term
+  const longBody = document.getElementById('billsLongBody');
+  longBody.innerHTML = '';
+  longBills.forEach(bill => {
+    const el = document.createElement('div');
+    el.className = 'upc';
+    el.innerHTML = `
+      <div><div class="upc-name">${bill.name}</div><div class="upc-when">${bill.company} · due ${bill.dueDay}${ordinal(bill.dueDay)}</div></div>
+      <div class="upc-amt" style="color:var(--red)">${fmtD(bill.amt)}</div>`;
+    longBody.appendChild(el);
+  });
+  if (longBills.length === 0) longBody.innerHTML = '<div style="font-family:var(--mono);font-size:11px;color:var(--sub2);text-align:center;padding:8px 0;">No bills in this window</div>';
+}
+
+function ordinal(n) {
+  const s = ['th','st','nd','rd'], v = n%100;
+  return s[(v-20)%10]||s[v]||s[0];
+}
+
+// ══════════════════════════════════════
+// BILL TOGGLE
+// ══════════════════════════════════════
+function toggleBill(id, amt, currentBills) {
+  billsPaid[id] = !billsPaid[id];
+  saveState();
+  renderExpensePage();
+  renderPresetRows();
+  showToast(billsPaid[id] ? '✓ Paid' : 'Unpaid');
+}
+
+// ══════════════════════════════════════
+// PRESET
+// ══════════════════════════════════════
+function openPreset(key) {
+  activePreset = key;
+  const cfg = presetCfg[key];
+  document.getElementById('presetSheetTitle').textContent = cfg.label;
+  document.getElementById('presetAmt').value = presets[key] ? Math.abs(presets[key]).toFixed(2) : '';
+  const signRow = document.getElementById('presetSignRow');
+  if (!cfg.fixedSign) { signRow.style.display='flex'; setPSign(presetSigns[key]); }
+  else { signRow.style.display='none'; pSelSign = cfg.defaultSign; }
+  const btn = document.getElementById('presetSaveBtn');
+  btn.className = 'save-btn ' + ((key==='cc1'||key==='cc2') ? 'sr' : key==='upi' ? 'sg' : 'sy');
+  document.getElementById('presetClearBtn').style.display = presets[key] ? 'block' : 'none';
+  openSheetEl('sheetPreset');
+  setTimeout(() => document.getElementById('presetAmt').focus(), 340);
+}
+function setPSign(s) {
+  pSelSign = s;
+  document.getElementById('pSignPos').className = 'sign-btn'+(s===1?' sp':'');
+  document.getElementById('pSignNeg').className = 'sign-btn'+(s===-1?' sn':'');
+}
+function savePreset() {
+  const amt = parseFloat(document.getElementById('presetAmt').value);
+  if (!amt||amt<=0) { showToast('Enter an amount'); return; }
+  presets[activePreset] = amt;
+  presetSigns[activePreset] = pSelSign;
+  saveState(); renderPresetRows(); renderExpensePage(); closeSheet(); showToast('Saved');
+}
+function clearPreset() {
+  presets[activePreset] = 0;
+  saveState(); renderPresetRows(); renderExpensePage(); closeSheet(); showToast('Cleared');
+}
+function renderPresetRows() {
+  ['cc1','cc2','upi','oth'].forEach(key => {
+    const amt = presets[key], sign = presetSigns[key];
     const valEl = document.getElementById('pv-'+key);
     const rowEl = document.getElementById('pr-'+key);
     if (!amt) {
-      valEl.textContent = '—';
-      valEl.className = 'preset-val';
-      rowEl.classList.remove('has-value');
+      valEl.textContent='—'; valEl.className='preset-val'; rowEl.classList.remove('has-value');
     } else {
       const prefix = sign>=0?'+':'-';
       const cls = (key==='cc1'||key==='cc2') ? 'active-cc' : key==='upi' ? 'active-inc' : 'active-oth';
       valEl.textContent = prefix+'$'+amt.toFixed(2);
-      valEl.className = 'preset-val '+cls;
+      valEl.className   = 'preset-val '+cls;
       rowEl.classList.add('has-value');
     }
-  }
+  });
+}
 
-  // ── Extra ──
-  function openExtra(idx) {
-    extraEditIdx = idx;
-    const isEdit = idx !== null;
-    document.getElementById('extraSheetTitle').textContent = isEdit ? 'Edit Adjustment' : 'Add Adjustment';
-    document.getElementById('extraDeleteBtn').classList.toggle('vis', isEdit);
-    if (isEdit) {
-      const item = extraItems[idx];
-      setType(item.type);
-      document.getElementById('adjLabel').value = item.label;
-      document.getElementById('adjAmt').value   = Math.abs(item.signed).toFixed(2);
-      if (item.type==='adjust') setSign(item.signed>=0?1:-1);
-    } else {
-      setType('income');
-      document.getElementById('adjLabel').value = '';
-      document.getElementById('adjAmt').value   = '';
-    }
-    openSheetEl('sheetExtra');
-    setTimeout(() => document.getElementById('adjLabel').focus(), 340);
+// ══════════════════════════════════════
+// EXTRA ADJUSTMENTS
+// ══════════════════════════════════════
+function openExtra(idx) {
+  extraEditIdx = idx;
+  const isEdit = idx !== null;
+  document.getElementById('extraSheetTitle').textContent = isEdit ? 'Edit Adjustment' : 'Add Adjustment';
+  document.getElementById('extraDeleteBtn').classList.toggle('vis', isEdit);
+  if (isEdit) {
+    const item = extraItems[idx];
+    setType(item.type);
+    document.getElementById('adjLabel').value = item.label;
+    document.getElementById('adjAmt').value   = Math.abs(item.signed).toFixed(2);
+    if (item.type==='adjust') setSign(item.signed>=0?1:-1);
+  } else {
+    setType('income');
+    document.getElementById('adjLabel').value = '';
+    document.getElementById('adjAmt').value   = '';
   }
-  function setType(t) {
-    selType = t; selSign = t==='debt'?-1:1;
-    ['income','debt','adjust'].forEach(x => {
-      document.getElementById('btn-'+x).className='t-btn'+(x===t?' s'+x[0]:'');
-    });
-    document.getElementById('signRow').style.display = t==='adjust'?'flex':'none';
-    const labels = {income:'Save Income',debt:'Save CC / Debt',adjust:'Save Adjustment'};
-    document.getElementById('extraSaveBtn').textContent = labels[t];
-    document.getElementById('extraSaveBtn').className   = 'save-btn s'+t[0];
-  }
-  function setSign(s) {
-    selSign = s;
-    document.getElementById('signPos').className='sign-btn'+(s===1?' sp':'');
-    document.getElementById('signNeg').className='sign-btn'+(s===-1?' sn':'');
-  }
-  function saveExtra() {
-    const label = document.getElementById('adjLabel').value.trim() ||
-      (selType==='income'?'Extra Income':selType==='debt'?'Debt Payment':'Adjustment');
-    const amt = parseFloat(document.getElementById('adjAmt').value);
-    if (!amt||amt<=0) { showToast('Enter an amount'); return; }
-    const signed = selType==='income'?amt:selType==='debt'?-amt:selSign*amt;
-    if (extraEditIdx!==null) { extraItems[extraEditIdx]={label,type:selType,signed}; showToast('Updated'); }
-    else { extraItems.push({label,type:selType,signed}); showToast(signed>=0?'+ Added':'− Reduced'); }
-    renderExtras(); updateStandings(); closeSheet();
-  }
-  function deleteExtra() {
-    if (extraEditIdx===null) return;
-    extraItems.splice(extraEditIdx,1);
-    renderExtras(); updateStandings(); closeSheet(); showToast('Deleted');
-  }
-  function renderExtras() {
-    const list = document.getElementById('adjList');
-    list.querySelectorAll('.adj-item').forEach(e=>e.remove());
-    document.getElementById('extraDivider').classList.toggle('show', extraItems.length>0);
-    extraItems.forEach((item,i) => {
-      const sign=item.signed>=0?'+':'-';
-      const abs=Math.abs(item.signed).toFixed(2);
-      const tl=item.type==='income'?'Income':item.type==='debt'?'CC / Debt':'Adjustment';
-      const el=document.createElement('div');
-      el.className='adj-item'; el.onclick=()=>openExtra(i);
-      el.innerHTML=`<div class="adj-pip ${item.type}"></div><div class="adj-info"><div class="adj-name">${item.label}</div><div class="adj-type-lbl">${tl}</div></div><div class="adj-r"><div class="adj-amt ${item.type}">${sign}$${abs}</div><div class="adj-edit-hint">edit</div></div>`;
-      list.appendChild(el);
-    });
-  }
+  openSheetEl('sheetExtra');
+  setTimeout(() => document.getElementById('adjLabel').focus(), 340);
+}
+function setType(t) {
+  selType=t; selSign=t==='debt'?-1:1;
+  ['income','debt','adjust'].forEach(x => {
+    document.getElementById('btn-'+x).className='t-btn'+(x===t?' s'+x[0]:'');
+  });
+  document.getElementById('signRow').style.display = t==='adjust'?'flex':'none';
+  const labels={income:'Save Income',debt:'Save CC / Debt',adjust:'Save Adjustment'};
+  document.getElementById('extraSaveBtn').textContent = labels[t];
+  document.getElementById('extraSaveBtn').className   = 'save-btn s'+t[0];
+}
+function setSign(s) {
+  selSign=s;
+  document.getElementById('signPos').className='sign-btn'+(s===1?' sp':'');
+  document.getElementById('signNeg').className='sign-btn'+(s===-1?' sn':'');
+}
+function saveExtra() {
+  const label = document.getElementById('adjLabel').value.trim() ||
+    (selType==='income'?'Extra Income':selType==='debt'?'Debt Payment':'Adjustment');
+  const amt = parseFloat(document.getElementById('adjAmt').value);
+  if (!amt||amt<=0) { showToast('Enter an amount'); return; }
+  const signed = selType==='income'?amt:selType==='debt'?-amt:selSign*amt;
+  if (extraEditIdx!==null) { extraItems[extraEditIdx]={label,type:selType,signed}; showToast('Updated'); }
+  else { extraItems.push({label,type:selType,signed}); showToast(signed>=0?'+ Added':'− Reduced'); }
+  saveState(); renderExtras(); renderExpensePage(); closeSheet();
+}
+function deleteExtra() {
+  if (extraEditIdx===null) return;
+  extraItems.splice(extraEditIdx,1);
+  saveState(); renderExtras(); renderExpensePage(); closeSheet(); showToast('Deleted');
+}
+function renderExtras() {
+  const list = document.getElementById('adjList');
+  list.querySelectorAll('.adj-item').forEach(e=>e.remove());
+  document.getElementById('extraDivider').classList.toggle('show', extraItems.length>0);
+  extraItems.forEach((item,i) => {
+    const sign=item.signed>=0?'+':'-';
+    const abs=Math.abs(item.signed).toFixed(2);
+    const tl=item.type==='income'?'Income':item.type==='debt'?'CC / Debt':'Adjustment';
+    const el=document.createElement('div');
+    el.className='adj-item'; el.onclick=()=>openExtra(i);
+    el.innerHTML=`<div class="adj-pip ${item.type}"></div><div class="adj-info"><div class="adj-name">${item.label}</div><div class="adj-type-lbl">${tl}</div></div><div class="adj-r"><div class="adj-amt ${item.type}">${sign}$${abs}</div><div class="adj-edit-hint">edit</div></div>`;
+    list.appendChild(el);
+  });
+}
 
-  // ── Sheet helpers ──
-  function openSheetEl(id) {
-    if (activeSheet) document.getElementById(activeSheet).classList.remove('open');
-    activeSheet = id;
-    document.getElementById(id).classList.add('open');
-    document.getElementById('overlay').classList.add('show');
-    document.getElementById('fab').classList.add('open');
-  }
-  function closeSheet() {
-    if (activeSheet) document.getElementById(activeSheet).classList.remove('open');
-    activeSheet=null; extraEditIdx=null; activePreset=null;
-    document.getElementById('overlay').classList.remove('show');
-    document.getElementById('fab').classList.remove('open');
-  }
+// ══════════════════════════════════════
+// SHEET HELPERS
+// ══════════════════════════════════════
+function openSheetEl(id) {
+  if (activeSheet) document.getElementById(activeSheet).classList.remove('open');
+  activeSheet=id;
+  document.getElementById(id).classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+  document.getElementById('fab').classList.add('open');
+}
+function closeSheet() {
+  if (activeSheet) document.getElementById(activeSheet).classList.remove('open');
+  activeSheet=null; extraEditIdx=null; activePreset=null;
+  document.getElementById('overlay').classList.remove('show');
+  document.getElementById('fab').classList.remove('open');
+}
 
-  function showToast(msg) {
-    const el=document.getElementById('toastEl');
-    el.textContent=msg; el.classList.add('show');
-    clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),1600);
-  }
+// ══════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════
+function navTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
+  document.getElementById('page-'+page).classList.add('active');
+  const navEl = document.getElementById('nav-'+page);
+  if (navEl) navEl.classList.add('on');
+  // show/hide FAB — only on expense page
+  document.getElementById('fab').classList.toggle('hidden', page !== 'expense');
+  prevPage = page;
+  window.scrollTo(0,0);
+}
 
+function goToSchedule() {
+  closeMore();
+  renderSchedule();
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-schedule').classList.add('active');
+  document.getElementById('fab').classList.add('hidden');
+  window.scrollTo(0,0);
+}
+function goBack() {
+  navTo(prevPage || 'expense');
+}
 
-  function openMore() {
-    document.getElementById('moreTray').classList.add('open');
-    document.getElementById('moreOverlay').classList.add('show');
-  }
-  function closeMore() {
-    document.getElementById('moreTray').classList.remove('open');
-    document.getElementById('moreOverlay').classList.remove('show');
-  }
-  const start=new Date('2026-05-23'), end=new Date('2026-06-05'), now=new Date();
-  const day=Math.max(1,Math.floor((now-start)/86400000)+1);
-  const pct=Math.min(100,Math.max(1,(now-start)/(end-start)*100));
-  document.getElementById('dayBadge').textContent='Day '+day;
-  document.getElementById('progFill').style.width=pct+'%';
+function renderSchedule() {
+  const body = document.getElementById('scheduleBody');
+  body.innerHTML = '';
+  const now = new Date();
+  PAY_DATES.forEach((date, i) => {
+    if (i >= PAY_DATES.length - 1) return;
+    const next  = PAY_DATES[i+1];
+    const end   = new Date(next.getTime() - 86400000);
+    const isCurrent = now >= date && now <= end;
+    const isPast    = now > end;
+    const bills     = getBillsForPeriod(date, next);
+    const owed      = totalBills(bills);
+    const isExtra   = EXTRA_PAY.includes(date.toISOString().split('T')[0]);
+    const opts = {month:'short', day:'numeric'};
+    const el = document.createElement('div');
+    el.className = 'pay-row' + (isCurrent ? ' current-period' : '') + (isPast ? ' past' : '');
+    el.style.opacity = isPast ? '0.4' : '1';
+    el.innerHTML = `
+      <div class="pay-date">${date.toLocaleDateString('en-US',opts)}${isCurrent ? '' : ''}${isExtra ? ' 🌟' : ''}</div>
+      <div class="pay-amt">+${fmtD(PAYCHECK)}</div>
+      <div class="pay-owed">-${fmtD(owed)}</div>
+      ${isCurrent ? '<span class="pay-badge">NOW</span>' : ''}
+    `;
+    body.appendChild(el);
+  });
+}
+
+// ══════════════════════════════════════
+// MORE TRAY
+// ══════════════════════════════════════
+function openMore() {
+  document.getElementById('moreTray').classList.add('open');
+  document.getElementById('moreOverlay').classList.add('show');
+}
+function closeMore() {
+  document.getElementById('moreTray').classList.remove('open');
+  document.getElementById('moreOverlay').classList.remove('show');
+}
+
+// ══════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════
+function showToast(msg) {
+  const el=document.getElementById('toastEl');
+  el.textContent=msg; el.classList.add('show');
+  clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),1600);
+}
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+loadState();
+renderExpensePage();
+renderPresetRows();
+renderExtras();
 </script>
 </body>
 </html>
