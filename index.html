@@ -648,24 +648,23 @@ function renderExpensePage() {
   document.getElementById('dayBadge').textContent    = 'Day ' + day;
   document.getElementById('progFill').style.width    = pct + '%';
 
-  // Standings
-  const adj        = adjTotal();
-  const paidTotal  = currentBills.filter(b => billsPaid[b.id]).reduce((s,b) => s+b.amt, 0);
-  const unpaidTotal= currentBills.filter(b => !billsPaid[b.id]).reduce((s,b) => s+b.amt, 0);
-  const currentIn  = PAYCHECK + Math.max(0, adj);
-  const currentOut = unpaidTotal + Math.max(0, -adj);
-  const currentSt  = PAYCHECK + adj - totalBills(currentBills);
-  const shortSt    = currentSt + PAYCHECK - shortExp;
-  const longSt     = shortSt   + PAYCHECK - longExp;
+  // Standings — checking a bill means cash has left, reduces standing
+  const adj       = adjTotal();
+  const paidAmt   = currentBills.filter(b =>  billsPaid[b.id]).reduce((s,b) => s+b.amt, 0);
+  const currentIn = PAYCHECK + Math.max(0, adj);
+  const currentOut= paidAmt  + Math.max(0, -adj);
+  const currentSt = currentIn - currentOut;
+  const shortSt   = currentSt + PAYCHECK - shortExp;
+  const longSt    = shortSt   + PAYCHECK - longExp;
 
-  document.getElementById('stCurrent').textContent    = fmt(currentSt);
-  document.getElementById('stShort').textContent      = fmt(shortSt);
-  document.getElementById('stLong').textContent       = fmt(longSt);
-  document.getElementById('cardCurrent').className    = 'st ' + colorCls(currentSt);
-  document.getElementById('cardShort').className      = 'st ' + colorCls(shortSt);
-  document.getElementById('cardLong').className       = 'st ' + colorCls(longSt);
+  document.getElementById('stCurrent').textContent     = fmt(currentSt);
+  document.getElementById('stShort').textContent       = fmt(shortSt);
+  document.getElementById('stLong').textContent        = fmt(longSt);
+  document.getElementById('cardCurrent').className     = 'st ' + colorCls(currentSt);
+  document.getElementById('cardShort').className       = 'st ' + colorCls(shortSt);
+  document.getElementById('cardLong').className        = 'st ' + colorCls(longSt);
   document.getElementById('detCurrentIn').textContent  = fmt(currentIn);
-  document.getElementById('detCurrentOut').textContent = fmt(currentOut + paidTotal);
+  document.getElementById('detCurrentOut').textContent = fmt(currentOut);
   document.getElementById('detShortIn').textContent    = fmt(PAYCHECK);
   document.getElementById('detShortOut').textContent   = fmt(shortExp);
   document.getElementById('detLongIn').textContent     = fmt(PAYCHECK);
