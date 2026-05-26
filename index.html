@@ -674,14 +674,16 @@ function renderExpensePage() {
   const adj     = adjTotal();
   const paidAmt = currentBills.filter(b => billsPaid[b.id]).reduce((s,b) => s+b.amt, 0);
 
-  let currentSt;
-  let currentIn, currentOut;
+  let currentSt, currentIn, currentOut;
 
   if (bankBalance !== null) {
-    // Real bank balance mode — balance minus paid bills plus positive adjustments
-    currentIn  = bankBalance + Math.max(0, adj);
-    currentOut = paidAmt + Math.max(0, -adj);
+    // Real bank balance anchors Current
+    // Standing = balance + all adjustments (pos & neg) - bills checked paid
     currentSt  = bankBalance + adj - paidAmt;
+    // In = bank balance (what you actually have)
+    currentIn  = bankBalance;
+    // Out = bills paid so far + net negative adjustments (CC debt etc.)
+    currentOut = paidAmt + Math.max(0, -adj);
   } else {
     // Paycheck math fallback
     currentIn  = PAYCHECK + Math.max(0, adj);
@@ -698,8 +700,9 @@ function renderExpensePage() {
   document.getElementById('cardCurrent').className     = 'st ' + colorCls(currentSt) + ' tappable';
   document.getElementById('cardShort').className       = 'st ' + colorCls(shortSt);
   document.getElementById('cardLong').className        = 'st ' + colorCls(longSt);
+  // in = what you have, out = what's gone out (paid bills + debt payments)
   document.getElementById('detCurrentIn').textContent  = fmt(currentIn);
-  document.getElementById('detCurrentOut').textContent = fmt(currentOut);
+  document.getElementById('detCurrentOut').textContent = fmt(paidAmt + Math.max(0, -adj));
   document.getElementById('detShortIn').textContent    = fmt(PAYCHECK);
   document.getElementById('detShortOut').textContent   = fmt(shortExp);
   document.getElementById('detLongIn').textContent     = fmt(PAYCHECK);
