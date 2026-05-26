@@ -231,6 +231,8 @@ body {
 .toast.show { opacity: 1; }
 
 @keyframes fadeUp { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+.st.tappable { cursor: pointer; }
+.st.tappable:active { opacity: 0.85; }
 </style>
 </head>
 <body>
@@ -274,13 +276,14 @@ body {
   <!-- STANDINGS -->
   <div class="standings-wrap">
     <div class="standings">
-      <div class="st g" id="cardCurrent">
+      <div class="st g" id="cardCurrent" onclick="openBalanceSheet()" style="cursor:pointer;">
         <div class="st-lbl">Current</div>
         <div class="st-val" id="stCurrent">$0</div>
         <div class="st-meta">
           <div class="st-meta-row"><span class="st-meta-lbl">in</span><span class="st-meta-val in" id="detCurrentIn">$0</span></div>
           <div class="st-meta-row"><span class="st-meta-lbl">out</span><span class="st-meta-val out" id="detCurrentOut">$0</span></div>
         </div>
+        <div style="margin-top:6px;font-family:var(--mono);font-size:8px;color:var(--sub2);" id="balanceBadge">tap to set balance</div>
       </div>
       <div class="st y" id="cardShort">
         <div class="st-lbl">Short</div>
@@ -453,6 +456,22 @@ body {
   </div>
 </div>
 
+<!-- BALANCE SHEET -->
+<div class="sheet" id="sheetBalance">
+  <div class="handle"></div>
+  <div class="sheet-hdr">
+    <div class="sheet-title">Current Bank Balance</div>
+    <div class="sheet-delete vis" id="balanceClearBtn" onclick="clearBalance()" style="display:none;">Clear</div>
+  </div>
+  <div style="padding:0 18px;margin-bottom:14px;">
+    <div style="font-family:var(--mono);font-size:11px;color:var(--sub);line-height:1.6;">
+      Enter your real bank balance. Current standing will be calculated from this number, and Short + Long will cascade from there.
+    </div>
+  </div>
+  <input class="amt-inp" id="balanceAmt" type="number" inputmode="decimal" placeholder="0.00" min="0" step="0.01">
+  <button class="save-btn sg" onclick="saveBalance()">Set Balance</button>
+</div>
+
 <!-- NAV -->
 <nav class="nav">
   <div class="ni" id="nav-budget" onclick="navTo('budget')"><div class="ni-icon">📊</div><div class="ni-lbl">Budget</div></div>
@@ -550,6 +569,7 @@ function totalBills(bills) {
 // STATE
 // ══════════════════════════════════════
 let currentPeriodIdx = getCurrentPeriodIdx();
+let bankBalance = null;  // null = not set, uses paycheck math
 let billsPaid = {};      // { billId: true }
 let extraItems = [];
 let extraEditIdx = null;
@@ -572,20 +592,22 @@ const presetSigns = { cc1:-1, cc2:-1, upi:1, oth:1 };
 // ══════════════════════════════════════
 function saveState() {
   const key = 'mww_period_' + currentPeriodIdx;
-  localStorage.setItem(key, JSON.stringify({ billsPaid, extraItems, presets, presetSigns }));
+  localStorage.setItem(key, JSON.stringify({ billsPaid, extraItems, presets, presetSigns, bankBalance }));
 }
 function loadState() {
   const key = 'mww_period_' + currentPeriodIdx;
   const raw = localStorage.getItem(key);
   if (raw) {
     const d = JSON.parse(raw);
-    billsPaid  = d.billsPaid  || {};
-    extraItems = d.extraItems || [];
+    billsPaid   = d.billsPaid   || {};
+    extraItems  = d.extraItems  || [];
+    bankBalance = d.bankBalance !== undefined ? d.bankBalance : null;
     Object.assign(presets,     d.presets     || {});
     Object.assign(presetSigns, d.presetSigns || {});
   } else {
-    billsPaid  = {};
-    extraItems = [];
+    billsPaid   = {};
+    extraItems  = [];
+    bankBalance = null;
     Object.keys(presets).forEach(k => { presets[k] = 0; presetSigns[k] = presetCfg[k].defaultSign; });
   }
 }
@@ -648,19 +670,32 @@ function renderExpensePage() {
   document.getElementById('dayBadge').textContent    = 'Day ' + day;
   document.getElementById('progFill').style.width    = pct + '%';
 
-  // Standings — checking a bill means cash has left, reduces standing
-  const adj       = adjTotal();
-  const paidAmt   = currentBills.filter(b =>  billsPaid[b.id]).reduce((s,b) => s+b.amt, 0);
-  const currentIn = PAYCHECK + Math.max(0, adj);
-  const currentOut= paidAmt  + Math.max(0, -adj);
-  const currentSt = currentIn - currentOut;
-  const shortSt   = currentSt + PAYCHECK - shortExp;
-  const longSt    = shortSt   + PAYCHECK - longExp;
+  // Standings
+  const adj     = adjTotal();
+  const paidAmt = currentBills.filter(b => billsPaid[b.id]).reduce((s,b) => s+b.amt, 0);
+
+  let currentSt;
+  let currentIn, currentOut;
+
+  if (bankBalance !== null) {
+    // Real bank balance mode — balance minus paid bills plus positive adjustments
+    currentIn  = bankBalance + Math.max(0, adj);
+    currentOut = paidAmt + Math.max(0, -adj);
+    currentSt  = bankBalance + adj - paidAmt;
+  } else {
+    // Paycheck math fallback
+    currentIn  = PAYCHECK + Math.max(0, adj);
+    currentOut = paidAmt  + Math.max(0, -adj);
+    currentSt  = currentIn - currentOut;
+  }
+
+  const shortSt = currentSt + PAYCHECK - shortExp;
+  const longSt  = shortSt   + PAYCHECK - longExp;
 
   document.getElementById('stCurrent').textContent     = fmt(currentSt);
   document.getElementById('stShort').textContent       = fmt(shortSt);
   document.getElementById('stLong').textContent        = fmt(longSt);
-  document.getElementById('cardCurrent').className     = 'st ' + colorCls(currentSt);
+  document.getElementById('cardCurrent').className     = 'st ' + colorCls(currentSt) + ' tappable';
   document.getElementById('cardShort').className       = 'st ' + colorCls(shortSt);
   document.getElementById('cardLong').className        = 'st ' + colorCls(longSt);
   document.getElementById('detCurrentIn').textContent  = fmt(currentIn);
@@ -669,6 +704,16 @@ function renderExpensePage() {
   document.getElementById('detShortOut').textContent   = fmt(shortExp);
   document.getElementById('detLongIn').textContent     = fmt(PAYCHECK);
   document.getElementById('detLongOut').textContent    = fmt(longExp);
+
+  // Balance badge
+  const badge = document.getElementById('balanceBadge');
+  if (bankBalance !== null) {
+    badge.textContent = 'balance: ' + fmtD(bankBalance);
+    badge.style.color = 'rgba(45,221,130,0.5)';
+  } else {
+    badge.textContent = 'tap to set balance';
+    badge.style.color = 'var(--sub2)';
+  }
 
   // Bills this period
   const currentBody = document.getElementById('billsCurrentBody');
@@ -946,6 +991,32 @@ function showToast(msg) {
   const el=document.getElementById('toastEl');
   el.textContent=msg; el.classList.add('show');
   clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),1600);
+}
+
+// ══════════════════════════════════════
+// BANK BALANCE
+// ══════════════════════════════════════
+function openBalanceSheet() {
+  document.getElementById('balanceAmt').value = bankBalance !== null ? bankBalance.toFixed(2) : '';
+  document.getElementById('balanceClearBtn').style.display = bankBalance !== null ? 'block' : 'none';
+  openSheetEl('sheetBalance');
+  setTimeout(() => document.getElementById('balanceAmt').focus(), 340);
+}
+function saveBalance() {
+  const amt = parseFloat(document.getElementById('balanceAmt').value);
+  if (isNaN(amt) || amt < 0) { showToast('Enter a valid balance'); return; }
+  bankBalance = amt;
+  saveState();
+  renderExpensePage();
+  closeSheet();
+  showToast('Balance set');
+}
+function clearBalance() {
+  bankBalance = null;
+  saveState();
+  renderExpensePage();
+  closeSheet();
+  showToast('Balance cleared');
 }
 
 // ══════════════════════════════════════
