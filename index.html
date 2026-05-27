@@ -312,6 +312,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 50;
+  transition: background 0.2s, color 0.2s;
 }
 .budget-row {
   display: flex;
@@ -400,6 +401,13 @@ body {
 .about-icon { font-size: 22px; flex-shrink: 0; padding-top: 1px; }
 .about-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
 .about-desc { font-size: 12px; color: var(--sub); line-height: 1.6; font-family: var(--sans); }
+
+.add-btn {
+  width: 100%; border: 1.5px dashed var(--border); border-radius: 14px;
+  padding: 12px; text-align: center; font-size: 13px; color: var(--sub);
+  cursor: pointer; background: none; font-family: var(--sans); transition: all 0.2s;
+}
+.add-btn:active { border-color: var(--blue); color: var(--blue); }
 
 /* ── EXPENSE STICKY HEADER ── */
 .expense-sticky {
@@ -538,8 +546,8 @@ body {
   </div>
 
   <!-- ESSENTIAL/FIXED -->
-  <div class="section" style="background:rgba(106,163,245,0.04);">
-    <div class="sec-head budget-sec-sticky" style="background:color-mix(in srgb, #6aa3f5 15%, #111318);border-bottom:1px solid rgba(106,163,245,0.3);">
+  <div class="section" style="background:color-mix(in srgb, #6aa3f5 5%, var(--bg));">
+    <div class="sec-head budget-sec-sticky" style="background:color-mix(in srgb, #6aa3f5 15%, var(--bg2));border-bottom:1px solid rgba(106,163,245,0.3);">
       <div class="sec-head-left"><div class="sec-dot" style="background:var(--blue)"></div><span class="sec-label" style="color:var(--blue);">Essential / Fixed</span></div>
       <span class="sec-right" style="color:var(--blue);" id="total-essential">$0</span>
     </div>
@@ -547,8 +555,8 @@ body {
   </div>
 
   <!-- DISCRETIONARY -->
-  <div class="section" style="background:rgba(245,200,74,0.04);">
-    <div class="sec-head budget-sec-sticky" style="background:color-mix(in srgb, #f5c84a 12%, #111318);border-bottom:1px solid rgba(245,200,74,0.3);">
+  <div class="section" style="background:color-mix(in srgb, #f5c84a 5%, var(--bg));">
+    <div class="sec-head budget-sec-sticky" style="background:color-mix(in srgb, #f5c84a 12%, var(--bg2));border-bottom:1px solid rgba(245,200,74,0.3);">
       <div class="sec-head-left"><div class="sec-dot" style="background:var(--yellow)"></div><span class="sec-label" style="color:var(--yellow);">Discretionary / Variable</span></div>
       <span class="sec-right" style="color:var(--yellow);" id="total-disc">$0</span>
     </div>
@@ -556,8 +564,8 @@ body {
   </div>
 
   <!-- SAVING & INVESTING -->
-  <div class="section" style="background:rgba(240,150,60,0.04);">
-    <div class="sec-head budget-sec-sticky" style="background:color-mix(in srgb, #f09640 12%, #111318);border-bottom:1px solid rgba(240,150,60,0.3);">
+  <div class="section" style="background:color-mix(in srgb, #f09640 5%, var(--bg));">
+    <div class="sec-head budget-sec-sticky" style="background:color-mix(in srgb, #f09640 12%, var(--bg2));border-bottom:1px solid rgba(240,150,60,0.3);">
       <div class="sec-head-left"><div class="sec-dot" style="background:#f09640"></div><span class="sec-label" style="color:#f09640;">Saving & Investing</span></div>
       <span class="sec-right" style="color:#f09640;" id="total-saving">$0</span>
     </div>
@@ -565,8 +573,8 @@ body {
   </div>
 
   <!-- UPCOMING/SAVINGS FUNDS -->
-  <div class="section" style="background:rgba(32,200,180,0.04);">
-    <div class="sec-head budget-sec-sticky" style="background:rgba(32,200,180,0.12);border-bottom:1px solid rgba(32,200,180,0.25);">
+  <div class="section" style="background:color-mix(in srgb, #20c8b4 5%, var(--bg));">
+    <div class="sec-head budget-sec-sticky" style="background:color-mix(in srgb, #20c8b4 12%, var(--bg2));border-bottom:1px solid rgba(32,200,180,0.3);">
       <div class="sec-head-left"><div class="sec-dot" style="background:#20c8b4"></div><span class="sec-label" style="color:#20c8b4;">Upcoming / Savings Funds</span></div>
     </div>
     <div class="sec-body" id="budget-funds-body"></div>
@@ -809,7 +817,7 @@ body {
      PAGE: PAYCHECK SCHEDULE (More)
 ══════════════════════════════════════ -->
 <div class="page" id="page-schedule">
-  <div class="pay-hdr">
+  <div class="pay-hdr" style="position:sticky;top:0;z-index:70;background:var(--bg);box-shadow:0 4px 24px rgba(0,0,0,0.3);">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
       <div>
         <h1>Paycheck Schedule</h1>
@@ -829,12 +837,12 @@ body {
           Apply All
         </button>
       </div>
-      <div style="font-family:var(--mono);font-size:10px;color:var(--sub2);margin-top:8px;">Tap a row to override individual periods</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--sub2);margin-top:8px;">Tap a row to override · 🔒 to protect from Apply All</div>
     </div>
   </div>
 
   <!-- COLUMN HEADERS -->
-  <div style="display:flex;padding:6px 16px 4px;gap:0;">
+  <div style="display:flex;padding:6px 16px 4px;gap:0;position:sticky;top:0;z-index:65;background:var(--bg2);border-bottom:1px solid var(--border);" id="schedColHdr">
     <div style="font-family:var(--mono);font-size:9px;color:var(--sub2);text-transform:uppercase;letter-spacing:0.06em;flex:1;">Date</div>
     <div style="font-family:var(--mono);font-size:9px;color:var(--sub2);text-transform:uppercase;letter-spacing:0.06em;width:68px;text-align:right;">Pay</div>
     <div style="font-family:var(--mono);font-size:9px;color:var(--sub2);text-transform:uppercase;letter-spacing:0.06em;width:68px;text-align:right;">Owed</div>
@@ -876,7 +884,7 @@ body {
   </div>
 
   <!-- EF BALANCE -->
-  <div class="standings-wrap" style="cursor:pointer;" onclick="openEFSheet()">
+  <div class="standings-wrap" style="cursor:pointer;position:sticky;top:0;z-index:70;box-shadow:0 4px 24px rgba(0,0,0,0.3);" onclick="openEFSheet()">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
       <div>
         <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--sub);margin-bottom:6px;">EF Balance</div>
@@ -1022,6 +1030,52 @@ body {
     </div>
   </div>
 
+</div>
+
+<!-- BUDGET CATEGORY EDIT SHEET -->
+<div class="sheet" id="sheetBudgetCatEdit">
+  <div class="handle"></div>
+  <div class="sheet-hdr">
+    <div class="sheet-title">Edit Category</div>
+    <div class="sheet-delete vis" onclick="deleteBudgetCategory('essential', catEditGi)">Delete</div>
+  </div>
+  <div class="field">
+    <div class="field-lbl">Category Name</div>
+    <input class="inp" id="catEditName" type="text" placeholder="e.g. House, Medical" autocomplete="off">
+  </div>
+  <button class="save-btn sg" onclick="saveBudgetCatEdit()" style="margin-bottom:10px;">Save Name</button>
+  <button class="save-btn si" onclick="addItemFromCatSheet()" style="background:var(--s2);color:var(--text);border:1px solid var(--border2);">+ Add Item to This Category</button>
+</div>
+
+<!-- BUDGET ITEM SHEET -->
+<div class="sheet" id="sheetBudgetItem">
+  <div class="handle"></div>
+  <div class="sheet-hdr">
+    <div class="sheet-title" id="budgetItemSheetTitle">Add Item</div>
+    <div class="sheet-delete" id="budgetItemDeleteBtn" onclick="deleteBudgetItem()">Delete</div>
+  </div>
+  <div class="field">
+    <div class="field-lbl">Label</div>
+    <input class="inp" id="budgetItemLbl" type="text" placeholder="e.g. Car Insurance" autocomplete="off">
+  </div>
+  <div class="field">
+    <div class="field-lbl">Amount</div>
+    <input class="amt-inp" id="budgetItemVal" type="number" inputmode="decimal" placeholder="0.00" min="0" step="0.01" style="width:calc(100% - 0px);margin:0 0 16px;">
+  </div>
+  <button class="save-btn sg" onclick="saveBudgetItem()">Save Item</button>
+</div>
+
+<!-- BUDGET CATEGORY SHEET -->
+<div class="sheet" id="sheetBudgetCat">
+  <div class="handle"></div>
+  <div class="sheet-hdr">
+    <div class="sheet-title">Add Category</div>
+  </div>
+  <div class="field">
+    <div class="field-lbl">Category Name</div>
+    <input class="inp" id="budgetCatName" type="text" placeholder="e.g. Medical, Subscriptions" autocomplete="off">
+  </div>
+  <button class="save-btn sg" onclick="saveBudgetCategory()">Add Category</button>
 </div>
 
 <!-- FAB -->
@@ -1652,6 +1706,14 @@ function goToSchedule() {
   renderSchedule();
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-schedule').classList.add('active');
+  requestAnimationFrame(() => {
+    const payHdr = document.querySelector('#page-schedule .pay-hdr');
+    if (payHdr) {
+      const h = payHdr.offsetHeight;
+      const colHdr = document.getElementById('schedColHdr');
+      if (colHdr) colHdr.style.top = h + 'px';
+    }
+  });
   document.getElementById('fab').classList.add('hidden');
   window.scrollTo(0,0);
 }
@@ -2296,7 +2358,7 @@ function renderPeriodAdjs() {
 // ══════════════════════════════════════
 // BUDGET PAGE
 // ══════════════════════════════════════
-const BUDGET_ESSENTIAL = [
+const DEFAULT_BUDGET_ESSENTIAL = [
   { group:'House', items:[
     { id:'mortgage',    lbl:'Mortgage + Escrow (Taxes, Home Ins)', val:2020 },
     { id:'proptax',     lbl:'Property Taxes',    val:0 },
@@ -2340,7 +2402,7 @@ const BUDGET_ESSENTIAL = [
   ]},
 ];
 
-const BUDGET_DISC = [
+const DEFAULT_BUDGET_DISC = [
   { id:'restaurants',  lbl:'Restaurants',              val:150 },
   { id:'recreation',   lbl:'Recreation',               val:0   },
   { id:'extracurric',  lbl:'Extracurricular Events',   val:0   },
@@ -2349,12 +2411,16 @@ const BUDGET_DISC = [
   { id:'gifts',        lbl:'Gift/Contributions',       val:80  },
 ];
 
-const BUDGET_SAVING = [
+const DEFAULT_BUDGET_SAVING = [
   { id:'efund',        lbl:'Emergency Fund',           val:0   },
   { id:'college',      lbl:'College Savings',          val:0   },
   { id:'shortmid',     lbl:'Short/Mid-Term Needs',     val:0   },
   { id:'retirement',   lbl:'Retirement Contributions', val:650 },
 ];
+
+let BUDGET_ESSENTIAL = JSON.parse(JSON.stringify(DEFAULT_BUDGET_ESSENTIAL));
+let BUDGET_DISC      = JSON.parse(JSON.stringify(DEFAULT_BUDGET_DISC));
+let BUDGET_SAVING    = JSON.parse(JSON.stringify(DEFAULT_BUDGET_SAVING));
 
 const DEFAULT_FUNDS = [
   { name:'Emergency Fund',   planned:0, current:0 },
@@ -2366,20 +2432,20 @@ const DEFAULT_FUNDS = [
 ];
 
 function loadBudget() {
-  const raw = localStorage.getItem('mww_budget');
+  const raw = localStorage.getItem('mww_budget_v2');
   if (raw) {
     const saved = JSON.parse(raw);
-    // restore essential
-    BUDGET_ESSENTIAL.forEach(grp => grp.items.forEach(item => {
-      if (saved[item.id] !== undefined) item.val = saved[item.id];
-    }));
-    BUDGET_DISC.forEach(item => { if (saved[item.id] !== undefined) item.val = saved[item.id]; });
-    BUDGET_SAVING.forEach(item => { if (saved[item.id] !== undefined) item.val = saved[item.id]; });
+    if (saved.essential) BUDGET_ESSENTIAL = saved.essential;
+    if (saved.disc)      BUDGET_DISC      = saved.disc;
+    if (saved.saving)    BUDGET_SAVING    = saved.saving;
     if (saved.income !== undefined) budgetIncome = saved.income;
-    if (saved.funds) budgetFunds = saved.funds;
+    if (saved.funds)  budgetFunds = saved.funds;
     else budgetFunds = JSON.parse(JSON.stringify(DEFAULT_FUNDS));
   } else {
-    budgetFunds = JSON.parse(JSON.stringify(DEFAULT_FUNDS));
+    BUDGET_ESSENTIAL = JSON.parse(JSON.stringify(DEFAULT_BUDGET_ESSENTIAL));
+    BUDGET_DISC      = JSON.parse(JSON.stringify(DEFAULT_BUDGET_DISC));
+    BUDGET_SAVING    = JSON.parse(JSON.stringify(DEFAULT_BUDGET_SAVING));
+    budgetFunds      = JSON.parse(JSON.stringify(DEFAULT_FUNDS));
   }
 }
 
@@ -2387,17 +2453,20 @@ let budgetIncome = 5428;
 let budgetFunds  = JSON.parse(JSON.stringify(DEFAULT_FUNDS));
 
 function saveBudget() {
-  const data = { income: budgetIncome, funds: budgetFunds };
-  BUDGET_ESSENTIAL.forEach(grp => grp.items.forEach(i => { data[i.id] = i.val; }));
-  BUDGET_DISC.forEach(i => { data[i.id] = i.val; });
-  BUDGET_SAVING.forEach(i => { data[i.id] = i.val; });
-  localStorage.setItem('mww_budget', JSON.stringify(data));
+  const data = {
+    income: budgetIncome,
+    funds: budgetFunds,
+    essential: BUDGET_ESSENTIAL,
+    disc: BUDGET_DISC,
+    saving: BUDGET_SAVING
+  };
+  localStorage.setItem('mww_budget_v2', JSON.stringify(data));
 }
 
 function renderBudgetPage() {
-  renderBudgetSection('budget-essential-body', BUDGET_ESSENTIAL, true);
-  renderBudgetSection('budget-disc-body', BUDGET_DISC, false);
-  renderBudgetSection('budget-saving-body', BUDGET_SAVING, false);
+  renderBudgetSection('budget-essential-body', BUDGET_ESSENTIAL, true, 'essential');
+  renderBudgetSection('budget-disc-body', BUDGET_DISC, false, 'disc');
+  renderBudgetSection('budget-saving-body', BUDGET_SAVING, false, 'saving');
   renderBudgetFunds();
   updateBudgetOutlook();
   // Set sticky top offset = height of budget sticky header
@@ -2415,57 +2484,188 @@ function renderBudgetPage() {
   });
 }
 
-function renderBudgetSection(bodyId, data, hasGroups) {
+function renderBudgetSection(bodyId, data, hasGroups, sectionKey) {
   const body = document.getElementById(bodyId);
   if (!body) return;
   body.innerHTML = '';
 
   if (hasGroups) {
-    data.forEach(grp => {
+    data.forEach((grp, gi) => {
+      // Category header — tappable to edit name
       const ghdr = document.createElement('div');
       ghdr.className = 'budget-group-hdr';
-      ghdr.textContent = grp.group;
+      ghdr.style.cssText += 'display:flex;justify-content:space-between;align-items:center;cursor:pointer;';
+      ghdr.innerHTML = `
+        <span class="budget-grp-lbl" data-gi="${gi}" data-sec="${sectionKey}">${grp.group}</span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--sub);cursor:pointer;padding:2px 6px;border-radius:6px;border:1px solid var(--border2);background:var(--s2);" onclick="event.stopPropagation();openBudgetCatEditSheet('${sectionKey}',${gi})">✎</span>`;
+      ghdr.querySelector('.budget-grp-lbl').onclick = () => openBudgetCatEditSheet(sectionKey, gi);
       body.appendChild(ghdr);
-      grp.items.forEach(item => body.appendChild(makeBudgetRow(item)));
+      grp.items.forEach((item, ii) => body.appendChild(makeBudgetRow(item, sectionKey, gi, ii)));
     });
+    // Add category button
+    const addCat = document.createElement('button');
+    addCat.className = 'add-btn';
+    addCat.style.cssText = 'margin-top:6px;width:100%;';
+    addCat.textContent = '+ Add Category';
+    addCat.onclick = () => openBudgetCategorySheet(sectionKey);
+    body.appendChild(addCat);
   } else {
-    data.forEach(item => body.appendChild(makeBudgetRow(item)));
+    data.forEach((item, ii) => body.appendChild(makeBudgetRow(item, sectionKey, null, ii)));
+    // Add item button
+    const addItem = document.createElement('button');
+    addItem.className = 'add-btn';
+    addItem.style.cssText = 'margin-top:6px;width:100%;';
+    addItem.textContent = '+ Add Item';
+    addItem.onclick = () => openBudgetItemSheet(sectionKey, null, null);
+    body.appendChild(addItem);
   }
 }
 
-function makeBudgetRow(item) {
+function makeBudgetRow(item, sectionKey, gi, ii) {
   const el = document.createElement('div');
   el.className = 'budget-row';
   el.innerHTML = `
-    <div class="budget-row-lbl">${item.lbl}</div>
-    <div class="budget-row-val ${item.val > 0 ? 'has-val' : ''}" id="bv-${item.id}" onclick="editBudgetField('${item.id}')">
+    <div class="budget-row-lbl" style="cursor:pointer;" onclick="openBudgetItemSheet('${sectionKey}',${gi},${ii})">${item.lbl}</div>
+    <div class="budget-row-val ${item.val > 0 ? 'has-val' : ''}" id="bv-${item.id}" onclick="editBudgetField('${item.id}','${sectionKey}',${gi},${ii})">
       ${item.val > 0 ? fmtD(item.val) : '—'}
     </div>`;
   return el;
 }
 
-function editBudgetField(id) {
+function editBudgetField(id, sectionKey, gi, ii) {
   const el = document.getElementById('bv-' + id);
   if (!el || el.querySelector('input')) return;
-
   const item = findBudgetItem(id);
   if (!item) return;
-
-  el.innerHTML = `<input type="number" inputmode="decimal" value="${item.val || ''}" placeholder="0.00" min="0" step="0.01" autofocus>`;
+  el.innerHTML = `<input type="number" inputmode="decimal" value="${item.val||''}" placeholder="0.00" min="0" step="0.01" autofocus>`;
   const inp = el.querySelector('input');
-  inp.focus();
-  inp.select();
-
+  inp.focus(); inp.select();
   function commit() {
     const val = parseFloat(inp.value) || 0;
     item.val = val;
     el.innerHTML = val > 0 ? fmtD(val) : '—';
     el.className = 'budget-row-val' + (val > 0 ? ' has-val' : '');
-    saveBudget();
-    updateBudgetOutlook();
+    saveBudget(); updateBudgetOutlook();
   }
   inp.addEventListener('blur', commit);
-  inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); });
+  inp.addEventListener('keydown', e => { if (e.key==='Enter') inp.blur(); });
+}
+
+function getBudgetSection(key) {
+  if (key==='essential') return BUDGET_ESSENTIAL;
+  if (key==='disc')      return BUDGET_DISC;
+  if (key==='saving')    return BUDGET_SAVING;
+  return [];
+}
+
+function editBudgetCategoryName(sectionKey, gi, el) {
+  if (el.querySelector('input')) return;
+  const grp = BUDGET_ESSENTIAL[gi];
+  const orig = grp.group;
+  el.innerHTML = `<input type="text" value="${orig}" style="background:none;border:none;outline:none;font-family:var(--mono);font-size:9px;color:var(--text2);width:120px;letter-spacing:0.1em;text-transform:uppercase;" autofocus>`;
+  const inp = el.querySelector('input');
+  inp.focus(); inp.select();
+  function commit() {
+    grp.group = inp.value.trim() || orig;
+    el.textContent = grp.group;
+    saveBudget();
+  }
+  inp.addEventListener('blur', commit);
+  inp.addEventListener('keydown', e => { if (e.key==='Enter') inp.blur(); });
+}
+
+function deleteBudgetCategory(sectionKey, gi) {
+  BUDGET_ESSENTIAL.splice(gi, 1);
+  saveBudget(); renderBudgetPage(); updateBudgetOutlook();
+  closeSheet();
+  showToast('Category deleted');
+}
+
+let catEditGi = null;
+function openBudgetCatEditSheet(sectionKey, gi) {
+  catEditGi = gi;
+  const grp = BUDGET_ESSENTIAL[gi];
+  document.getElementById('catEditName').value = grp.group;
+  openSheetEl('sheetBudgetCatEdit');
+  setTimeout(() => document.getElementById('catEditName').focus(), 340);
+}
+function saveBudgetCatEdit() {
+  const name = document.getElementById('catEditName').value.trim();
+  if (!name) { showToast('Enter a name'); return; }
+  BUDGET_ESSENTIAL[catEditGi].group = name;
+  saveBudget(); renderBudgetPage(); closeSheet();
+  showToast('Category updated');
+}
+function addItemFromCatSheet() {
+  closeSheet();
+  setTimeout(() => openBudgetItemSheet('essential', catEditGi, null), 350);
+}
+
+// Budget item sheet
+let budgetSheetSec = null, budgetSheetGi = null, budgetSheetIi = null;
+
+function openBudgetItemSheet(sectionKey, gi, ii) {
+  budgetSheetSec = sectionKey;
+  budgetSheetGi  = gi;
+  budgetSheetIi  = ii;
+  const isEdit = ii !== null;
+  let item = null;
+  if (isEdit) {
+    if (sectionKey === 'essential' && gi !== null) item = BUDGET_ESSENTIAL[gi].items[ii];
+    else if (sectionKey === 'disc')    item = BUDGET_DISC[ii];
+    else if (sectionKey === 'saving')  item = BUDGET_SAVING[ii];
+  }
+  document.getElementById('budgetItemSheetTitle').textContent = isEdit ? 'Edit Item' : 'Add Item';
+  document.getElementById('budgetItemDeleteBtn').classList.toggle('vis', isEdit);
+  document.getElementById('budgetItemLbl').value = item ? item.lbl : '';
+  document.getElementById('budgetItemVal').value = item ? (item.val||'') : '';
+  openSheetEl('sheetBudgetItem');
+  setTimeout(() => document.getElementById('budgetItemLbl').focus(), 340);
+}
+
+function saveBudgetItem() {
+  const lbl = document.getElementById('budgetItemLbl').value.trim();
+  const val = parseFloat(document.getElementById('budgetItemVal').value) || 0;
+  if (!lbl) { showToast('Enter a label'); return; }
+  const id  = 'b' + Date.now();
+  const isEdit = budgetSheetIi !== null;
+
+  if (budgetSheetSec === 'essential' && budgetSheetGi !== null) {
+    if (isEdit) { BUDGET_ESSENTIAL[budgetSheetGi].items[budgetSheetIi] = { ...BUDGET_ESSENTIAL[budgetSheetGi].items[budgetSheetIi], lbl, val }; }
+    else        { BUDGET_ESSENTIAL[budgetSheetGi].items.push({ id, lbl, val }); }
+  } else if (budgetSheetSec === 'disc') {
+    if (isEdit) { BUDGET_DISC[budgetSheetIi] = { ...BUDGET_DISC[budgetSheetIi], lbl, val }; }
+    else        { BUDGET_DISC.push({ id, lbl, val }); }
+  } else if (budgetSheetSec === 'saving') {
+    if (isEdit) { BUDGET_SAVING[budgetSheetIi] = { ...BUDGET_SAVING[budgetSheetIi], lbl, val }; }
+    else        { BUDGET_SAVING.push({ id, lbl, val }); }
+  }
+  saveBudget(); renderBudgetPage(); updateBudgetOutlook(); closeSheet();
+  showToast(isEdit ? 'Item updated' : 'Item added');
+}
+
+function deleteBudgetItem() {
+  if (budgetSheetSec === 'essential' && budgetSheetGi !== null) BUDGET_ESSENTIAL[budgetSheetGi].items.splice(budgetSheetIi, 1);
+  else if (budgetSheetSec === 'disc')   BUDGET_DISC.splice(budgetSheetIi, 1);
+  else if (budgetSheetSec === 'saving') BUDGET_SAVING.splice(budgetSheetIi, 1);
+  saveBudget(); renderBudgetPage(); updateBudgetOutlook(); closeSheet();
+  showToast('Item deleted');
+}
+
+// Budget category sheet (essential only)
+let budgetCatSec = null;
+function openBudgetCategorySheet(sectionKey) {
+  budgetCatSec = sectionKey;
+  document.getElementById('budgetCatName').value = '';
+  openSheetEl('sheetBudgetCat');
+  setTimeout(() => document.getElementById('budgetCatName').focus(), 340);
+}
+function saveBudgetCategory() {
+  const name = document.getElementById('budgetCatName').value.trim();
+  if (!name) { showToast('Enter a category name'); return; }
+  BUDGET_ESSENTIAL.push({ group: name, items: [] });
+  saveBudget(); renderBudgetPage(); closeSheet();
+  showToast('Category added');
 }
 
 function editBudgetInline(field) {
@@ -2587,6 +2787,7 @@ function applySettingsUI() {
   document.getElementById('themeLight').className = 'sign-btn' + (theme==='light' ? ' sp' : '');
   document.getElementById('themeDark').className  = 'sign-btn' + (theme==='dark'  ? ' sp' : '');
   document.getElementById('zoomLabel').textContent = Math.round(zoom*100) + '%';
+  applyZoom(zoom);
 }
 
 function setTheme(t) {
@@ -2639,15 +2840,26 @@ function adjustZoom(delta) {
   const current = parseFloat(localStorage.getItem('mww_zoom') || '1');
   const next    = Math.min(1.3, Math.max(0.8, Math.round((current + delta)*100)/100));
   localStorage.setItem('mww_zoom', next.toString());
-  document.body.style.fontSize = (next * 16) + 'px';
+  applyZoom(next);
   document.getElementById('zoomLabel').textContent = Math.round(next*100) + '%';
+  showToast(Math.round(next*100) + '%');
+}
+
+function applyZoom(z) {
+  document.documentElement.style.setProperty('--zoom', z);
+  document.body.style.zoom = z;
+  // fallback for Safari which doesn't support zoom
+  if (!('zoom' in document.body.style) || getComputedStyle(document.body).zoom === '') {
+    document.body.style.transform = 'scale(' + z + ')';
+    document.body.style.transformOrigin = 'top center';
+  }
 }
 
 function initSettings() {
   const theme = localStorage.getItem('mww_theme') || 'dark';
   const zoom  = parseFloat(localStorage.getItem('mww_zoom') || '1');
   applyTheme(theme);
-  document.body.style.fontSize = (zoom * 16) + 'px';
+  applyZoom(zoom);
 }
 
 // ══════════════════════════════════════
