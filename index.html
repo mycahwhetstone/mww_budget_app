@@ -159,12 +159,12 @@ body {
 .pay-hdr { background: var(--bg); padding: 54px 20px 18px; border-bottom: 2px solid var(--gap); }
 .pay-hdr h1 { font-size: 21px; font-weight: 600; letter-spacing: -0.4px; margin-bottom: 4px; }
 .pay-hdr .pay-sub { font-family: var(--mono); font-size: 11px; color: var(--sub); }
-.pay-row { display: flex; align-items: center; gap: 0; padding: 11px 14px; background: var(--s1); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 7px; }
+.pay-row { display: flex; align-items: center; gap: 0; padding: 10px 14px; background: var(--s1); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 6px; }
 .pay-row.current-period { border-color: rgba(45,221,130,0.35); background: rgba(45,221,130,0.05); }
-.pay-date { font-family: var(--mono); font-size: 12px; font-weight: 500; flex: 1; }
-.pay-amt { font-family: var(--mono); font-size: 12px; color: var(--green); width: 80px; text-align: right; }
-.pay-owed { font-family: var(--mono); font-size: 12px; color: var(--red); width: 80px; text-align: right; }
-.pay-badge { font-family: var(--mono); font-size: 9px; background: var(--gdim); color: var(--green); border: 1px solid rgba(45,221,130,0.2); border-radius: 5px; padding: 2px 6px; margin-left: 8px; }
+.pay-date { font-family: var(--mono); font-size: 11px; font-weight: 500; flex: 1; }
+.pay-amt  { font-family: var(--mono); font-size: 11px; color: var(--green); width: 68px; text-align: right; }
+.pay-owed { font-family: var(--mono); font-size: 11px; color: var(--red);   width: 68px; text-align: right; }
+.pay-badge { font-family: var(--mono); font-size: 9px; background: var(--gdim); color: var(--green); border: 1px solid rgba(45,221,130,0.2); border-radius: 5px; padding: 2px 6px; }
 
 /* ── FAB ── */
 .fab { position: fixed; bottom: 94px; right: calc(50% - 215px + 18px); width: 50px; height: 50px; border-radius: 14px; background: var(--green); border: none; color: #0a0a0a; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 1px rgba(45,221,130,0.2), 0 8px 28px rgba(45,221,130,0.18); transition: transform 0.2s, border-radius 0.2s; z-index: 90; line-height: 1; }
@@ -233,6 +233,240 @@ body {
 @keyframes fadeUp { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
 .st.tappable { cursor: pointer; }
 .st.tappable:active { opacity: 0.85; }
+
+/* ── GOALS ── */
+.goal-cat-card {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+}
+.goal-cat-title { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+.goal-cat-items { font-family: var(--mono); font-size: 9px; color: var(--sub); line-height: 1.5; }
+
+.goal-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 7px;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  user-select: none;
+  position: relative;
+}
+.goal-row:active { opacity: 0.8; }
+.goal-row.cat-blue   { background: rgba(106,163,245,0.08); border-color: rgba(106,163,245,0.2); }
+.goal-row.cat-green  { background: rgba(45,221,130,0.07);  border-color: rgba(45,221,130,0.2);  }
+.goal-row.cat-yellow { background: rgba(245,200,74,0.08);  border-color: rgba(245,200,74,0.2);  }
+.goal-row.cat-peach  { background: rgba(240,120,80,0.08);  border-color: rgba(240,120,80,0.2);  }
+
+.goal-row.reorder-mode { cursor: grab; }
+.goal-row.dragging { opacity: 0.5; border-style: dashed; }
+
+.goal-status {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1.5px solid var(--border2);
+  transition: background 0.2s, border-color 0.2s;
+}
+.goal-status.green  { background: var(--green);  border-color: var(--green); }
+.goal-status.yellow { background: var(--yellow); border-color: var(--yellow); }
+.goal-status.red    { background: var(--red);    border-color: var(--red); }
+
+.goal-info { display: flex; align-items: flex-start; gap: 10px; flex: 1; min-width: 0; }
+.goal-num  { font-family: var(--mono); font-size: 11px; color: var(--sub); flex-shrink: 0; padding-top: 1px; width: 16px; }
+.goal-text { font-size: 13px; font-weight: 500; line-height: 1.4; }
+.goal-drag-handle { font-size: 16px; color: var(--sub2); flex-shrink: 0; display: none; cursor: grab; padding: 0 2px; }
+.goal-row.reorder-mode .goal-drag-handle { display: block; }
+.goal-row.reorder-mode .goal-status { display: none; }
+
+.goal-reorder-btn { font-family: var(--mono); font-size: 11px; color: var(--sub); cursor: pointer; }
+.goal-reorder-btn.active { color: var(--green); }
+
+.goal-cat-btn {
+  padding: 9px 0; border-radius: 10px;
+  border: 1px solid var(--border2);
+  background: var(--s2);
+  font-family: var(--sans); font-size: 11px; font-weight: 500;
+  cursor: pointer; transition: all 0.15s;
+}
+.goal-cat-btn.selected { opacity: 1; }
+.goal-cat-btn:not(.selected) { opacity: 0.45; }
+
+/* ── BUDGET PAGE ── */
+.budget-group-hdr {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text2);
+  padding: 9px 14px 8px;
+  background: var(--s2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.budget-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 6px;
+}
+.budget-row-lbl { font-size: 13px; font-weight: 500; flex: 1; }
+.budget-row-val {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text2);
+  cursor: pointer;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+  min-width: 70px;
+  text-align: right;
+}
+.budget-row-val:hover { border-color: var(--border2); background: var(--s2); }
+.budget-row-val.has-val { color: var(--text); }
+.budget-row-val input {
+  background: none;
+  border: none;
+  outline: none;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text);
+  width: 80px;
+  text-align: right;
+}
+.budget-fund-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 6px;
+}
+.budget-fund-num { font-family: var(--mono); font-size: 11px; color: var(--sub2); width: 16px; flex-shrink: 0; }
+.budget-fund-name {
+  flex: 1;
+  font-size: 13px;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: var(--sans);
+  cursor: text;
+}
+.budget-fund-name::placeholder { color: var(--sub2); }
+.budget-fund-planned, .budget-fund-current {
+  font-family: var(--mono);
+  font-size: 12px;
+  width: 70px;
+  text-align: right;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+}
+.budget-fund-planned:hover, .budget-fund-current:hover { border-color: var(--border2); background: var(--s2); }
+.budget-fund-planned input, .budget-fund-current input {
+  background: none; border: none; outline: none;
+  font-family: var(--mono); font-size: 12px;
+  color: var(--text); width: 60px; text-align: right;
+}
+
+/* ── EXPENSE STICKY HEADER ── */
+.expense-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 70;
+  background: var(--bg);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+/* ── STICKY SECTION HEADERS ── */
+.sec-head-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: var(--s1);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+.budget-sec-sticky {
+  position: sticky;
+  top: 0; /* overridden by JS */
+  z-index: 55;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+
+/* ── BILL REGISTER ROW ── */
+.bill-reg {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px;
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 7px;
+  cursor: pointer;
+  transition: background 0.15s;
+  user-select: none;
+}
+.bill-reg:active { background: var(--s2); }
+.bill-reg-info { flex: 1; min-width: 0; }
+.bill-reg-name { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bill-reg-sub { font-family: var(--mono); font-size: 10px; color: var(--sub); margin-top: 2px; }
+.bill-reg-right { text-align: right; flex-shrink: 0; }
+.bill-reg-amt { font-family: var(--mono); font-size: 13px; }
+.bill-reg-tags { display: flex; gap: 4px; margin-top: 3px; justify-content: flex-end; flex-wrap: wrap; }
+.autopay-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); display: inline-block; margin-right: 2px; vertical-align: middle; }
+
+/* summary rows */
+.sum-line { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: var(--s1); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 7px; }
+.sum-line-lbl { font-size: 13px; font-weight: 500; }
+.sum-line-val { font-family: var(--mono); font-size: 13px; }
+
+/* ── EF MILESTONE ROW ── */
+.ef-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px;
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 7px;
+  position: relative; overflow: hidden;
+}
+.ef-row::after {
+  content: ''; position: absolute;
+  left: 0; top: 0; bottom: 0; width: 3px;
+}
+.ef-row.achieved::after { background: var(--green); }
+.ef-row.current::after  { background: var(--yellow); }
+.ef-row.future::after   { background: var(--border2); }
+.ef-month { font-family: var(--mono); font-size: 11px; color: var(--sub); width: 18px; flex-shrink: 0; }
+.ef-label { font-size: 13px; font-weight: 500; flex: 1; }
+.ef-target { font-family: var(--mono); font-size: 13px; }
+.ef-target.achieved { color: var(--green); }
+.ef-target.current  { color: var(--yellow); }
+.ef-target.future   { color: var(--sub2); }
+.ef-check { font-size: 14px; flex-shrink: 0; }
+
+/* category table */
+.cat-row { display: flex; align-items: center; padding: 10px 14px; background: var(--s1); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 7px; gap: 10px; }
+.cat-name { font-size: 13px; font-weight: 500; flex: 1; }
+.cat-ess  { font-family: var(--mono); font-size: 12px; width: 72px; text-align: right; color: var(--green); }
+.cat-non  { font-family: var(--mono); font-size: 12px; width: 72px; text-align: right; color: var(--sub); }
 </style>
 </head>
 <body>
@@ -241,16 +475,89 @@ body {
      PAGE: BUDGET
 ══════════════════════════════════════ -->
 <div class="page" id="page-budget">
-  <div class="hdr">
-    <div class="hdr-row">
-      <div class="hdr-left"><h1>Budget</h1><div class="period">Monthly overview</div></div>
+
+  <!-- STICKY OUTLOOK -->
+  <div class="expense-sticky" id="budgetSticky">
+    <div class="hdr" style="border-bottom:none;padding-bottom:12px;">
+      <div class="hdr-row">
+        <div class="hdr-left"><h1>Budget</h1><div class="period">Monthly overview · tap amounts to edit</div></div>
+      </div>
+    </div>
+    <!-- OUTLOOK STRIP -->
+    <div style="background:var(--bg2);padding:10px 16px 12px;border-bottom:2px solid var(--gap);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--sub);">Monthly Income</div>
+        <div class="budget-inline-val" id="bv-income" onclick="editBudgetInline('income')" style="font-family:var(--mono);font-size:15px;font-weight:500;color:var(--green);cursor:pointer;">$5,428</div>
+      </div>
+      <div style="height:1px;background:var(--border);margin-bottom:8px;"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;">
+        <div style="background:rgba(106,163,245,0.08);border:1px solid rgba(106,163,245,0.2);border-radius:8px;padding:8px 10px;">
+          <div style="font-family:var(--mono);font-size:8px;color:var(--blue);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em;">Essential</div>
+          <div style="font-family:var(--mono);font-size:13px;color:var(--blue);" id="outlook-essential">$0</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--blue);font-weight:600;" id="pct-essential">0%</div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--sub);">rec 60%</div>
+          </div>
+        </div>
+        <div style="background:rgba(245,200,74,0.08);border:1px solid rgba(245,200,74,0.2);border-radius:8px;padding:8px 10px;">
+          <div style="font-family:var(--mono);font-size:8px;color:var(--yellow);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em;">Discretionary</div>
+          <div style="font-family:var(--mono);font-size:13px;color:var(--yellow);" id="outlook-disc">$0</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--yellow);font-weight:600;" id="pct-disc">0%</div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--sub);">rec 20%</div>
+          </div>
+        </div>
+        <div style="background:rgba(240,150,60,0.08);border:1px solid rgba(240,150,60,0.2);border-radius:8px;padding:8px 10px;">
+          <div style="font-family:var(--mono);font-size:8px;color:#f09640;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em;">Saving</div>
+          <div style="font-family:var(--mono);font-size:13px;color:#f09640;" id="outlook-saving">$0</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+            <div style="font-family:var(--mono);font-size:9px;color:#f09640;font-weight:600;" id="pct-saving">0%</div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--sub);">rec 20%</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--sub);">Surplus / Deficit</div>
+        <div style="font-family:var(--mono);font-size:13px;font-weight:500;" id="outlook-surplus">$0</div>
+      </div>
     </div>
   </div>
-  <div class="placeholder">
-    <div class="placeholder-icon">📊</div>
-    <div class="placeholder-title">Budget</div>
-    <div class="placeholder-sub">Monthly income, expenses,<br>and savings overview.<br>Coming next.</div>
+
+  <!-- ESSENTIAL/FIXED -->
+  <div class="section" style="background:rgba(106,163,245,0.04);">
+    <div class="sec-head budget-sec-sticky" style="background:color-mix(in srgb, #6aa3f5 15%, #111318);border-bottom:1px solid rgba(106,163,245,0.3);">
+      <div class="sec-head-left"><div class="sec-dot" style="background:var(--blue)"></div><span class="sec-label" style="color:var(--blue);">Essential / Fixed</span></div>
+      <span class="sec-right" style="color:var(--blue);" id="total-essential">$0</span>
+    </div>
+    <div class="sec-body" id="budget-essential-body"></div>
   </div>
+
+  <!-- DISCRETIONARY -->
+  <div class="section" style="background:rgba(245,200,74,0.04);">
+    <div class="sec-head budget-sec-sticky" style="background:color-mix(in srgb, #f5c84a 12%, #111318);border-bottom:1px solid rgba(245,200,74,0.3);">
+      <div class="sec-head-left"><div class="sec-dot" style="background:var(--yellow)"></div><span class="sec-label" style="color:var(--yellow);">Discretionary / Variable</span></div>
+      <span class="sec-right" style="color:var(--yellow);" id="total-disc">$0</span>
+    </div>
+    <div class="sec-body" id="budget-disc-body"></div>
+  </div>
+
+  <!-- SAVING & INVESTING -->
+  <div class="section" style="background:rgba(240,150,60,0.04);">
+    <div class="sec-head budget-sec-sticky" style="background:color-mix(in srgb, #f09640 12%, #111318);border-bottom:1px solid rgba(240,150,60,0.3);">
+      <div class="sec-head-left"><div class="sec-dot" style="background:#f09640"></div><span class="sec-label" style="color:#f09640;">Saving & Investing</span></div>
+      <span class="sec-right" style="color:#f09640;" id="total-saving">$0</span>
+    </div>
+    <div class="sec-body" id="budget-saving-body"></div>
+  </div>
+
+  <!-- UPCOMING/SAVINGS FUNDS -->
+  <div class="section" style="background:rgba(32,200,180,0.04);">
+    <div class="sec-head budget-sec-sticky" style="background:rgba(32,200,180,0.12);border-bottom:1px solid rgba(32,200,180,0.25);">
+      <div class="sec-head-left"><div class="sec-dot" style="background:#20c8b4"></div><span class="sec-label" style="color:#20c8b4;">Upcoming / Savings Funds</span></div>
+    </div>
+    <div class="sec-body" id="budget-funds-body"></div>
+  </div>
+
 </div>
 
 <!-- ══════════════════════════════════════
@@ -258,51 +565,59 @@ body {
 ══════════════════════════════════════ -->
 <div class="page active" id="page-expense">
 
-  <!-- HEADER -->
-  <div class="hdr">
-    <div class="hdr-row">
-      <div class="hdr-left">
-        <h1>Expense Planning</h1>
-        <div class="period" id="periodLabel">May 15 – May 28, 2026</div>
-      </div>
-      <div class="day-badge" id="dayBadge">Day 1</div>
-    </div>
-    <div class="prog-wrap">
-      <div class="prog-meta"><span id="progStart">May 15</span><span id="progEnd">May 29 · payday</span></div>
-      <div class="prog-bg"><div class="prog-fill" id="progFill" style="width:7%"></div></div>
-    </div>
-  </div>
+  <!-- STICKY TOP -->
+  <div class="expense-sticky" id="expenseSticky">
 
-  <!-- STANDINGS -->
-  <div class="standings-wrap">
-    <div class="standings">
-      <div class="st g" id="cardCurrent" onclick="openBalanceSheet()" style="cursor:pointer;">
-        <div class="st-lbl">Current</div>
-        <div class="st-val" id="stCurrent">$0</div>
-        <div class="st-meta">
-          <div class="st-meta-row"><span class="st-meta-lbl">in</span><span class="st-meta-val in" id="detCurrentIn">$0</span></div>
-          <div class="st-meta-row"><span class="st-meta-lbl">out</span><span class="st-meta-val out" id="detCurrentOut">$0</span></div>
+    <!-- HEADER -->
+    <div class="hdr" style="border-bottom:none;padding-bottom:12px;">
+      <div class="hdr-row">
+        <div class="hdr-left">
+          <h1>Expense Planning</h1>
+          <div class="period" id="periodLabel">May 15 – May 28, 2026</div>
         </div>
-        <div style="margin-top:6px;font-family:var(--mono);font-size:8px;color:var(--sub2);" id="balanceBadge">tap to set balance</div>
+        <div class="day-badge" id="dayBadge">Day 1</div>
       </div>
-      <div class="st y" id="cardShort">
-        <div class="st-lbl">Short</div>
-        <div class="st-val" id="stShort">$0</div>
-        <div class="st-meta">
-          <div class="st-meta-row"><span class="st-meta-lbl">in</span><span class="st-meta-val in" id="detShortIn">$0</span></div>
-          <div class="st-meta-row"><span class="st-meta-lbl">out</span><span class="st-meta-val out" id="detShortOut">$0</span></div>
+      <div class="prog-wrap">
+        <div class="prog-meta"><span id="progStart">May 15</span><span id="progEnd">May 29 · payday</span></div>
+        <div class="prog-bg"><div class="prog-fill" id="progFill" style="width:7%"></div></div>
+      </div>
+    </div>
+
+    <!-- STANDINGS -->
+    <div class="standings-wrap" style="border-bottom:none;">
+      <div class="standings">
+        <div class="st g" id="cardCurrent" onclick="openBalanceSheet()" style="cursor:pointer;">
+          <div class="st-lbl">Current</div>
+          <div class="st-val" id="stCurrent">$0</div>
+          <div class="st-meta">
+            <div class="st-meta-row"><span class="st-meta-lbl">in</span><span class="st-meta-val in" id="detCurrentIn">$0</span></div>
+            <div class="st-meta-row"><span class="st-meta-lbl">out</span><span class="st-meta-val out" id="detCurrentOut">$0</span></div>
+          </div>
+          <div style="margin-top:6px;font-family:var(--mono);font-size:8px;color:var(--sub2);" id="balanceBadge">tap to set balance</div>
         </div>
-      </div>
-      <div class="st r" id="cardLong">
-        <div class="st-lbl">Long</div>
-        <div class="st-val" id="stLong">$0</div>
-        <div class="st-meta">
-          <div class="st-meta-row"><span class="st-meta-lbl">in</span><span class="st-meta-val in" id="detLongIn">$0</span></div>
-          <div class="st-meta-row"><span class="st-meta-lbl">out</span><span class="st-meta-val out" id="detLongOut">$0</span></div>
+        <div class="st y" id="cardShort">
+          <div class="st-lbl">Short</div>
+          <div class="st-val" id="stShort">$0</div>
+          <div class="st-meta">
+            <div class="st-meta-row"><span class="st-meta-lbl">in</span><span class="st-meta-val in" id="detShortIn">$0</span></div>
+            <div class="st-meta-row"><span class="st-meta-lbl">out</span><span class="st-meta-val out" id="detShortOut">$0</span></div>
+          </div>
+        </div>
+        <div class="st r" id="cardLong">
+          <div class="st-lbl">Long</div>
+          <div class="st-val" id="stLong">$0</div>
+          <div class="st-meta">
+            <div class="st-meta-row"><span class="st-meta-lbl">in</span><span class="st-meta-val in" id="detLongIn">$0</span></div>
+            <div class="st-meta-row"><span class="st-meta-lbl">out</span><span class="st-meta-val out" id="detLongOut">$0</span></div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+
+    <!-- STICKY BOTTOM BORDER -->
+    <div style="height:2px;background:var(--gap);"></div>
+
+  </div><!-- end expense-sticky -->
 
   <!-- ADJUSTMENTS -->
   <div class="section">
@@ -333,18 +648,26 @@ body {
   <div class="section">
     <div class="sec-head">
       <div class="sec-head-left"><div class="sec-dot" style="background:var(--yellow)"></div><span class="sec-label">Short Term</span></div>
-      <span class="sec-right" id="shortLabel">Next period</span>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="sec-right" id="shortLabel">Next period</span>
+        <span class="sec-action" onclick="openPeriodAdj('short', null)">+ Add</span>
+      </div>
     </div>
     <div class="sec-body" id="billsShortBody"></div>
+    <div class="sec-body" style="padding-top:0;" id="shortAdjBody"></div>
   </div>
 
   <!-- LONG TERM -->
   <div class="section">
     <div class="sec-head">
       <div class="sec-head-left"><div class="sec-dot" style="background:var(--red)"></div><span class="sec-label">Long Term</span></div>
-      <span class="sec-right">2+ paychecks out</span>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="sec-right">2+ paychecks out</span>
+        <span class="sec-action" onclick="openPeriodAdj('long', null)">+ Add</span>
+      </div>
     </div>
     <div class="sec-body" id="billsLongBody"></div>
+    <div class="sec-body" style="padding-top:0;" id="longAdjBody"></div>
   </div>
 
 </div>
@@ -355,30 +678,117 @@ body {
 <div class="page" id="page-monthly">
   <div class="hdr">
     <div class="hdr-row">
-      <div class="hdr-left"><h1>Monthly Fixed</h1><div class="period">Bills & Emergency Fund</div></div>
+      <div class="hdr-left"><h1>Monthly Fixed</h1><div class="period" id="monthlyTotals">Loading...</div></div>
     </div>
   </div>
-  <div class="placeholder">
-    <div class="placeholder-icon">🏠</div>
-    <div class="placeholder-title">Monthly Fixed Costs</div>
-    <div class="placeholder-sub">Full bill register, emergency fund<br>tracker, and debt balances.<br>Coming next.</div>
+
+  <!-- WEEK 1-2 -->
+  <div class="section">
+    <div class="sec-head sec-head-sticky">
+      <div class="sec-head-left"><div class="sec-dot" style="background:var(--blue)"></div><span class="sec-label">Weeks 1 – 2</span></div>
+      <span class="sec-right" id="week12Total">$0.00</span>
+    </div>
+    <div class="sec-body" id="week12Body"></div>
   </div>
+
+  <!-- WEEK 3-4 -->
+  <div class="section">
+    <div class="sec-head sec-head-sticky">
+      <div class="sec-head-left"><div class="sec-dot" style="background:var(--yellow)"></div><span class="sec-label">Weeks 3 – 4</span></div>
+      <span class="sec-right" id="week34Total">$0.00</span>
+    </div>
+    <div class="sec-body" id="week34Body"></div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="section">
+    <div class="sec-head sec-head-sticky">
+      <div class="sec-head-left"><div class="sec-dot" style="background:var(--green)"></div><span class="sec-label">Summary</span></div>
+    </div>
+    <div class="sec-body" id="monthlySummaryBody"></div>
+  </div>
+
+
 </div>
 
 <!-- ══════════════════════════════════════
      PAGE: GOALS
 ══════════════════════════════════════ -->
 <div class="page" id="page-goals">
+
+  <!-- CATEGORY OVERVIEW -->
   <div class="hdr">
     <div class="hdr-row">
-      <div class="hdr-left"><h1>Goals</h1><div class="period">Financial goals</div></div>
+      <div class="hdr-left"><h1>Goals</h1><div class="period">Tap to cycle status · Long press to reorder</div></div>
     </div>
   </div>
-  <div class="placeholder">
-    <div class="placeholder-icon">🎯</div>
-    <div class="placeholder-title">Goals</div>
-    <div class="placeholder-sub">Track your financial goals<br>and milestones.<br>Coming next.</div>
+  <div class="section">
+    <div class="sec-head sec-head-sticky">
+      <div class="sec-head-left"><div class="sec-dot" style="background:var(--blue)"></div><span class="sec-label">Categories</span></div>
+    </div>
+    <div class="sec-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="goal-cat-card" style="background:rgba(106,163,245,0.12);border-color:rgba(106,163,245,0.25);">
+          <div class="goal-cat-title" style="color:var(--blue);">Short-Term Safety</div>
+          <div class="goal-cat-items">No CC Debt · 3-6 Mo EF · Remove ST Debt</div>
+        </div>
+        <div class="goal-cat-card" style="background:rgba(45,221,130,0.1);border-color:rgba(45,221,130,0.25);">
+          <div class="goal-cat-title" style="color:var(--green);">Long-Term Goals</div>
+          <div class="goal-cat-items">Max Roth · Brokerage Accounts</div>
+        </div>
+        <div class="goal-cat-card" style="background:rgba(245,200,74,0.1);border-color:rgba(245,200,74,0.25);">
+          <div class="goal-cat-title" style="color:var(--yellow);">Mid-Range Flexibility</div>
+          <div class="goal-cat-items">Loan Reduction · Debt On Time · Mortgage+</div>
+        </div>
+        <div class="goal-cat-card" style="background:rgba(240,120,80,0.1);border-color:rgba(240,120,80,0.25);">
+          <div class="goal-cat-title" style="color:#f07850;">Post-Core Goals</div>
+          <div class="goal-cat-items">HSA · 401k · Vacation · Future Expenses</div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- INDIVIDUAL GOALS -->
+  <div class="section">
+    <div class="sec-head sec-head-sticky">
+      <div class="sec-head-left"><div class="sec-dot" style="background:var(--text2)"></div><span class="sec-label">Individual Goals</span></div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="goal-reorder-btn" id="reorderBtn" onclick="toggleReorder()">Reorder</span>
+        <span class="sec-action" onclick="openAddGoal()">+ Add</span>
+      </div>
+    </div>
+    <div class="sec-body" id="goalListBody"></div>
+  </div>
+
+</div>
+
+<!-- ADD/EDIT GOAL SHEET -->
+<div class="sheet" id="sheetGoal">
+  <div class="handle"></div>
+  <div class="sheet-hdr">
+    <div class="sheet-title" id="goalSheetTitle">Add Goal</div>
+    <div class="sheet-delete" id="goalDeleteBtn" onclick="deleteGoal()">Delete</div>
+  </div>
+  <div class="field">
+    <div class="field-lbl">Goal</div>
+    <input class="inp" id="goalText" type="text" placeholder="e.g. Pay off car loan" autocomplete="off">
+  </div>
+  <div style="padding:0 18px;margin-bottom:14px;">
+    <div class="field-lbl" style="font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--sub);margin-bottom:8px;">Tier</div>
+    <div style="display:flex;gap:6px;margin-bottom:12px;">
+      <button class="goal-cat-btn" id="gt-1" onclick="setGoalTier(1)" style="flex:1;border-color:rgba(45,221,130,0.3);color:var(--green);">Tier 1</button>
+      <button class="goal-cat-btn" id="gt-2" onclick="setGoalTier(2)" style="flex:1;border-color:rgba(245,200,74,0.3);color:var(--yellow);">Tier 2</button>
+      <button class="goal-cat-btn" id="gt-3" onclick="setGoalTier(3)" style="flex:1;border-color:rgba(240,95,95,0.3);color:var(--red);">Tier 3</button>
+    </div>
+    <div class="field-lbl" style="font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--sub);margin-bottom:8px;">Category</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+      <button class="goal-cat-btn" id="gc-blue"   onclick="setGoalCat('blue')"  style="border-color:rgba(106,163,245,0.3);color:var(--blue);">Short-Term Safety</button>
+      <button class="goal-cat-btn" id="gc-green"  onclick="setGoalCat('green')" style="border-color:rgba(45,221,130,0.3);color:var(--green);">Long-Term Goals</button>
+      <button class="goal-cat-btn" id="gc-yellow" onclick="setGoalCat('yellow')"style="border-color:rgba(245,200,74,0.3);color:var(--yellow);">Mid-Range Flexibility</button>
+      <button class="goal-cat-btn" id="gc-peach"  onclick="setGoalCat('peach')" style="border-color:rgba(240,120,80,0.3);color:#f07850;">Post-Core Goals</button>
+    </div>
+  </div>
+  <button class="save-btn sg" id="goalSaveBtn" onclick="saveGoal()">Add Goal</button>
 </div>
 
 <!-- ══════════════════════════════════════
@@ -386,15 +796,122 @@ body {
 ══════════════════════════════════════ -->
 <div class="page" id="page-schedule">
   <div class="pay-hdr">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
       <div>
         <h1>Paycheck Schedule</h1>
-        <div class="pay-sub">$2,714.20 · every 2 weeks</div>
+        <div class="pay-sub" id="schedSubtitle">$2,714.20 · every 2 weeks</div>
       </div>
-      <div style="font-size:22px;cursor:pointer;" onclick="goBack()">←</div>
+      <div style="font-size:22px;cursor:pointer;padding-top:4px;" onclick="goBack()">←</div>
+    </div>
+
+    <!-- APPLY TO ALL -->
+    <div style="background:var(--s2);border:1px solid var(--border2);border-radius:12px;padding:14px;">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--sub);margin-bottom:10px;">Default Paycheck Amount</div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input id="defaultPayInput" type="number" inputmode="decimal" placeholder="2714.20" min="0" step="0.01"
+          style="flex:1;background:var(--s1);border:1px solid var(--border2);border-radius:10px;padding:10px 12px;font-family:var(--mono);font-size:16px;color:var(--text);outline:none;">
+        <button onclick="applyDefaultPay()"
+          style="background:var(--green);color:#0a0a0a;border:none;border-radius:10px;padding:10px 16px;font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;">
+          Apply All
+        </button>
+      </div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--sub2);margin-top:8px;">Tap a row to override individual periods</div>
     </div>
   </div>
-  <div style="padding:12px 16px;" id="scheduleBody"></div>
+
+  <!-- COLUMN HEADERS -->
+  <div style="display:flex;padding:6px 16px 4px;gap:0;">
+    <div style="font-family:var(--mono);font-size:9px;color:var(--sub2);text-transform:uppercase;letter-spacing:0.06em;flex:1;">Date</div>
+    <div style="font-family:var(--mono);font-size:9px;color:var(--sub2);text-transform:uppercase;letter-spacing:0.06em;width:68px;text-align:right;">Pay</div>
+    <div style="font-family:var(--mono);font-size:9px;color:var(--sub2);text-transform:uppercase;letter-spacing:0.06em;width:68px;text-align:right;">Owed</div>
+    <div style="font-family:var(--mono);font-size:9px;color:var(--sub2);text-transform:uppercase;letter-spacing:0.06em;width:72px;text-align:right;">Standing</div>
+  </div>
+
+  <div style="padding:0 16px 16px;" id="scheduleBody"></div>
+</div>
+
+<!-- PERIOD OVERRIDE SHEET -->
+<div class="sheet" id="sheetPeriodOverride">
+  <div class="handle"></div>
+  <div class="sheet-hdr">
+    <div class="sheet-title" id="overrideSheetTitle">Override Period</div>
+    <div class="sheet-delete vis" id="overrideClearBtn" onclick="clearPeriodOverride()">Reset</div>
+  </div>
+  <div style="padding:0 18px;margin-bottom:14px;">
+    <div style="font-family:var(--mono);font-size:11px;color:var(--sub);line-height:1.6;" id="overrideSheetSub">Enter a custom paycheck amount for this period.</div>
+  </div>
+  <input class="amt-inp" id="overrideAmt" type="number" inputmode="decimal" placeholder="0.00" min="0" step="0.01">
+  <button class="save-btn sg" onclick="savePeriodOverride()">Save Override</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE: ESSENTIAL & EMERGENCY FUND
+══════════════════════════════════════ -->
+<div class="page" id="page-ef">
+  <div class="hdr">
+    <div class="hdr-row">
+      <div class="hdr-left">
+        <h1>Essential & EF</h1>
+        <div class="period">Emergency fund tracker</div>
+      </div>
+      <div style="font-size:22px;cursor:pointer;padding-top:4px;" onclick="navTo(prevPage||'expense')">←</div>
+    </div>
+  </div>
+
+  <!-- EF BALANCE -->
+  <div class="standings-wrap" style="cursor:pointer;" onclick="openEFSheet()">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+      <div>
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--sub);margin-bottom:6px;">EF Balance</div>
+        <div style="font-family:var(--mono);font-size:28px;font-weight:500;letter-spacing:-0.5px;color:var(--green);" id="efBalanceDisplay">$9,130.80</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--sub);margin-bottom:6px;">Coverage</div>
+        <div style="font-family:var(--mono);font-size:28px;font-weight:500;color:var(--yellow);" id="efMonthsDisplay">2.61 mo</div>
+      </div>
+    </div>
+    <div style="font-family:var(--mono);font-size:9px;color:var(--sub2);text-align:center;">tap to update balance</div>
+  </div>
+
+  <!-- EF MILESTONES -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-head-left"><div class="sec-dot" style="background:var(--green)"></div><span class="sec-label">Milestones</span></div>
+      <span class="sec-right" id="efNextLabel">Next: 3 mo</span>
+    </div>
+    <div class="sec-body" id="efMilestonesBody"></div>
+  </div>
+
+  <!-- ESSENTIAL BY CATEGORY -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-head-left"><div class="sec-dot" style="background:var(--blue)"></div><span class="sec-label">By Category</span></div>
+    </div>
+    <div class="sec-body" id="efCategoryBody"></div>
+  </div>
+
+</div>
+
+<!-- PERIOD ADJUSTMENT SHEET -->
+<div class="sheet" id="sheetPeriodAdj">
+  <div class="handle"></div>
+  <div class="sheet-hdr">
+    <div class="sheet-title" id="periodAdjTitle">Add Adjustment</div>
+    <div class="sheet-delete" id="periodAdjDelete" onclick="deletePeriodAdj()">Delete</div>
+  </div>
+
+  <div class="field">
+    <div class="field-lbl">Label</div>
+    <input class="inp" id="periodAdjLabel" type="text" placeholder="e.g. Bonus, extra bill, refund…" autocomplete="off">
+  </div>
+
+  <div class="sign-row">
+    <button class="sign-btn sp" id="periodAdjPos" onclick="setPeriodAdjSign(1)">+ Adds to standing</button>
+    <button class="sign-btn"    id="periodAdjNeg" onclick="setPeriodAdjSign(-1)">− Reduces standing</button>
+  </div>
+
+  <input class="amt-inp" id="periodAdjAmt" type="number" inputmode="decimal" placeholder="0.00" min="0" step="0.01">
+  <button class="save-btn sy" id="periodAdjSave" onclick="savePeriodAdj()">Save Adjustment</button>
 </div>
 
 <!-- FAB -->
@@ -440,6 +957,68 @@ body {
   <button class="save-btn si" id="extraSaveBtn" onclick="saveExtra()">Save Income</button>
 </div>
 
+<!-- BILL EDIT SHEET -->
+<div class="sheet" id="sheetBill">
+  <div class="handle"></div>
+  <div class="sheet-hdr">
+    <div class="sheet-title" id="billSheetTitle">Edit Bill</div>
+    <div class="sheet-delete" id="billDeleteBtn" onclick="deleteBill()">Delete</div>
+  </div>
+
+  <div class="field">
+    <div class="field-lbl">Name</div>
+    <input class="inp" id="billName" type="text" placeholder="e.g. Mortgage" autocomplete="off">
+  </div>
+  <div class="field">
+    <div class="field-lbl">Company</div>
+    <input class="inp" id="billCompany" type="text" placeholder="e.g. Caliber/Newrez" autocomplete="off">
+  </div>
+  <div class="field">
+    <div class="field-lbl">Category</div>
+    <input class="inp" id="billCategory" type="text" placeholder="e.g. House, Utilities, Personal" autocomplete="off">
+  </div>
+  <div style="display:flex;gap:10px;padding:0 18px;margin-bottom:14px;">
+    <div style="flex:1;">
+      <div class="field-lbl" style="font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--sub);margin-bottom:6px;">Amount</div>
+      <input class="inp" id="billAmt" type="number" inputmode="decimal" placeholder="0.00" min="0" step="0.01">
+    </div>
+    <div style="flex:1;">
+      <div class="field-lbl" style="font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--sub);margin-bottom:6px;">Due Day</div>
+      <input class="inp" id="billDueDay" type="number" inputmode="numeric" placeholder="1-28" min="1" max="28">
+    </div>
+  </div>
+
+  <div style="padding:0 18px;margin-bottom:6px;">
+    <div class="field-lbl" style="font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--sub);margin-bottom:8px;">Pay Method</div>
+    <div style="display:flex;gap:6px;">
+      <button class="t-btn" id="mSAV" onclick="setBillMethod('SAV')">Savings</button>
+      <button class="t-btn" id="mCHK" onclick="setBillMethod('CHK')">Checking</button>
+      <button class="t-btn" id="mCC1" onclick="setBillMethod('CC1')">CC1</button>
+      <button class="t-btn" id="mCC2" onclick="setBillMethod('CC2')">CC2</button>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:10px;padding:0 18px;margin:14px 0;">
+    <button class="sign-btn" id="billAutopay" onclick="toggleBillAutopay()" style="flex:1;">AutoPay: Off</button>
+    <button class="sign-btn" id="billEssential" onclick="toggleBillEssential()" style="flex:1;">Essential: No</button>
+  </div>
+
+  <button class="save-btn sg" id="billSaveBtn" onclick="saveBillEdit()">Save Bill</button>
+</div>
+
+<!-- EF BALANCE SHEET -->
+<div class="sheet" id="sheetEF">
+  <div class="handle"></div>
+  <div class="sheet-hdr">
+    <div class="sheet-title">Emergency Fund Balance</div>
+  </div>
+  <div style="padding:0 18px;margin-bottom:14px;">
+    <div style="font-family:var(--mono);font-size:11px;color:var(--sub);line-height:1.6;">Enter your current Thrivent Money Market / EF balance.</div>
+  </div>
+  <input class="amt-inp" id="efAmt" type="number" inputmode="decimal" placeholder="0.00" min="0" step="0.01">
+  <button class="save-btn sg" onclick="saveEFBalance()">Update Balance</button>
+</div>
+
 <!-- MORE TRAY -->
 <div class="overlay" id="moreOverlay" onclick="closeMore()" style="z-index:130;"></div>
 <div class="more-tray" id="moreTray">
@@ -447,6 +1026,11 @@ body {
   <div class="more-item" onclick="goToSchedule()">
     <span class="more-icon">📅</span>
     <div class="more-info"><div class="more-label">Paycheck Schedule</div><div class="more-sub">Pay dates, amounts, obligations</div></div>
+    <span class="more-arrow">›</span>
+  </div>
+  <div class="more-item" onclick="goToEF()">
+    <span class="more-icon">🛡️</span>
+    <div class="more-info"><div class="more-label">Essential & Emergency Fund</div><div class="more-sub">EF balance, milestones, category breakdown</div></div>
     <span class="more-arrow">›</span>
   </div>
   <div class="more-item" onclick="showToast('Settings coming soon'); closeMore()">
@@ -475,8 +1059,8 @@ body {
 <!-- NAV -->
 <nav class="nav">
   <div class="ni" id="nav-budget" onclick="navTo('budget')"><div class="ni-icon">📊</div><div class="ni-lbl">Budget</div></div>
-  <div class="ni on" id="nav-expense" onclick="navTo('expense')"><div class="ni-icon">📋</div><div class="ni-lbl">Expense</div></div>
-  <div class="ni" id="nav-monthly" onclick="navTo('monthly')"><div class="ni-icon">🏠</div><div class="ni-lbl">Monthly</div></div>
+  <div class="ni on" id="nav-expense" onclick="navTo('expense')"><div class="ni-icon">📋</div><div class="ni-lbl">Plan</div></div>
+  <div class="ni" id="nav-monthly" onclick="navTo('monthly')"><div class="ni-icon">🏠</div><div class="ni-lbl">Costs</div></div>
   <div class="ni" id="nav-goals" onclick="navTo('goals')"><div class="ni-icon">🎯</div><div class="ni-lbl">Goals</div></div>
   <div class="ni" id="nav-more" onclick="openMore()"><div class="ni-icon">⋯</div><div class="ni-lbl">More</div></div>
 </nav>
@@ -489,24 +1073,33 @@ body {
 const PAYCHECK = 2714.20;
 
 // All bills — dueDay is day of month
-const ALL_BILLS = [
-  { id:'b1',  name:'Mortgage',           company:'Caliber/Newrez',      amt:1800.00, dueDay:1,  method:'SAV', essential:true  },
-  { id:'b2',  name:'Gas',                company:'Centerpoint',          amt:100.00,  dueDay:1,  method:'SAV', essential:true  },
-  { id:'b3',  name:'Car',                company:'Capital One',          amt:400.00,  dueDay:3,  method:'SAV', essential:true  },
-  { id:'b4',  name:'Electric',           company:'Duke',                 amt:80.00,   dueDay:7,  method:'CHK', essential:true  },
-  { id:'b5',  name:'Trash',              company:'Waste Management',     amt:32.92,   dueDay:7,  method:'SAV', essential:true  },
-  { id:'b6',  name:'House/Car Insurance',company:'State Farm',           amt:220.00,  dueDay:7,  method:'CC1', essential:true  },
-  { id:'b7',  name:'Student Loans',      company:'NelNet',               amt:575.46,  dueDay:12, method:'SAV', essential:true  },
-  { id:'b8',  name:'Roth IRA',           company:'Thrivent',             amt:650.00,  dueDay:15, method:'CHK', essential:false },
-  { id:'b9',  name:'Planet Fitness',     company:'Planet Fitness',       amt:15.00,   dueDay:17, method:'CHK', essential:false },
-  { id:'b10', name:'PP Food',            company:"Hill's",               amt:90.00,   dueDay:17, method:'CC1', essential:true  },
-  { id:'b11', name:'Water/Sewer',        company:'Town of Brownsburg',   amt:60.00,   dueDay:18, method:'CC1', essential:true  },
-  { id:'b12', name:'Phone Storage',      company:'Apple',                amt:9.99,    dueDay:21, method:'CC1', essential:false },
-  { id:'b13', name:'The Athletic',       company:'The Athletic',         amt:7.99,    dueDay:21, method:'CHK', essential:false },
-  { id:'b14', name:'YTTV + Phone',       company:'Youtube',              amt:88.00,   dueDay:27, method:'CHK', essential:false },
-  { id:'b15', name:'WiFi',               company:"AT&T",                 amt:85.00,   dueDay:27, method:'CC1', essential:true  },
-  { id:'b16', name:'Netflix',            company:'Netflix',              amt:15.49,   dueDay:28, method:'CC1', essential:false },
+const DEFAULT_BILLS = [
+  { id:'b1',  name:'Mortgage',           company:'Caliber/Newrez',    category:'House',          amt:1800.00, dueDay:1,  method:'SAV', autopay:false, essential:true  },
+  { id:'b2',  name:'Gas',                company:'Centerpoint',       category:'Utilities',       amt:100.00,  dueDay:1,  method:'SAV', autopay:true,  essential:true  },
+  { id:'b3',  name:'Car',                company:'Capital One',       category:'Car',             amt:400.00,  dueDay:3,  method:'SAV', autopay:false, essential:true  },
+  { id:'b4',  name:'Electric',           company:'Duke',              category:'Utilities',       amt:80.00,   dueDay:7,  method:'CHK', autopay:true,  essential:true  },
+  { id:'b5',  name:'Trash',              company:'Waste Management',  category:'Utilities',       amt:32.92,   dueDay:7,  method:'SAV', autopay:true,  essential:true  },
+  { id:'b6',  name:'House/Car Insurance',company:'State Farm',        category:'House',           amt:220.00,  dueDay:7,  method:'CC1', autopay:true,  essential:true  },
+  { id:'b7',  name:'Student Loans',      company:'NelNet',            category:'Student Loans',   amt:575.46,  dueDay:12, method:'SAV', autopay:true,  essential:true  },
+  { id:'b8',  name:'Roth IRA',           company:'Thrivent',          category:'Personal',        amt:650.00,  dueDay:15, method:'CHK', autopay:false, essential:false },
+  { id:'b9',  name:'Planet Fitness',     company:'Planet Fitness',    category:'Personal',        amt:15.00,   dueDay:17, method:'CHK', autopay:true,  essential:false },
+  { id:'b10', name:'PP Food',            company:"Hill's",            category:'Pups',            amt:90.00,   dueDay:17, method:'CC1', autopay:true,  essential:true  },
+  { id:'b11', name:'Water/Sewer',        company:'Town of Brownsburg',category:'Utilities',       amt:60.00,   dueDay:18, method:'CC1', autopay:true,  essential:true  },
+  { id:'b12', name:'Phone Storage',      company:'Apple',             category:'Entertainment',   amt:9.99,    dueDay:21, method:'CC1', autopay:true,  essential:false },
+  { id:'b13', name:'The Athletic',       company:'The Athletic',      category:'Entertainment',   amt:7.99,    dueDay:21, method:'CHK', autopay:true,  essential:false },
+  { id:'b14', name:'YTTV + Phone',       company:'Youtube',           category:'Entertainment',   amt:88.00,   dueDay:27, method:'CHK', autopay:true,  essential:false },
+  { id:'b15', name:'WiFi',               company:"AT&T",              category:'Utilities',       amt:85.00,   dueDay:27, method:'CC1', autopay:true,  essential:true  },
+  { id:'b16', name:'Netflix',            company:'Netflix',           category:'Entertainment',   amt:15.49,   dueDay:28, method:'CC1', autopay:true,  essential:false },
 ];
+
+function getBills() {
+  const raw = localStorage.getItem('mww_bills');
+  return raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_BILLS));
+}
+function saveBills(bills) {
+  localStorage.setItem('mww_bills', JSON.stringify(bills));
+}
+let ALL_BILLS = getBills();
 
 // Pay schedule (Fridays)
 const PAY_DATES = [
@@ -572,6 +1165,8 @@ let currentPeriodIdx = getCurrentPeriodIdx();
 let bankBalance = null;  // null = not set, uses paycheck math
 let billsPaid = {};      // { billId: true }
 let extraItems = [];
+let shortAdjs  = [];
+let longAdjs   = [];
 let extraEditIdx = null;
 let selType = 'income', selSign = 1;
 let activePreset = null, pSelSign = -1;
@@ -592,7 +1187,7 @@ const presetSigns = { cc1:-1, cc2:-1, upi:1, oth:1 };
 // ══════════════════════════════════════
 function saveState() {
   const key = 'mww_period_' + currentPeriodIdx;
-  localStorage.setItem(key, JSON.stringify({ billsPaid, extraItems, presets, presetSigns, bankBalance }));
+  localStorage.setItem(key, JSON.stringify({ billsPaid, extraItems, presets, presetSigns, bankBalance, shortAdjs, longAdjs }));
 }
 function loadState() {
   const key = 'mww_period_' + currentPeriodIdx;
@@ -602,12 +1197,16 @@ function loadState() {
     billsPaid   = d.billsPaid   || {};
     extraItems  = d.extraItems  || [];
     bankBalance = d.bankBalance !== undefined ? d.bankBalance : null;
+    shortAdjs   = d.shortAdjs   || [];
+    longAdjs    = d.longAdjs    || [];
     Object.assign(presets,     d.presets     || {});
     Object.assign(presetSigns, d.presetSigns || {});
   } else {
     billsPaid   = {};
     extraItems  = [];
     bankBalance = null;
+    shortAdjs   = [];
+    longAdjs    = [];
     Object.keys(presets).forEach(k => { presets[k] = 0; presetSigns[k] = presetCfg[k].defaultSign; });
   }
 }
@@ -926,8 +1525,14 @@ function navTo(page) {
   document.getElementById('page-'+page).classList.add('active');
   const navEl = document.getElementById('nav-'+page);
   if (navEl) navEl.classList.add('on');
-  // show/hide FAB — only on expense page
-  document.getElementById('fab').classList.toggle('hidden', page !== 'expense');
+  // FAB visible on expense and monthly pages
+  document.getElementById('fab').classList.toggle('hidden', page !== 'expense' && page !== 'monthly');
+  // Update FAB action based on page
+  document.getElementById('fab').onclick = page === 'monthly'
+    ? () => openBillEdit(null)
+    : () => openExtra(null);
+  if (page === 'monthly') renderMonthlyPage();
+  if (page === 'budget') { loadBudget(); renderBudgetPage(); }
   prevPage = page;
   window.scrollTo(0,0);
 }
@@ -948,27 +1553,87 @@ function renderSchedule() {
   const body = document.getElementById('scheduleBody');
   body.innerHTML = '';
   const now = new Date();
+
+  // Load overrides and default
+  const overrides = JSON.parse(localStorage.getItem('mww_pay_overrides') || '{}');
+  const defaultPay = parseFloat(localStorage.getItem('mww_default_pay') || PAYCHECK);
+
+  // Set default input placeholder
+  document.getElementById('defaultPayInput').value = defaultPay;
+  document.getElementById('schedSubtitle').textContent = '$' + defaultPay.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' · every 2 weeks';
+
   PAY_DATES.forEach((date, i) => {
     if (i >= PAY_DATES.length - 1) return;
-    const next  = PAY_DATES[i+1];
-    const end   = new Date(next.getTime() - 86400000);
-    const isCurrent = now >= date && now <= end;
-    const isPast    = now > end;
-    const bills     = getBillsForPeriod(date, next);
-    const owed      = totalBills(bills);
-    const isExtra   = EXTRA_PAY.includes(date.toISOString().split('T')[0]);
+    const next     = PAY_DATES[i+1];
+    const end      = new Date(next.getTime() - 86400000);
+    const isCurrent= now >= date && now <= end;
+    const isPast   = now > end;
+    const bills    = getBillsForPeriod(date, next);
+    const owed     = totalBills(bills);
+    const isExtra  = EXTRA_PAY.includes(date.toISOString().split('T')[0]);
+    const dateKey  = date.toISOString().split('T')[0];
+    const pay      = overrides[dateKey] !== undefined ? overrides[dateKey] : defaultPay;
+
+    const standing = pay - owed;
+    const standingColor = standing > 500 ? 'var(--green)' : standing > 0 ? 'var(--yellow)' : 'var(--red)';
     const opts = {month:'short', day:'numeric'};
+
     const el = document.createElement('div');
-    el.className = 'pay-row' + (isCurrent ? ' current-period' : '') + (isPast ? ' past' : '');
-    el.style.opacity = isPast ? '0.4' : '1';
+    el.className = 'pay-row' + (isCurrent ? ' current-period' : '');
+    el.style.opacity = isPast ? '0.38' : '1';
+    el.style.cursor = 'pointer';
+    el.onclick = () => openPeriodOverride(dateKey, date, pay, defaultPay);
     el.innerHTML = `
-      <div class="pay-date">${date.toLocaleDateString('en-US',opts)}${isCurrent ? '' : ''}${isExtra ? ' 🌟' : ''}</div>
-      <div class="pay-amt">+${fmtD(PAYCHECK)}</div>
-      <div class="pay-owed">-${fmtD(owed)}</div>
-      ${isCurrent ? '<span class="pay-badge">NOW</span>' : ''}
+      <div class="pay-date" style="font-size:11px;">
+        ${date.toLocaleDateString('en-US',opts)}
+        ${isExtra ? ' 🌟' : ''}
+        ${isCurrent ? '<span class="pay-badge" style="margin-left:4px;">NOW</span>' : ''}
+        ${overrides[dateKey] !== undefined ? '<span style="font-family:var(--mono);font-size:8px;color:var(--yellow);margin-left:4px;">✎</span>' : ''}
+      </div>
+      <div class="pay-amt" style="font-size:11px;">+${fmt(pay)}</div>
+      <div class="pay-owed" style="font-size:11px;">-${fmt(owed)}</div>
+      <div style="font-family:var(--mono);font-size:11px;width:72px;text-align:right;color:${standingColor};">${isPast ? '—' : fmt(standing)}</div>
     `;
     body.appendChild(el);
   });
+}
+
+let overrideDateKey = null;
+function openPeriodOverride(dateKey, date, currentPay, defaultPay) {
+  overrideDateKey = dateKey;
+  const opts = {month:'short', day:'numeric', year:'numeric'};
+  document.getElementById('overrideSheetTitle').textContent = date.toLocaleDateString('en-US', opts);
+  document.getElementById('overrideSheetSub').textContent = 'Default: $' + defaultPay.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' · Enter a custom amount to override.';
+  document.getElementById('overrideAmt').value = currentPay.toFixed(2);
+  const overrides = JSON.parse(localStorage.getItem('mww_pay_overrides') || '{}');
+  document.getElementById('overrideClearBtn').style.display = overrides[dateKey] !== undefined ? 'block' : 'none';
+  openSheetEl('sheetPeriodOverride');
+  setTimeout(() => document.getElementById('overrideAmt').focus(), 340);
+}
+function savePeriodOverride() {
+  const amt = parseFloat(document.getElementById('overrideAmt').value);
+  if (isNaN(amt) || amt < 0) { showToast('Enter a valid amount'); return; }
+  const overrides = JSON.parse(localStorage.getItem('mww_pay_overrides') || '{}');
+  overrides[overrideDateKey] = amt;
+  localStorage.setItem('mww_pay_overrides', JSON.stringify(overrides));
+  closeSheet();
+  renderSchedule();
+  showToast('Override saved');
+}
+function clearPeriodOverride() {
+  const overrides = JSON.parse(localStorage.getItem('mww_pay_overrides') || '{}');
+  delete overrides[overrideDateKey];
+  localStorage.setItem('mww_pay_overrides', JSON.stringify(overrides));
+  closeSheet();
+  renderSchedule();
+  showToast('Reset to default');
+}
+function applyDefaultPay() {
+  const amt = parseFloat(document.getElementById('defaultPayInput').value);
+  if (isNaN(amt) || amt <= 0) { showToast('Enter a valid amount'); return; }
+  localStorage.setItem('mww_default_pay', amt.toString());
+  renderSchedule();
+  showToast('Applied to all periods');
 }
 
 // ══════════════════════════════════════
@@ -1019,12 +1684,925 @@ function clearBalance() {
 }
 
 // ══════════════════════════════════════
+// MONTHLY FIXED PAGE
+// ══════════════════════════════════════
+function renderMonthlyPage() {
+  const bills = ALL_BILLS;
+
+  // Split into week 1-2 (due day 1-14) and week 3-4 (due day 15-31)
+  const w12 = bills.filter(b => b.dueDay <= 14);
+  const w34 = bills.filter(b => b.dueDay > 14);
+
+  const w12Total = w12.reduce((s,b) => s+b.amt, 0);
+  const w34Total = w34.reduce((s,b) => s+b.amt, 0);
+  const grandTotal = bills.reduce((s,b) => s+b.amt, 0);
+
+  document.getElementById('week12Total').textContent = fmtD(w12Total);
+  document.getElementById('week34Total').textContent = fmtD(w34Total);
+  document.getElementById('monthlyTotals').textContent = 'Total: ' + fmtD(grandTotal) + ' / mo';
+
+  renderBillGroup('week12Body', w12);
+  renderBillGroup('week34Body', w34);
+  renderMonthlySummary(bills, grandTotal, w12, w34);
+}
+
+function renderBillGroup(bodyId, bills) {
+  const body = document.getElementById(bodyId);
+  body.innerHTML = '';
+  bills.sort((a,b) => a.dueDay - b.dueDay).forEach(bill => {
+    const el = document.createElement('div');
+    el.className = 'bill-reg';
+    el.onclick = () => openBillEdit(bill.id);
+    el.innerHTML = `
+      <div class="bill-reg-info">
+        <div class="bill-reg-name">
+          ${bill.autopay ? '<span class="autopay-dot"></span>' : ''}${bill.name}
+        </div>
+        <div class="bill-reg-sub">${bill.company} · due ${bill.dueDay}${ordinal(bill.dueDay)}</div>
+      </div>
+      <div class="bill-reg-right">
+        <div class="bill-reg-amt">${fmtD(bill.amt)}</div>
+        <div class="bill-reg-tags">
+          <span class="tag ${tagClass(bill.method)}">${bill.method}</span>
+          ${bill.essential ? '<span class="tag" style="background:var(--gdim);color:var(--green);">ESS</span>' : '<span class="tag" style="background:var(--s3);color:var(--sub);">NON</span>'}
+        </div>
+      </div>`;
+    body.appendChild(el);
+  });
+}
+
+function renderMonthlySummary(bills, grandTotal, w12, w34) {
+  const body = document.getElementById('monthlySummaryBody');
+  body.innerHTML = '';
+
+  const savTotal = bills.filter(b=>b.method==='SAV').reduce((s,b)=>s+b.amt,0);
+  const chkTotal = bills.filter(b=>b.method==='CHK').reduce((s,b)=>s+b.amt,0);
+  const cc1Total = bills.filter(b=>b.method==='CC1').reduce((s,b)=>s+b.amt,0);
+  const cc2Total = bills.filter(b=>b.method==='CC2').reduce((s,b)=>s+b.amt,0);
+  const essTotal = bills.filter(b=>b.essential).reduce((s,b)=>s+b.amt,0);
+  const nonTotal = bills.filter(b=>!b.essential).reduce((s,b)=>s+b.amt,0);
+
+  function addGroupHeader(label) {
+    const el = document.createElement('div');
+    el.style.cssText = 'font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--sub2);padding:4px 2px 6px;';
+    el.textContent = label;
+    body.appendChild(el);
+  }
+
+  // Group 1 — By Pay Method
+  addGroupHeader('By Pay Method');
+  [
+    { lbl:'Savings',  val: fmtD(savTotal), color:'var(--blue)'   },
+    { lbl:'Checking', val: fmtD(chkTotal), color:'var(--yellow)' },
+    { lbl:'CC1',      val: fmtD(cc1Total), color:'var(--red)'    },
+    { lbl:'CC2',      val: fmtD(cc2Total), color:'var(--red)'    },
+  ].forEach(r => {
+    const el = document.createElement('div');
+    el.className = 'sum-line';
+    el.innerHTML = `<span class="sum-line-lbl">${r.lbl}</span><span class="sum-line-val" style="color:${r.color};">${r.val}</span>`;
+    body.appendChild(el);
+  });
+
+  // Group 2 — By Week (Savings, Checking, CC1)
+  addGroupHeader('By Week');
+  const methods = ['SAV','CHK','CC1'];
+  const methodLabels = { SAV:'Savings', CHK:'Checking', CC1:'CC1' };
+  const methodColors = { SAV:'var(--blue)', CHK:'var(--yellow)', CC1:'var(--red)' };
+
+  // Group 3 — By Priority (moved after By Week)
+  // (rendered after By Week block below)
+
+  // Column header
+  const hdr = document.createElement('div');
+  hdr.style.cssText = 'display:flex;padding:4px 14px 4px;gap:0;';
+  hdr.innerHTML = `
+    <div style="flex:1;"></div>
+    ${methods.map(m=>`<div style="width:76px;text-align:right;font-family:var(--mono);font-size:9px;color:${methodColors[m]};text-transform:uppercase;letter-spacing:0.06em;">${methodLabels[m]}</div>`).join('')}
+  `;
+  body.appendChild(hdr);
+
+  [['1-2', w12], ['3-4', w34]].forEach(([label, wbills]) => {
+    const el = document.createElement('div');
+    el.className = 'cat-row';
+    el.innerHTML = `
+      <div class="cat-name" style="font-family:var(--mono);font-size:12px;">${label}</div>
+      ${methods.map(m => {
+        const total = wbills.filter(b=>b.method===m).reduce((s,b)=>s+b.amt,0);
+        return `<div style="width:76px;text-align:right;font-family:var(--mono);font-size:12px;color:${total>0?methodColors[m]:'var(--sub2)'};">${total>0?fmtD(total):'—'}</div>`;
+      }).join('')}`;
+    body.appendChild(el);
+  });
+
+  // Group 3 — By Priority
+  addGroupHeader('By Priority');
+  [
+    { lbl:'Essential',     val: fmtD(essTotal), color:'var(--green)' },
+    { lbl:'Non-Essential', val: fmtD(nonTotal), color:'var(--sub)'   },
+  ].forEach(r => {
+    const el = document.createElement('div');
+    el.className = 'sum-line';
+    el.innerHTML = `<span class="sum-line-lbl">${r.lbl}</span><span class="sum-line-val" style="color:${r.color};">${r.val}</span>`;
+    body.appendChild(el);
+  });
+
+  // Monthly total
+  const totalEl = document.createElement('div');
+  totalEl.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--s2);border:1px solid var(--border2);border-radius:10px;margin-top:8px;';
+  totalEl.innerHTML = `<span style="font-size:14px;font-weight:600;">Monthly Total</span><span style="font-family:var(--mono);font-size:15px;font-weight:500;color:var(--text);">${fmtD(grandTotal)}</span>`;
+  body.appendChild(totalEl);
+}
+
+// ══════════════════════════════════════
+// BILL EDIT SHEET
+// ══════════════════════════════════════
+let editingBillId = null;
+let billEditMethod = 'SAV';
+let billEditAutopay = false;
+let billEditEssential = false;
+
+function openBillEdit(id) {
+  const bill = id ? ALL_BILLS.find(b=>b.id===id) : null;
+  editingBillId = id || null;
+
+  document.getElementById('billSheetTitle').textContent = bill ? 'Edit Bill' : 'Add Bill';
+  document.getElementById('billDeleteBtn').classList.toggle('vis', !!bill);
+  document.getElementById('billName').value    = bill ? bill.name    : '';
+  document.getElementById('billCompany').value = bill ? bill.company : '';
+  document.getElementById('billCategory').value= bill ? (bill.category||'') : '';
+  document.getElementById('billAmt').value     = bill ? bill.amt.toFixed(2) : '';
+  document.getElementById('billDueDay').value  = bill ? bill.dueDay : '';
+
+  billEditMethod    = bill ? bill.method    : 'SAV';
+  billEditAutopay   = bill ? bill.autopay   : false;
+  billEditEssential = bill ? bill.essential : false;
+
+  updateBillMethodBtns();
+  updateBillToggleBtns();
+  openSheetEl('sheetBill');
+  setTimeout(() => document.getElementById('billName').focus(), 340);
+}
+
+function setBillMethod(m) {
+  billEditMethod = m;
+  updateBillMethodBtns();
+}
+function updateBillMethodBtns() {
+  ['SAV','CHK','CC1','CC2'].forEach(m => {
+    const btn = document.getElementById('m'+m);
+    const active = m === billEditMethod;
+    if (m==='SAV') btn.className = 't-btn' + (active?' si':'');
+    else if (m==='CHK') btn.className = 't-btn' + (active?' sa':'');
+    else btn.className = 't-btn' + (active?' sd':'');
+  });
+}
+function toggleBillAutopay() {
+  billEditAutopay = !billEditAutopay;
+  updateBillToggleBtns();
+}
+function toggleBillEssential() {
+  billEditEssential = !billEditEssential;
+  updateBillToggleBtns();
+}
+function updateBillToggleBtns() {
+  const apBtn = document.getElementById('billAutopay');
+  apBtn.textContent = 'AutoPay: ' + (billEditAutopay ? 'On' : 'Off');
+  apBtn.className   = 'sign-btn' + (billEditAutopay ? ' sp' : '');
+
+  const esBtn = document.getElementById('billEssential');
+  esBtn.textContent = 'Essential: ' + (billEditEssential ? 'Yes' : 'No');
+  esBtn.className   = 'sign-btn' + (billEditEssential ? ' sp' : '');
+}
+
+function saveBillEdit() {
+  const name    = document.getElementById('billName').value.trim();
+  const company = document.getElementById('billCompany').value.trim();
+  const category= document.getElementById('billCategory').value.trim();
+  const amt     = parseFloat(document.getElementById('billAmt').value);
+  const dueDay  = parseInt(document.getElementById('billDueDay').value);
+
+  if (!name)            { showToast('Enter a name'); return; }
+  if (!amt || amt <= 0) { showToast('Enter an amount'); return; }
+  if (!dueDay || dueDay < 1 || dueDay > 28) { showToast('Enter a valid due day (1-28)'); return; }
+
+  if (editingBillId) {
+    // Edit existing
+    const idx = ALL_BILLS.findIndex(b => b.id === editingBillId);
+    if (idx > -1) {
+      ALL_BILLS[idx] = { ...ALL_BILLS[idx], name, company, category, amt, dueDay, method:billEditMethod, autopay:billEditAutopay, essential:billEditEssential };
+    }
+  } else {
+    // Add new
+    const newId = 'b' + Date.now();
+    ALL_BILLS.push({ id:newId, name, company, category, amt, dueDay, method:billEditMethod, autopay:billEditAutopay, essential:billEditEssential });
+  }
+
+  saveBills(ALL_BILLS);
+  closeSheet();
+  renderMonthlyPage();
+  renderExpensePage(); // ripple to expense planning
+  showToast(editingBillId ? 'Bill updated' : 'Bill added');
+}
+
+function deleteBill() {
+  if (!editingBillId) return;
+  ALL_BILLS = ALL_BILLS.filter(b => b.id !== editingBillId);
+  saveBills(ALL_BILLS);
+  closeSheet();
+  renderMonthlyPage();
+  renderExpensePage();
+  showToast('Bill deleted');
+}
+
+// ══════════════════════════════════════
+// ESSENTIAL & EMERGENCY FUND PAGE
+// ══════════════════════════════════════
+const EF_MILESTONES = [
+  { months: 1, target: 3500  },
+  { months: 2, target: 6900  },
+  { months: 3, target: 10400 },
+  { months: 4, target: 13800 },
+  { months: 5, target: 17300 },
+  { months: 6, target: 20700 },
+];
+
+let efBalance = parseFloat(localStorage.getItem('mww_ef_balance')) || 9130.80;
+
+function saveEFBalance() {
+  const amt = parseFloat(document.getElementById('efAmt').value);
+  if (isNaN(amt) || amt < 0) { showToast('Enter a valid amount'); return; }
+  efBalance = amt;
+  localStorage.setItem('mww_ef_balance', efBalance.toString());
+  closeSheet();
+  renderEFPage();
+  showToast('EF balance updated');
+}
+
+function openEFSheet() {
+  document.getElementById('efAmt').value = efBalance.toFixed(2);
+  openSheetEl('sheetEF');
+  setTimeout(() => document.getElementById('efAmt').focus(), 340);
+}
+
+function goToEF() {
+  closeMore();
+  renderEFPage();
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-ef').classList.add('active');
+  document.getElementById('fab').classList.add('hidden');
+  window.scrollTo(0,0);
+}
+
+function renderEFPage() {
+  const bills = ALL_BILLS;
+  const monthlyTotal = bills.reduce((s,b) => s+b.amt, 0);
+  const months = efBalance / monthlyTotal;
+
+  // Header
+  document.getElementById('efBalanceDisplay').textContent = fmtD(efBalance);
+  document.getElementById('efMonthsDisplay').textContent  = months.toFixed(2) + ' mo';
+
+  // Next milestone label
+  const next = EF_MILESTONES.find(m => m.target > efBalance);
+  document.getElementById('efNextLabel').textContent = next ? 'Next: ' + next.months + ' mo' : 'Goal reached!';
+
+  // Milestones
+  const mBody = document.getElementById('efMilestonesBody');
+  mBody.innerHTML = '';
+  EF_MILESTONES.forEach(m => {
+    const achieved = efBalance >= m.target;
+    const isCurrent = !achieved && (!EF_MILESTONES.find(x => x.target > efBalance && x.months < m.months));
+    const cls = achieved ? 'achieved' : (next && next.months === m.months ? 'current' : 'future');
+    const remaining = m.target - efBalance;
+    const el = document.createElement('div');
+    el.className = 'ef-row ' + cls;
+    el.innerHTML = `
+      <div class="ef-month">${m.months}</div>
+      <div class="ef-label">${m.months} Month${m.months>1?'s':''}</div>
+      <div>
+        <div class="ef-target ${cls}">${fmtD(m.target)}</div>
+        ${!achieved ? '<div style="font-family:var(--mono);font-size:9px;color:var(--sub2);">-' + fmtD(remaining) + '</div>' : ''}
+      </div>
+      <div class="ef-check">${achieved ? '✓' : ''}</div>`;
+    mBody.appendChild(el);
+  });
+
+  // Category breakdown
+  const cBody = document.getElementById('efCategoryBody');
+  cBody.innerHTML = '';
+
+  // Get unique categories
+  const categories = [...new Set(bills.map(b => b.category || 'Other'))].sort();
+  const catData = categories.map(cat => {
+    const catBills = bills.filter(b => (b.category||'Other') === cat);
+    const ess = catBills.filter(b => b.essential).reduce((s,b)=>s+b.amt,0);
+    const non = catBills.filter(b=>!b.essential).reduce((s,b)=>s+b.amt,0);
+    return { cat, ess, non };
+  });
+
+  // Header row
+  const hdr = document.createElement('div');
+  hdr.className = 'cat-row';
+  hdr.style.background = 'var(--s2)';
+  hdr.style.borderColor = 'var(--border2)';
+  hdr.innerHTML = `
+    <div class="cat-name" style="font-size:10px;font-family:var(--mono);color:var(--sub);text-transform:uppercase;letter-spacing:0.08em;">Category</div>
+    <div class="cat-ess" style="color:var(--sub);font-size:10px;">Essential</div>
+    <div class="cat-non" style="color:var(--sub);font-size:10px;">Non</div>`;
+  cBody.appendChild(hdr);
+
+  catData.forEach(row => {
+    const el = document.createElement('div');
+    el.className = 'cat-row';
+    el.innerHTML = `
+      <div class="cat-name">${row.cat}</div>
+      <div class="cat-ess">${row.ess > 0 ? fmtD(row.ess) : '—'}</div>
+      <div class="cat-non">${row.non > 0 ? fmtD(row.non) : '—'}</div>`;
+    cBody.appendChild(el);
+  });
+
+  // Grand total row
+  const essTotal = bills.filter(b=>b.essential).reduce((s,b)=>s+b.amt,0);
+  const nonTotal = bills.filter(b=>!b.essential).reduce((s,b)=>s+b.amt,0);
+  const tot = document.createElement('div');
+  tot.className = 'cat-row';
+  tot.style.cssText = 'background:var(--s2);border-color:var(--border2);margin-top:4px;';
+  tot.innerHTML = `
+    <div class="cat-name" style="font-weight:600;">Grand Total</div>
+    <div class="cat-ess" style="color:var(--text);font-weight:500;">${fmtD(essTotal)}</div>
+    <div class="cat-non" style="color:var(--text);font-weight:500;">${fmtD(nonTotal)}</div>`;
+  cBody.appendChild(tot);
+}
+
+// ══════════════════════════════════════
+// SHORT / LONG PERIOD ADJUSTMENTS
+// ══════════════════════════════════════
+let periodAdjSign    = 1;
+let periodAdjPeriod  = 'short'; // 'short' or 'long'
+let periodAdjEditIdx = null;
+
+// stored in state per period
+// shortAdjs: [{label, signed}]
+// longAdjs:  [{label, signed}]
+
+function shortAdjTotal() {
+  return (shortAdjs||[]).reduce((s,a) => s+a.signed, 0);
+}
+function longAdjTotal() {
+  return (longAdjs||[]).reduce((s,a) => s+a.signed, 0);
+}
+
+function openPeriodAdj(period, idx) {
+  periodAdjPeriod  = period;
+  periodAdjEditIdx = idx;
+  const isEdit = idx !== null;
+  const adjs   = period === 'short' ? shortAdjs : longAdjs;
+
+  document.getElementById('periodAdjTitle').textContent = isEdit ? 'Edit Adjustment' : 'Add Adjustment';
+  document.getElementById('periodAdjDelete').classList.toggle('vis', isEdit);
+
+  if (isEdit && adjs[idx]) {
+    document.getElementById('periodAdjLabel').value = adjs[idx].label;
+    document.getElementById('periodAdjAmt').value   = Math.abs(adjs[idx].signed).toFixed(2);
+    setPeriodAdjSign(adjs[idx].signed >= 0 ? 1 : -1);
+  } else {
+    document.getElementById('periodAdjLabel').value = '';
+    document.getElementById('periodAdjAmt').value   = '';
+    setPeriodAdjSign(1);
+  }
+
+  openSheetEl('sheetPeriodAdj');
+  setTimeout(() => document.getElementById('periodAdjLabel').focus(), 340);
+}
+
+function setPeriodAdjSign(s) {
+  periodAdjSign = s;
+  document.getElementById('periodAdjPos').className = 'sign-btn' + (s === 1  ? ' sp' : '');
+  document.getElementById('periodAdjNeg').className = 'sign-btn' + (s === -1 ? ' sn' : '');
+}
+
+function savePeriodAdj() {
+  const label  = document.getElementById('periodAdjLabel').value.trim() || 'Adjustment';
+  const amt    = parseFloat(document.getElementById('periodAdjAmt').value);
+  if (!amt || amt <= 0) { showToast('Enter an amount'); return; }
+  const signed = periodAdjSign * amt;
+  const adjs   = periodAdjPeriod === 'short' ? shortAdjs : longAdjs;
+
+  if (periodAdjEditIdx !== null) {
+    adjs[periodAdjEditIdx] = { label, signed };
+    showToast('Updated');
+  } else {
+    adjs.push({ label, signed });
+    showToast(signed >= 0 ? '+ Added to standing' : '− Reduced standing');
+  }
+
+  saveState();
+  renderPeriodAdjs();
+  renderExpensePage();
+  closeSheet();
+}
+
+function deletePeriodAdj() {
+  const adjs = periodAdjPeriod === 'short' ? shortAdjs : longAdjs;
+  if (periodAdjEditIdx === null) return;
+  adjs.splice(periodAdjEditIdx, 1);
+  saveState();
+  renderPeriodAdjs();
+  renderExpensePage();
+  closeSheet();
+  showToast('Deleted');
+}
+
+function renderPeriodAdjs() {
+  ['short','long'].forEach(period => {
+    const adjs = period === 'short' ? shortAdjs : longAdjs;
+    const body = document.getElementById(period + 'AdjBody');
+    if (!body) return;
+    body.innerHTML = '';
+    if (adjs.length === 0) return;
+
+    // small divider label
+    const divider = document.createElement('div');
+    divider.className = 'adj-divider show';
+    divider.style.paddingTop = '0';
+    divider.textContent = 'Planned Adjustments';
+    body.appendChild(divider);
+
+    adjs.forEach((adj, i) => {
+      const sign   = adj.signed >= 0 ? '+' : '-';
+      const abs    = Math.abs(adj.signed).toFixed(2);
+      const color  = adj.signed >= 0 ? 'var(--green)' : 'var(--red)';
+      const el     = document.createElement('div');
+      el.className = 'adj-item';
+      el.onclick   = () => openPeriodAdj(period, i);
+      el.innerHTML = `
+        <div class="adj-pip" style="background:${color};"></div>
+        <div class="adj-info">
+          <div class="adj-name">${adj.label}</div>
+          <div class="adj-type-lbl">Planned · ${period === 'short' ? 'Short Term' : 'Long Term'}</div>
+        </div>
+        <div class="adj-r">
+          <div class="adj-amt" style="color:${color};">${sign}$${abs}</div>
+          <div class="adj-edit-hint">edit</div>
+        </div>`;
+      body.appendChild(el);
+    });
+  });
+}
+
+// ══════════════════════════════════════
+// BUDGET PAGE
+// ══════════════════════════════════════
+const BUDGET_ESSENTIAL = [
+  { group:'House', items:[
+    { id:'mortgage',    lbl:'Mortgage + Escrow (Taxes, Home Ins)', val:2020 },
+    { id:'proptax',     lbl:'Property Taxes',    val:0 },
+    { id:'homemaint',   lbl:'Home Maintenance',  val:0 },
+    { id:'homeins',     lbl:"Homeowner's Insurance", val:0 },
+    { id:'utilities',   lbl:'Utilities (Electric, Gas, Water, etc.)', val:275 },
+    { id:'internet',    lbl:'Internet/Wi-Fi',    val:85 },
+  ]},
+  { group:'Health Care/Insurance', items:[
+    { id:'healthins',   lbl:'Health Insurance',  val:0 },
+    { id:'lifeins',     lbl:'Life Insurance',     val:50 },
+    { id:'disabilityinc',lbl:'Disability Income', val:0 },
+    { id:'ltcare',      lbl:'Long-term Care',     val:0 },
+    { id:'medicaldrugs',lbl:'Medical/Dental/Drugs',val:0 },
+  ]},
+  { group:'Transportation', items:[
+    { id:'carpayment',  lbl:'Car Payment',        val:400 },
+    { id:'autoins',     lbl:'Auto Insurance',     val:100 },
+    { id:'gastrans',    lbl:'Gas',                val:50 },
+    { id:'carmaint',    lbl:'Maintenance',        val:0 },
+    { id:'othertrans',  lbl:'Other',              val:0 },
+  ]},
+  { group:'Personal Loans', items:[
+    { id:'studentloans',lbl:'Student Loans',      val:575.46 },
+    { id:'ccdebt',      lbl:'Credit Card Debt',   val:0 },
+  ]},
+  { group:'Household/Personal', items:[
+    { id:'groceries',   lbl:'Groceries',          val:100 },
+    { id:'personalcare',lbl:'Personal Care',      val:50 },
+    { id:'profduties',  lbl:'Professional Dues',  val:0 },
+    { id:'cellphone',   lbl:'Cell Phone',         val:50 },
+    { id:'entsubscriptions',lbl:'Entertainment Subscriptions', val:85 },
+  ]},
+  { group:'Children', items:[
+    { id:'childcare',   lbl:'Child Care',         val:0 },
+    { id:'education',   lbl:'Education',          val:0 },
+  ]},
+  { group:'Pet Care', items:[
+    { id:'dogfood',     lbl:'Dog Food',           val:100 },
+    { id:'vetvisits',   lbl:'Vet Visits/Meds',    val:67 },
+  ]},
+];
+
+const BUDGET_DISC = [
+  { id:'restaurants',  lbl:'Restaurants',              val:150 },
+  { id:'recreation',   lbl:'Recreation',               val:0   },
+  { id:'extracurric',  lbl:'Extracurricular Events',   val:0   },
+  { id:'hobbies',      lbl:'Hobbies',                  val:0   },
+  { id:'vacation',     lbl:'Vacation/Travel',          val:0   },
+  { id:'gifts',        lbl:'Gift/Contributions',       val:80  },
+];
+
+const BUDGET_SAVING = [
+  { id:'efund',        lbl:'Emergency Fund',           val:0   },
+  { id:'college',      lbl:'College Savings',          val:0   },
+  { id:'shortmid',     lbl:'Short/Mid-Term Needs',     val:0   },
+  { id:'retirement',   lbl:'Retirement Contributions', val:650 },
+];
+
+const DEFAULT_FUNDS = [
+  { name:'Emergency Fund',   planned:0, current:0 },
+  { name:'Extra Student Loans', planned:0, current:0 },
+  { name:'Floors',           planned:0, current:0 },
+  { name:'',                 planned:0, current:0 },
+  { name:'',                 planned:0, current:0 },
+  { name:'',                 planned:0, current:0 },
+];
+
+function loadBudget() {
+  const raw = localStorage.getItem('mww_budget');
+  if (raw) {
+    const saved = JSON.parse(raw);
+    // restore essential
+    BUDGET_ESSENTIAL.forEach(grp => grp.items.forEach(item => {
+      if (saved[item.id] !== undefined) item.val = saved[item.id];
+    }));
+    BUDGET_DISC.forEach(item => { if (saved[item.id] !== undefined) item.val = saved[item.id]; });
+    BUDGET_SAVING.forEach(item => { if (saved[item.id] !== undefined) item.val = saved[item.id]; });
+    if (saved.income !== undefined) budgetIncome = saved.income;
+    if (saved.funds) budgetFunds = saved.funds;
+    else budgetFunds = JSON.parse(JSON.stringify(DEFAULT_FUNDS));
+  } else {
+    budgetFunds = JSON.parse(JSON.stringify(DEFAULT_FUNDS));
+  }
+}
+
+let budgetIncome = 5428;
+let budgetFunds  = JSON.parse(JSON.stringify(DEFAULT_FUNDS));
+
+function saveBudget() {
+  const data = { income: budgetIncome, funds: budgetFunds };
+  BUDGET_ESSENTIAL.forEach(grp => grp.items.forEach(i => { data[i.id] = i.val; }));
+  BUDGET_DISC.forEach(i => { data[i.id] = i.val; });
+  BUDGET_SAVING.forEach(i => { data[i.id] = i.val; });
+  localStorage.setItem('mww_budget', JSON.stringify(data));
+}
+
+function renderBudgetPage() {
+  renderBudgetSection('budget-essential-body', BUDGET_ESSENTIAL, true);
+  renderBudgetSection('budget-disc-body', BUDGET_DISC, false);
+  renderBudgetSection('budget-saving-body', BUDGET_SAVING, false);
+  renderBudgetFunds();
+  updateBudgetOutlook();
+  // Set sticky top offset = height of budget sticky header
+  requestAnimationFrame(() => {
+    const sticky = document.getElementById('budgetSticky');
+    if (!sticky) return;
+    const h = sticky.offsetHeight;
+    document.querySelectorAll('.budget-sec-sticky').forEach(el => {
+      el.style.top = h + 'px';
+    });
+    // Also set budget group headers
+    document.querySelectorAll('#page-budget .budget-group-hdr').forEach(el => {
+      el.style.top = h + 'px';
+    });
+  });
+}
+
+function renderBudgetSection(bodyId, data, hasGroups) {
+  const body = document.getElementById(bodyId);
+  if (!body) return;
+  body.innerHTML = '';
+
+  if (hasGroups) {
+    data.forEach(grp => {
+      const ghdr = document.createElement('div');
+      ghdr.className = 'budget-group-hdr';
+      ghdr.textContent = grp.group;
+      body.appendChild(ghdr);
+      grp.items.forEach(item => body.appendChild(makeBudgetRow(item)));
+    });
+  } else {
+    data.forEach(item => body.appendChild(makeBudgetRow(item)));
+  }
+}
+
+function makeBudgetRow(item) {
+  const el = document.createElement('div');
+  el.className = 'budget-row';
+  el.innerHTML = `
+    <div class="budget-row-lbl">${item.lbl}</div>
+    <div class="budget-row-val ${item.val > 0 ? 'has-val' : ''}" id="bv-${item.id}" onclick="editBudgetField('${item.id}')">
+      ${item.val > 0 ? fmtD(item.val) : '—'}
+    </div>`;
+  return el;
+}
+
+function editBudgetField(id) {
+  const el = document.getElementById('bv-' + id);
+  if (!el || el.querySelector('input')) return;
+
+  const item = findBudgetItem(id);
+  if (!item) return;
+
+  el.innerHTML = `<input type="number" inputmode="decimal" value="${item.val || ''}" placeholder="0.00" min="0" step="0.01" autofocus>`;
+  const inp = el.querySelector('input');
+  inp.focus();
+  inp.select();
+
+  function commit() {
+    const val = parseFloat(inp.value) || 0;
+    item.val = val;
+    el.innerHTML = val > 0 ? fmtD(val) : '—';
+    el.className = 'budget-row-val' + (val > 0 ? ' has-val' : '');
+    saveBudget();
+    updateBudgetOutlook();
+  }
+  inp.addEventListener('blur', commit);
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); });
+}
+
+function editBudgetInline(field) {
+  const el = document.getElementById('bv-' + field);
+  if (!el || el.querySelector('input')) return;
+  const current = field === 'income' ? budgetIncome : 0;
+  el.innerHTML = `<input type="number" inputmode="decimal" value="${current}" placeholder="0.00" min="0" step="0.01" autofocus style="font-family:var(--mono);font-size:15px;color:var(--green);background:none;border:none;outline:none;width:90px;text-align:right;">`;
+  const inp = el.querySelector('input');
+  inp.focus(); inp.select();
+  function commit() {
+    budgetIncome = parseFloat(inp.value) || 0;
+    el.textContent = fmt(budgetIncome);
+    saveBudget();
+    updateBudgetOutlook();
+  }
+  inp.addEventListener('blur', commit);
+  inp.addEventListener('keydown', e => { if (e.key==='Enter') inp.blur(); });
+}
+
+function findBudgetItem(id) {
+  for (const grp of BUDGET_ESSENTIAL) {
+    const found = grp.items.find(i => i.id === id);
+    if (found) return found;
+  }
+  return BUDGET_DISC.find(i => i.id === id) || BUDGET_SAVING.find(i => i.id === id);
+}
+
+function updateBudgetOutlook() {
+  const essTotal  = BUDGET_ESSENTIAL.reduce((s,g) => s + g.items.reduce((ss,i) => ss+i.val, 0), 0);
+  const discTotal = BUDGET_DISC.reduce((s,i) => s+i.val, 0);
+  const savTotal  = BUDGET_SAVING.reduce((s,i) => s+i.val, 0);
+  const totalExp  = essTotal + discTotal + savTotal;
+  const surplus   = budgetIncome - totalExp;
+  const inc       = budgetIncome || 1;
+
+  document.getElementById('total-essential').textContent = fmtD(essTotal);
+  document.getElementById('total-disc').textContent      = fmtD(discTotal);
+  document.getElementById('total-saving').textContent    = fmtD(savTotal);
+
+  document.getElementById('outlook-essential').textContent = fmtD(essTotal);
+  document.getElementById('outlook-disc').textContent      = fmtD(discTotal);
+  document.getElementById('outlook-saving').textContent    = fmtD(savTotal);
+  const essP  = Math.round(essTotal/inc*100);
+  const discP = Math.round(discTotal/inc*100);
+  const savP  = Math.round(savTotal/inc*100);
+  document.getElementById('pct-essential').textContent = essP  + '%';
+  document.getElementById('pct-disc').textContent      = discP + '%';
+  document.getElementById('pct-saving').textContent    = savP  + '%';
+
+  const surplusEl = document.getElementById('outlook-surplus');
+  surplusEl.textContent = (surplus >= 0 ? '+' : '') + fmtD(surplus);
+  surplusEl.style.color = surplus >= 0 ? 'var(--green)' : 'var(--red)';
+}
+
+function renderBudgetFunds() {
+  const body = document.getElementById('budget-funds-body');
+  if (!body) return;
+  body.innerHTML = '';
+
+  // Header
+  const hdr = document.createElement('div');
+  hdr.style.cssText = 'display:flex;padding:4px 14px 6px;gap:10px;';
+  hdr.innerHTML = `
+    <div style="width:16px;"></div>
+    <div style="flex:1;font-family:var(--mono);font-size:9px;color:var(--sub2);text-transform:uppercase;letter-spacing:0.06em;">Fund</div>
+    <div style="width:70px;text-align:right;font-family:var(--mono);font-size:9px;color:var(--sub2);text-transform:uppercase;letter-spacing:0.06em;">Planned</div>
+    <div style="width:70px;text-align:right;font-family:var(--mono);font-size:9px;color:var(--sub2);text-transform:uppercase;letter-spacing:0.06em;">Current</div>`;
+  body.appendChild(hdr);
+
+  budgetFunds.forEach((fund, i) => {
+    const el = document.createElement('div');
+    el.className = 'budget-fund-row';
+    el.innerHTML = `
+      <div class="budget-fund-num">${i+1}</div>
+      <input class="budget-fund-name" type="text" placeholder="Fund name…" value="${fund.name}" data-idx="${i}" data-field="name">
+      <div class="budget-fund-planned" id="bfp-${i}" onclick="editFundField(${i},'planned')">${fund.planned > 0 ? fmtD(fund.planned) : '—'}</div>
+      <div class="budget-fund-current" id="bfc-${i}" onclick="editFundField(${i},'current')">${fund.current > 0 ? fmtD(fund.current) : '—'}</div>`;
+    body.appendChild(el);
+
+    el.querySelector('input').addEventListener('blur', e => {
+      budgetFunds[i].name = e.target.value;
+      saveBudget();
+    });
+  });
+}
+
+function editFundField(idx, field) {
+  const elId = field === 'planned' ? 'bfp-' + idx : 'bfc-' + idx;
+  const el = document.getElementById(elId);
+  if (!el || el.querySelector('input')) return;
+  const current = budgetFunds[idx][field];
+  el.innerHTML = `<input type="number" inputmode="decimal" value="${current||''}" placeholder="0.00" min="0" step="0.01" style="background:none;border:none;outline:none;font-family:var(--mono);font-size:12px;color:var(--text);width:60px;text-align:right;">`;
+  const inp = el.querySelector('input');
+  inp.focus(); inp.select();
+  function commit() {
+    budgetFunds[idx][field] = parseFloat(inp.value) || 0;
+    el.innerHTML = budgetFunds[idx][field] > 0 ? fmtD(budgetFunds[idx][field]) : '—';
+    saveBudget();
+  }
+  inp.addEventListener('blur', commit);
+  inp.addEventListener('keydown', e => { if(e.key==='Enter') inp.blur(); });
+}
+
+// ══════════════════════════════════════
+// GOALS
+// ══════════════════════════════════════
+const GOAL_CYCLE = ['', 'green', 'yellow', 'red'];
+const CAT_COLORS = { blue:'var(--blue)', green:'var(--green)', yellow:'var(--yellow)', peach:'#f07850' };
+
+const DEFAULT_GOALS = [
+  { id:'g1',  text:'No Credit Card Debt, Ever',                                          cat:'blue',   tier:1, status:'' },
+  { id:'g2',  text:'Mid-Range Debt Paid On Time (Car, Mortgage, Student Loans, etc.)',   cat:'yellow', tier:1, status:'' },
+  { id:'g3',  text:'3-6 Months Emergency Fund, and Maintain',                            cat:'blue',   tier:1, status:'' },
+  { id:'g4',  text:'Max Out Roth Every Year',                                            cat:'green',  tier:1, status:'' },
+  { id:'g5',  text:'Remove Short Term Debt (0% Int Rate, Payment Plans, Payoff < Year)', cat:'blue',   tier:2, status:'' },
+  { id:'g6',  text:'Student Loan Reduction / Extra Payments, Quickly',                   cat:'yellow', tier:2, status:'' },
+  { id:'g7',  text:'$150+ Extra Towards Mortgage / Month',                               cat:'yellow', tier:2, status:'' },
+  { id:'g8',  text:'HSA Contributions Monthly',                                          cat:'peach',  tier:2, status:'' },
+  { id:'g9',  text:'Investigate Brokerage Accounts',                                     cat:'green',  tier:3, status:'' },
+  { id:'g10', text:'Extra to 401k, Ideally Monthly',                                     cat:'peach',  tier:3, status:'' },
+  { id:'g11', text:'Vacation / Travel / Project Fund',                                   cat:'peach',  tier:3, status:'' },
+  { id:'g12', text:'Save for Future Expenses (House, Car, etc.)',                        cat:'peach',  tier:3, status:'' },
+];
+
+const TIER_CFG = {
+  1: { label:'Tier 1', desc:'Must-Do · Non-Negotiable',       color:'var(--green)'  },
+  2: { label:'Tier 2', desc:'Good to Have · Should be Doable', color:'var(--yellow)' },
+  3: { label:'Tier 3', desc:'Nice to Have · After Tier 1 & 2', color:'var(--red)'    },
+};
+
+let goalsList = [];
+let goalsReorderMode = false;
+let goalEditIdx = null;
+let goalCat = 'blue';
+let dragSrcIdx = null;
+
+function loadGoals() {
+  const raw = localStorage.getItem('mww_goals_v2');
+  goalsList = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_GOALS));
+  renderGoals();
+}
+
+function saveGoalsState() {
+  localStorage.setItem('mww_goals_v2', JSON.stringify(goalsList));
+}
+
+function renderGoals() {
+  const body = document.getElementById('goalListBody');
+  body.innerHTML = '';
+
+  [1, 2, 3].forEach(tier => {
+    const tierGoals = goalsList.filter(g => (g.tier || 1) === tier);
+    if (tierGoals.length === 0) return;
+    const cfg = TIER_CFG[tier];
+
+    // Tier header
+    const hdr = document.createElement('div');
+    hdr.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:12px 2px 6px;';
+    hdr.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:7px;height:7px;border-radius:50%;background:${cfg.color};flex-shrink:0;"></div>
+        <span style="font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--text2);">${cfg.label}</span>
+      </div>
+      <span style="font-family:var(--mono);font-size:9px;color:var(--sub);">${cfg.desc}</span>`;
+    body.appendChild(hdr);
+
+    tierGoals.forEach(goal => {
+      const i = goalsList.indexOf(goal);
+      const el = document.createElement('div');
+      el.className = 'goal-row cat-' + (goal.cat||'blue') + (goalsReorderMode ? ' reorder-mode' : '');
+      el.dataset.idx = i;
+      el.innerHTML = `
+        <div class="goal-drag-handle">☰</div>
+        <div class="goal-status ${goal.status||''}"></div>
+        <div class="goal-info">
+          <div class="goal-num">${i+1}</div>
+          <div class="goal-text">${goal.text}</div>
+        </div>`;
+
+      if (!goalsReorderMode) {
+        let pressTimer;
+        el.addEventListener('touchstart', () => { pressTimer = setTimeout(() => toggleReorder(), 600); }, {passive:true});
+        el.addEventListener('touchend',   () => clearTimeout(pressTimer));
+        el.addEventListener('touchmove',  () => clearTimeout(pressTimer), {passive:true});
+        el.addEventListener('mousedown',  () => { pressTimer = setTimeout(() => toggleReorder(), 600); });
+        el.addEventListener('mouseup',    () => clearTimeout(pressTimer));
+        el.onclick = () => { if (!goalsReorderMode) cycleGoalStatus(i); };
+      } else {
+        el.draggable = true;
+        el.addEventListener('dragstart', e => { dragSrcIdx = i; el.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
+        el.addEventListener('dragend',   () => el.classList.remove('dragging'));
+        el.addEventListener('dragover',  e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; });
+        el.addEventListener('drop',      e => { e.preventDefault(); if (dragSrcIdx !== i) { const moved = goalsList.splice(dragSrcIdx,1)[0]; goalsList.splice(i,0,moved); saveGoalsState(); renderGoals(); } });
+      }
+      body.appendChild(el);
+    });
+  });
+}
+
+function cycleGoalStatus(idx) {
+  const current = GOAL_CYCLE.indexOf(goalsList[idx].status);
+  goalsList[idx].status = GOAL_CYCLE[(current+1) % GOAL_CYCLE.length];
+  saveGoalsState();
+  renderGoals();
+}
+
+function toggleReorder() {
+  goalsReorderMode = !goalsReorderMode;
+  const btn = document.getElementById('reorderBtn');
+  btn.textContent = goalsReorderMode ? 'Done' : 'Reorder';
+  btn.classList.toggle('active', goalsReorderMode);
+  renderGoals();
+}
+
+// Add/edit goal sheet
+function openAddGoal() {
+  goalEditIdx = null;
+  document.getElementById('goalSheetTitle').textContent = 'Add Goal';
+  document.getElementById('goalDeleteBtn').classList.remove('vis');
+  document.getElementById('goalText').value = '';
+  setGoalTier(1);
+  setGoalCat('blue');
+  document.getElementById('goalSaveBtn').textContent = 'Add Goal';
+  openSheetEl('sheetGoal');
+  setTimeout(() => document.getElementById('goalText').focus(), 340);
+}
+
+let goalTier = 1;
+
+function setGoalTier(t) {
+  goalTier = t;
+  [1,2,3].forEach(n => {
+    document.getElementById('gt-'+n).className = 'goal-cat-btn' + (n===t?' selected':'');
+  });
+}
+
+function setGoalCat(cat) {
+  goalCat = cat;
+  ['blue','green','yellow','peach'].forEach(c => {
+    document.getElementById('gc-'+c).className = 'goal-cat-btn' + (c===cat?' selected':'');
+  });
+}
+
+function saveGoal() {
+  const text = document.getElementById('goalText').value.trim();
+  if (!text) { showToast('Enter a goal'); return; }
+  if (goalEditIdx !== null) {
+    goalsList[goalEditIdx].text = text;
+    goalsList[goalEditIdx].cat  = goalCat;
+    goalsList[goalEditIdx].tier = goalTier;
+    showToast('Goal updated');
+  } else {
+    goalsList.push({ id:'g'+Date.now(), text, cat:goalCat, tier:goalTier, status:'' });
+    showToast('Goal added');
+  }
+  saveGoalsState();
+  renderGoals();
+  closeSheet();
+}
+
+function deleteGoal() {
+  if (goalEditIdx === null) return;
+  goalsList.splice(goalEditIdx, 1);
+  saveGoalsState();
+  renderGoals();
+  closeSheet();
+  showToast('Goal deleted');
+}
+
+// ══════════════════════════════════════
 // INIT
 // ══════════════════════════════════════
 loadState();
+loadBudget();
 renderExpensePage();
 renderPresetRows();
 renderExtras();
+renderPeriodAdjs();
+renderMonthlyPage();
+renderBudgetPage();
+loadGoals();
 </script>
 </body>
 </html>
