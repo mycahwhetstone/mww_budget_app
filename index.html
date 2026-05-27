@@ -387,6 +387,20 @@ body {
   color: var(--text); width: 60px; text-align: right;
 }
 
+/* ── SETTINGS / ABOUT ── */
+.about-card {
+  display: flex;
+  gap: 14px;
+  padding: 14px;
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+.about-icon { font-size: 22px; flex-shrink: 0; padding-top: 1px; }
+.about-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.about-desc { font-size: 12px; color: var(--sub); line-height: 1.6; font-family: var(--sans); }
+
 /* ── EXPENSE STICKY HEADER ── */
 .expense-sticky {
   position: sticky;
@@ -838,9 +852,12 @@ body {
     <div class="sheet-delete vis" id="overrideClearBtn" onclick="clearPeriodOverride()">Reset</div>
   </div>
   <div style="padding:0 18px;margin-bottom:14px;">
-    <div style="font-family:var(--mono);font-size:11px;color:var(--sub);line-height:1.6;" id="overrideSheetSub">Enter a custom paycheck amount for this period.</div>
+    <div style="font-family:var(--mono);font-size:11px;color:var(--sub);line-height:1.6;" id="overrideSheetSub">Enter a custom amount for this period.</div>
   </div>
   <input class="amt-inp" id="overrideAmt" type="number" inputmode="decimal" placeholder="0.00" min="0" step="0.01">
+  <div style="display:flex;gap:8px;padding:0 18px;margin-bottom:16px;">
+    <button class="sign-btn" id="lockBtn" onclick="togglePeriodLock()" style="flex:1;">🔓 Unlocked</button>
+  </div>
   <button class="save-btn sg" onclick="savePeriodOverride()">Save Override</button>
 </div>
 
@@ -912,6 +929,99 @@ body {
 
   <input class="amt-inp" id="periodAdjAmt" type="number" inputmode="decimal" placeholder="0.00" min="0" step="0.01">
   <button class="save-btn sy" id="periodAdjSave" onclick="savePeriodAdj()">Save Adjustment</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE: SETTINGS
+══════════════════════════════════════ -->
+<div class="page" id="page-settings">
+  <div class="hdr">
+    <div class="hdr-row">
+      <div class="hdr-left"><h1>Settings</h1><div class="period">Preferences & About</div></div>
+      <div style="font-size:22px;cursor:pointer;padding-top:4px;" onclick="navTo(prevPage||'expense')">←</div>
+    </div>
+  </div>
+
+  <!-- APPEARANCE -->
+  <div class="section">
+    <div class="sec-head sec-head-sticky">
+      <div class="sec-head-left"><div class="sec-dot" style="background:var(--blue)"></div><span class="sec-label">Appearance</span></div>
+    </div>
+    <div class="sec-body">
+
+      <!-- Theme -->
+      <div style="margin-bottom:14px;">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--sub);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Theme</div>
+        <div style="display:flex;gap:8px;">
+          <button class="sign-btn sp" id="themeLight" onclick="setTheme('light')" style="flex:1;">☀️ Light</button>
+          <button class="sign-btn sp" id="themeDark"  onclick="setTheme('dark')"  style="flex:1;">🌙 Dark</button>
+        </div>
+      </div>
+
+      <!-- Text Size -->
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--sub);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Text Size</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="sign-btn" onclick="adjustZoom(-0.05)" style="flex:1;font-size:18px;">A−</button>
+          <div style="font-family:var(--mono);font-size:12px;color:var(--text2);width:50px;text-align:center;" id="zoomLabel">100%</div>
+          <button class="sign-btn" onclick="adjustZoom(0.05)"  style="flex:1;font-size:18px;">A+</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section">
+    <div class="sec-head sec-head-sticky">
+      <div class="sec-head-left"><div class="sec-dot" style="background:var(--green)"></div><span class="sec-label">About</span></div>
+    </div>
+    <div class="sec-body">
+      <div class="about-card">
+        <div class="about-icon">📊</div>
+        <div class="about-info">
+          <div class="about-title">Budget</div>
+          <div class="about-desc">Monthly income overview. Set your expected income, essential, discretionary, and saving targets. Track recommended vs actual spending percentages and manage upcoming savings funds.</div>
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">📋</div>
+        <div class="about-info">
+          <div class="about-title">Expense Planning</div>
+          <div class="about-desc">Your biweekly paycheck tracker. Set your bank balance, check off bills as you pay them, and see your Current, Short, and Long term standings update in real time. Add adjustments for CC payments, upcoming income, or one-off expenses.</div>
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">🏠</div>
+        <div class="about-info">
+          <div class="about-title">Costs</div>
+          <div class="about-desc">Your master bill register. Every bill lives here — name, company, due date, amount, pay method, autopay, and essential status. Edits here automatically update Expense Planning. Includes a summary breakdown by pay method, priority, and week.</div>
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">🎯</div>
+        <div class="about-info">
+          <div class="about-title">Goals</div>
+          <div class="about-desc">Track your financial goals across three tiers — Must-Do, Good to Have, and Nice to Have. Tap any goal to cycle its status (green/yellow/red). Long press to reorder. Add new goals and assign them a tier and category.</div>
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">📅</div>
+        <div class="about-info">
+          <div class="about-title">Paycheck Schedule</div>
+          <div class="about-desc">Your full biweekly pay calendar. Set a default paycheck amount and apply it to all future periods. Tap any row to override a specific period. Lock individual paychecks to protect them from the Apply All button.</div>
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">🛡️</div>
+        <div class="about-info">
+          <div class="about-title">Essential & Emergency Fund</div>
+          <div class="about-desc">Track your emergency fund balance against 1-6 month milestones. See a full category breakdown of essential vs non-essential spending. Tap the balance to update it anytime.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- FAB -->
@@ -1033,9 +1143,9 @@ body {
     <div class="more-info"><div class="more-label">Essential & Emergency Fund</div><div class="more-sub">EF balance, milestones, category breakdown</div></div>
     <span class="more-arrow">›</span>
   </div>
-  <div class="more-item" onclick="showToast('Settings coming soon'); closeMore()">
+  <div class="more-item" onclick="goToSettings()">
     <span class="more-icon">⚙️</span>
-    <div class="more-info"><div class="more-label">Settings</div><div class="more-sub">Pay cycle, paycheck amount</div></div>
+    <div class="more-info"><div class="more-label">Settings</div><div class="more-sub">Theme, text size, about</div></div>
     <span class="more-arrow">›</span>
   </div>
 </div>
@@ -1283,8 +1393,8 @@ function renderExpensePage() {
 
   // Current standing = base + adjustments - unpaid bills remaining this period
   const currentSt    = base + adj - unpaidAmt;
-  const shortSt      = currentSt + PAYCHECK - shortExp;
-  const longSt       = shortSt   + PAYCHECK - longExp;
+  const shortSt      = currentSt + PAYCHECK - shortExp + shortAdjTotal();
+  const longSt       = shortSt   + PAYCHECK - longExp  + longAdjTotal();
 
   // Subtotals for card display
   const currentIn    = base + Math.max(0, adj);   // base + any positive adjustments
@@ -1556,6 +1666,7 @@ function renderSchedule() {
 
   // Load overrides and default
   const overrides = JSON.parse(localStorage.getItem('mww_pay_overrides') || '{}');
+  const locks     = JSON.parse(localStorage.getItem('mww_pay_locks')     || '{}');
   const defaultPay = parseFloat(localStorage.getItem('mww_default_pay') || PAYCHECK);
 
   // Set default input placeholder
@@ -1588,7 +1699,7 @@ function renderSchedule() {
         ${date.toLocaleDateString('en-US',opts)}
         ${isExtra ? ' 🌟' : ''}
         ${isCurrent ? '<span class="pay-badge" style="margin-left:4px;">NOW</span>' : ''}
-        ${overrides[dateKey] !== undefined ? '<span style="font-family:var(--mono);font-size:8px;color:var(--yellow);margin-left:4px;">✎</span>' : ''}
+        ${overrides[dateKey] !== undefined ? '<span style="font-family:var(--mono);font-size:8px;color:var(--yellow);margin-left:4px;">✎</span>' : ''}${locks[dateKey] ? '<span style="font-size:9px;margin-left:3px;">🔒</span>' : ''}
       </div>
       <div class="pay-amt" style="font-size:11px;">+${fmt(pay)}</div>
       <div class="pay-owed" style="font-size:11px;">-${fmt(owed)}</div>
@@ -1603,12 +1714,29 @@ function openPeriodOverride(dateKey, date, currentPay, defaultPay) {
   overrideDateKey = dateKey;
   const opts = {month:'short', day:'numeric', year:'numeric'};
   document.getElementById('overrideSheetTitle').textContent = date.toLocaleDateString('en-US', opts);
-  document.getElementById('overrideSheetSub').textContent = 'Default: $' + defaultPay.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' · Enter a custom amount to override.';
+  document.getElementById('overrideSheetSub').textContent   = 'Default: $' + defaultPay.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' · Enter a custom amount to override.';
   document.getElementById('overrideAmt').value = currentPay.toFixed(2);
   const overrides = JSON.parse(localStorage.getItem('mww_pay_overrides') || '{}');
+  const locks     = JSON.parse(localStorage.getItem('mww_pay_locks')     || '{}');
+  const isLocked  = !!locks[dateKey];
+  const lockBtn   = document.getElementById('lockBtn');
+  lockBtn.textContent = isLocked ? '🔒 Locked' : '🔓 Unlocked';
+  lockBtn.className   = 'sign-btn' + (isLocked ? ' sp' : '');
   document.getElementById('overrideClearBtn').style.display = overrides[dateKey] !== undefined ? 'block' : 'none';
   openSheetEl('sheetPeriodOverride');
   setTimeout(() => document.getElementById('overrideAmt').focus(), 340);
+}
+
+function togglePeriodLock() {
+  const locks   = JSON.parse(localStorage.getItem('mww_pay_locks') || '{}');
+  const isNowLocked = !locks[overrideDateKey];
+  if (isNowLocked) locks[overrideDateKey] = true;
+  else delete locks[overrideDateKey];
+  localStorage.setItem('mww_pay_locks', JSON.stringify(locks));
+  const lockBtn = document.getElementById('lockBtn');
+  lockBtn.textContent = isNowLocked ? '🔒 Locked' : '🔓 Unlocked';
+  lockBtn.className   = 'sign-btn' + (isNowLocked ? ' sp' : '');
+  showToast(isNowLocked ? '🔒 Locked from Apply All' : '🔓 Unlocked');
 }
 function savePeriodOverride() {
   const amt = parseFloat(document.getElementById('overrideAmt').value);
@@ -1632,8 +1760,24 @@ function applyDefaultPay() {
   const amt = parseFloat(document.getElementById('defaultPayInput').value);
   if (isNaN(amt) || amt <= 0) { showToast('Enter a valid amount'); return; }
   localStorage.setItem('mww_default_pay', amt.toString());
+  // Apply only to future, unlocked periods
+  const overrides = JSON.parse(localStorage.getItem('mww_pay_overrides') || '{}');
+  const locks     = JSON.parse(localStorage.getItem('mww_pay_locks')     || '{}');
+  const now = new Date();
+  PAY_DATES.forEach((date, i) => {
+    if (i >= PAY_DATES.length - 1) return;
+    const next = PAY_DATES[i+1];
+    const end  = new Date(next.getTime() - 86400000);
+    const isPast = now > end;
+    const dateKey = date.toISOString().split('T')[0];
+    if (!isPast && !locks[dateKey]) {
+      // Remove override so it falls back to default
+      delete overrides[dateKey];
+    }
+  });
+  localStorage.setItem('mww_pay_overrides', JSON.stringify(overrides));
   renderSchedule();
-  showToast('Applied to all periods');
+  showToast('Applied to future unlocked periods');
 }
 
 // ══════════════════════════════════════
@@ -2426,6 +2570,87 @@ function editFundField(idx, field) {
 }
 
 // ══════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════
+function goToSettings() {
+  closeMore();
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-settings').classList.add('active');
+  document.getElementById('fab').classList.add('hidden');
+  applySettingsUI();
+  window.scrollTo(0,0);
+}
+
+function applySettingsUI() {
+  const theme = localStorage.getItem('mww_theme') || 'dark';
+  const zoom  = parseFloat(localStorage.getItem('mww_zoom') || '1');
+  document.getElementById('themeLight').className = 'sign-btn' + (theme==='light' ? ' sp' : '');
+  document.getElementById('themeDark').className  = 'sign-btn' + (theme==='dark'  ? ' sp' : '');
+  document.getElementById('zoomLabel').textContent = Math.round(zoom*100) + '%';
+}
+
+function setTheme(t) {
+  localStorage.setItem('mww_theme', t);
+  applyTheme(t);
+  applySettingsUI();
+  showToast(t === 'light' ? '☀️ Light mode' : '🌙 Dark mode');
+}
+
+function applyTheme(t) {
+  const root = document.documentElement;
+  if (t === 'light') {
+    root.style.setProperty('--bg',      '#f4f5f7');
+    root.style.setProperty('--bg2',     '#eaecf0');
+    root.style.setProperty('--s1',      '#ffffff');
+    root.style.setProperty('--s2',      '#f0f2f5');
+    root.style.setProperty('--s3',      '#e4e6ea');
+    root.style.setProperty('--border',  '#d0d3da');
+    root.style.setProperty('--border2', '#b8bcc8');
+    root.style.setProperty('--gap',     '#d4d6db');
+    root.style.setProperty('--text',    '#1a1d24');
+    root.style.setProperty('--text2',   '#3d4152');
+    root.style.setProperty('--sub',     '#6b7191');
+    root.style.setProperty('--sub2',    '#9a9fb5');
+    root.style.setProperty('--green',   '#00a854');
+    root.style.setProperty('--yellow',  '#d4960a');
+    root.style.setProperty('--red',     '#d63c3c');
+    root.style.setProperty('--blue',    '#2b6fd4');
+  } else {
+    root.style.setProperty('--bg',      '#0a0a0a');
+    root.style.setProperty('--bg2',     '#111318');
+    root.style.setProperty('--s1',      '#272b35');
+    root.style.setProperty('--s2',      '#2e3240');
+    root.style.setProperty('--s3',      '#353a4a');
+    root.style.setProperty('--border',  '#363b4a');
+    root.style.setProperty('--border2', '#424860');
+    root.style.setProperty('--gap',     '#000000');
+    root.style.setProperty('--text',    '#dde1ec');
+    root.style.setProperty('--text2',   '#a8adc2');
+    root.style.setProperty('--sub',     '#6b7191');
+    root.style.setProperty('--sub2',    '#474d66');
+    root.style.setProperty('--green',   '#2ddd82');
+    root.style.setProperty('--yellow',  '#f5c84a');
+    root.style.setProperty('--red',     '#f05f5f');
+    root.style.setProperty('--blue',    '#6aa3f5');
+  }
+}
+
+function adjustZoom(delta) {
+  const current = parseFloat(localStorage.getItem('mww_zoom') || '1');
+  const next    = Math.min(1.3, Math.max(0.8, Math.round((current + delta)*100)/100));
+  localStorage.setItem('mww_zoom', next.toString());
+  document.body.style.fontSize = (next * 16) + 'px';
+  document.getElementById('zoomLabel').textContent = Math.round(next*100) + '%';
+}
+
+function initSettings() {
+  const theme = localStorage.getItem('mww_theme') || 'dark';
+  const zoom  = parseFloat(localStorage.getItem('mww_zoom') || '1');
+  applyTheme(theme);
+  document.body.style.fontSize = (zoom * 16) + 'px';
+}
+
+// ══════════════════════════════════════
 // GOALS
 // ══════════════════════════════════════
 const GOAL_CYCLE = ['', 'green', 'yellow', 'red'];
@@ -2594,6 +2819,7 @@ function deleteGoal() {
 // ══════════════════════════════════════
 // INIT
 // ══════════════════════════════════════
+initSettings();
 loadState();
 loadBudget();
 renderExpensePage();
