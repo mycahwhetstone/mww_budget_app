@@ -670,29 +670,26 @@ function renderExpensePage() {
   document.getElementById('dayBadge').textContent    = 'Day ' + day;
   document.getElementById('progFill').style.width    = pct + '%';
 
-  // Standings
-  const adj     = adjTotal();
-  const paidAmt = currentBills.filter(b => billsPaid[b.id]).reduce((s,b) => s+b.amt, 0);
+  // ── STANDINGS ──
+  // Current = Bank Balance + adj (pos income, neg debts) - unpaid bills this period
+  // Short   = Current + Paycheck - short term bills
+  // Long    = Short   + Paycheck - long term bills
 
-  let currentSt, currentIn, currentOut;
+  const adj          = adjTotal();
+  const unpaidAmt    = currentBills.filter(b => !billsPaid[b.id]).reduce((s,b) => s+b.amt, 0);
+  const paidAmt      = currentBills.filter(b =>  billsPaid[b.id]).reduce((s,b) => s+b.amt, 0);
 
-  if (bankBalance !== null) {
-    // Real bank balance anchors Current
-    // Standing = balance + all adjustments (pos & neg) - bills checked paid
-    currentSt  = bankBalance + adj - paidAmt;
-    // In = bank balance (what you actually have)
-    currentIn  = bankBalance;
-    // Out = bills paid so far + net negative adjustments (CC debt etc.)
-    currentOut = paidAmt + Math.max(0, -adj);
-  } else {
-    // Paycheck math fallback
-    currentIn  = PAYCHECK + Math.max(0, adj);
-    currentOut = paidAmt  + Math.max(0, -adj);
-    currentSt  = currentIn - currentOut;
-  }
+  // Base for current — bank balance if set, otherwise paycheck
+  const base         = bankBalance !== null ? bankBalance : PAYCHECK;
 
-  const shortSt = currentSt + PAYCHECK - shortExp;
-  const longSt  = shortSt   + PAYCHECK - longExp;
+  // Current standing = base + adjustments - unpaid bills remaining this period
+  const currentSt    = base + adj - unpaidAmt;
+  const shortSt      = currentSt + PAYCHECK - shortExp;
+  const longSt       = shortSt   + PAYCHECK - longExp;
+
+  // Subtotals for card display
+  const currentIn    = base + Math.max(0, adj);   // base + any positive adjustments
+  const currentOut   = unpaidAmt + Math.max(0, -adj); // unpaid bills + negative adjustments
 
   document.getElementById('stCurrent').textContent     = fmt(currentSt);
   document.getElementById('stShort').textContent       = fmt(shortSt);
@@ -700,9 +697,8 @@ function renderExpensePage() {
   document.getElementById('cardCurrent').className     = 'st ' + colorCls(currentSt) + ' tappable';
   document.getElementById('cardShort').className       = 'st ' + colorCls(shortSt);
   document.getElementById('cardLong').className        = 'st ' + colorCls(longSt);
-  // in = what you have, out = what's gone out (paid bills + debt payments)
   document.getElementById('detCurrentIn').textContent  = fmt(currentIn);
-  document.getElementById('detCurrentOut').textContent = fmt(paidAmt + Math.max(0, -adj));
+  document.getElementById('detCurrentOut').textContent = fmt(currentOut);
   document.getElementById('detShortIn').textContent    = fmt(PAYCHECK);
   document.getElementById('detShortOut').textContent   = fmt(shortExp);
   document.getElementById('detLongIn').textContent     = fmt(PAYCHECK);
