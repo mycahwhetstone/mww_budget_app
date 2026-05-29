@@ -597,7 +597,10 @@ body {
           <h1>Expense Planning</h1>
           <div class="period" id="periodLabel">May 15 – May 28, 2026</div>
         </div>
+        <div style="display:flex;align-items:center;gap:8px;">
         <div class="day-badge" id="dayBadge">Day 1</div>
+        <div class="day-badge" style="cursor:pointer;color:var(--sub);font-size:10px;" onclick="confirmResetPeriod()" title="Reset this period">↺</div>
+      </div>
       </div>
       <div class="prog-wrap">
         <div class="prog-meta"><span id="progStart">May 15</span><span id="progEnd">May 29 · payday</span></div>
@@ -1352,11 +1355,14 @@ const presetSigns = { cc1:-1, cc2:-1, upi:1, oth:1 };
 function saveState() {
   const key = 'mww_period_' + currentPeriodIdx;
   localStorage.setItem(key, JSON.stringify({ billsPaid, extraItems, presets, presetSigns, bankBalance, shortAdjs, longAdjs }));
+  localStorage.setItem('mww_last_period', currentPeriodIdx.toString());
 }
 function loadState() {
   const key = 'mww_period_' + currentPeriodIdx;
   const raw = localStorage.getItem(key);
+
   if (raw) {
+    // Data exists for this period — just load it
     const d = JSON.parse(raw);
     billsPaid   = d.billsPaid   || {};
     extraItems  = d.extraItems  || [];
@@ -1366,13 +1372,25 @@ function loadState() {
     Object.assign(presets,     d.presets     || {});
     Object.assign(presetSigns, d.presetSigns || {});
   } else {
+    // No data for this period yet — check if we rolled over from a previous period
+    const lastPeriod = parseInt(localStorage.getItem('mww_last_period') || '-1');
+    const rolledOver = lastPeriod !== -1 && lastPeriod !== currentPeriodIdx;
+
+    // Fresh slate either way — new period or first ever load
     billsPaid   = {};
     extraItems  = [];
     bankBalance = null;
     shortAdjs   = [];
     longAdjs    = [];
     Object.keys(presets).forEach(k => { presets[k] = 0; presetSigns[k] = presetCfg[k].defaultSign; });
+
+    if (rolledOver) {
+      showToast('🎉 New pay period started');
+    }
   }
+
+  // Always record current period as last known
+  localStorage.setItem('mww_last_period', currentPeriodIdx.toString());
 }
 
 // ══════════════════════════════════════
@@ -1418,20 +1436,22 @@ function renderExpensePage() {
   const longExp  = totalBills(longBills);
 
   // Header
-  const opts = {month:'short', day:'numeric'};
-  const periodStart = p0.toLocaleDateString('en-US', opts);
-  const periodEnd   = new Date(p1.getTime()-86400000).toLocaleDateString('en-US', opts);
-  const nextPayday  = p1.toLocaleDateString('en-US', opts);
-  document.getElementById('periodLabel').textContent = periodStart + ' – ' + periodEnd + ', 2026';
-  document.getElementById('progStart').textContent   = periodStart;
-  document.getElementById('progEnd').textContent     = nextPayday + ' · payday';
+  const opts          = {month:'short', day:'numeric'};
+  const now           = new Date();
+  const periodEndDate = new Date(p1.getTime() - 86400000); // last day of period (day before payday)
+  const periodStart   = p0.toLocaleDateString('en-US', opts);
+  const periodEndStr  = periodEndDate.toLocaleDateString('en-US', opts);
 
-  // Period progress
-  const now  = new Date();
-  const day  = Math.max(1, Math.floor((now - p0) / 86400000) + 1);
-  const pct  = Math.min(100, Math.max(1, (now - p0) / (p1 - p0) * 100));
-  document.getElementById('dayBadge').textContent    = 'Day ' + day;
-  document.getElementById('progFill').style.width    = pct + '%';
+  document.getElementById('periodLabel').textContent = periodStart + ' – ' + periodEndStr + ', 2026';
+  document.getElementById('progStart').textContent   = periodStart;
+  document.getElementById('progEnd').textContent     = periodEndStr + ' · last day';
+
+  // Period progress — how far through the 14-day period we are
+  const totalDays = Math.round((periodEndDate - p0) / 86400000) + 1; // e.g. 14
+  const dayNum    = Math.max(1, Math.floor((now - p0) / 86400000) + 1);
+  const pct       = Math.min(100, Math.max(0, ((dayNum - 1) / totalDays) * 100));
+  document.getElementById('dayBadge').textContent = 'Day ' + dayNum;
+  document.getElementById('progFill').style.width = pct + '%';
 
   // ── STANDINGS ──
   // Current = Bank Balance + adj (pos income, neg debts) - unpaid bills this period
@@ -1538,6 +1558,23 @@ function ordinal(n) {
 // ══════════════════════════════════════
 // BILL TOGGLE
 // ══════════════════════════════════════
+function confirmResetPeriod() {
+  if (!confirm('Reset this period? All checked bills, adjustments, and bank balance will be cleared.')) return;
+  billsPaid   = {};
+  extraItems  = [];
+  bankBalance = null;
+  shortAdjs   = [];
+  longAdjs    = [];
+  Object.keys(presets).forEach(k => { presets[k] = 0; presetSigns[k] = presetCfg[k].defaultSign; });
+  localStorage.setItem('mww_last_period', currentPeriodIdx.toString());
+  saveState();
+  renderExpensePage();
+  renderPresetRows();
+  renderExtras();
+  renderPeriodAdjs();
+  showToast('Period reset');
+}
+
 function toggleBill(id, amt, currentBills) {
   billsPaid[id] = !billsPaid[id];
   saveState();
