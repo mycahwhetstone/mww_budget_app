@@ -1328,7 +1328,7 @@ function totalBills(bills) {
 // ══════════════════════════════════════
 // STATE
 // ══════════════════════════════════════
-let currentPeriodIdx = getCurrentPeriodIdx();
+let currentPeriodIdx = getCurrentPeriodIdx(); // always recalculated fresh on load
 let bankBalance = null;  // null = not set, uses paycheck math
 let billsPaid = {};      // { billId: true }
 let extraItems = [];
@@ -1559,7 +1559,9 @@ function ordinal(n) {
 // BILL TOGGLE
 // ══════════════════════════════════════
 function confirmResetPeriod() {
-  if (!confirm('Reset this period? All checked bills, adjustments, and bank balance will be cleared.')) return;
+  if (!confirm('Reset to current period? All checked bills, adjustments, and bank balance will be cleared.')) return;
+  // Recalculate current period fresh
+  currentPeriodIdx = getCurrentPeriodIdx();
   billsPaid   = {};
   extraItems  = [];
   bankBalance = null;
@@ -1572,7 +1574,7 @@ function confirmResetPeriod() {
   renderPresetRows();
   renderExtras();
   renderPeriodAdjs();
-  showToast('Period reset');
+  showToast('Jumped to current period');
 }
 
 function toggleBill(id, amt, currentBills) {
