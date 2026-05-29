@@ -1331,7 +1331,11 @@ function totalBills(bills) {
 // ══════════════════════════════════════
 // STATE
 // ══════════════════════════════════════
-let currentPeriodIdx = getCurrentPeriodIdx(); // always recalculated fresh on load
+// currentPeriodIdx always computed live from today's date — never cached
+Object.defineProperty(window, 'currentPeriodIdx', {
+  get: function() { return getCurrentPeriodIdx(); },
+  configurable: true
+});
 let bankBalance = null;  // null = not set, uses paycheck math
 let billsPaid = {};      // { billId: true }
 let extraItems = [];
@@ -1358,7 +1362,6 @@ const presetSigns = { cc1:-1, cc2:-1, upi:1, oth:1 };
 function saveState() {
   const key = 'mww_period_' + currentPeriodIdx;
   localStorage.setItem(key, JSON.stringify({ billsPaid, extraItems, presets, presetSigns, bankBalance, shortAdjs, longAdjs }));
-  localStorage.setItem('mww_last_period', currentPeriodIdx.toString());
 }
 function loadState() {
   const key = 'mww_period_' + currentPeriodIdx;
@@ -1393,7 +1396,6 @@ function loadState() {
   }
 
   // Always record current period as last known
-  localStorage.setItem('mww_last_period', currentPeriodIdx.toString());
 }
 
 // ══════════════════════════════════════
@@ -1562,16 +1564,13 @@ function ordinal(n) {
 // BILL TOGGLE
 // ══════════════════════════════════════
 function confirmResetPeriod() {
-  if (!confirm('Reset to current period? All checked bills, adjustments, and bank balance will be cleared.')) return;
-  // Recalculate current period fresh
-  currentPeriodIdx = getCurrentPeriodIdx();
+  if (!confirm('Reset this period? All checked bills, adjustments, and bank balance will be cleared.')) return;
   billsPaid   = {};
   extraItems  = [];
   bankBalance = null;
   shortAdjs   = [];
   longAdjs    = [];
   Object.keys(presets).forEach(k => { presets[k] = 0; presetSigns[k] = presetCfg[k].defaultSign; });
-  localStorage.setItem('mww_last_period', currentPeriodIdx.toString());
   saveState();
   renderExpensePage();
   renderPresetRows();
@@ -3074,8 +3073,6 @@ function deleteGoal() {
 // INIT
 // ══════════════════════════════════════
 initSettings();
-// Always recalculate period index fresh on every load
-currentPeriodIdx = getCurrentPeriodIdx();
 loadState();
 loadBudget();
 renderExpensePage();
